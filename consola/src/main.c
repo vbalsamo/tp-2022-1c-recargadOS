@@ -16,12 +16,13 @@ int main(int argc, char* argv[]) {
     }
     //limpiar esto
 
-    t_list* instrucciones = obtenerInstrucciones(stringInstrucciones);
+    //t_list* instrucciones = obtenerInstrucciones(stringInstrucciones);//kernel obtiene la lista
     t_config* config = config_create("/home/juan-dell/git/tp-2022-1c-recargadOS/consola/config/consola.cfg");
     char * IP_KERNEL = config_get_string_value(config,"IP_KERNEL");
     char * PUERTO_KERNEL = config_get_string_value(config,"PUERTO_KERNEL");
  
     int socket_cliente = crear_conexion(IP_KERNEL, PUERTO_KERNEL);
+    
     
 
     return 0;

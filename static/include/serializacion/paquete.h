@@ -3,6 +3,7 @@
 
     #include<stdio.h>
     #include<stdlib.h>
+    #include<serializacion/estructuras.h>
     
     serializar_paquete(t_paquete* paquete, int bytes);
     enviar_paquete(t_paquete* paquete, int socket_cliente);

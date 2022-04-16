@@ -1,4 +1,19 @@
 #include<serializacion/paquete.h>
+
+
+
+t_paquete* armarPaqueteCon(void* estructura,tipoDeDato cod_op){
+
+	t_paquete* paquete = crearPaquete(cod_op);
+	paquete->buffer->size = tamanioEstructura(estructura,paquete->codigoOperacion);
+	paquete->buffer->stream = serializarEstructura(estructura,paquete->buffer->size,paquete->codigoOperacion);
+
+	//printf("Paquete %d creado \n", paquete->codigoOperacion);
+
+	return  paquete;
+
+}
+
 void* serializar_paquete(t_paquete* paquete, int bytes)
 {
 	void * magic = malloc(bytes);
