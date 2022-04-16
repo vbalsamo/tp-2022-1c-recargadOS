@@ -6,6 +6,21 @@ void validarParametros(int argc, char* argv[]){
         exit(EXIT_FAILURE);
     }
 }
+char* leerInstrucciones(char* path){
+    FILE* fileInstrucciones = fopen(path,"r");
+    char* stringInstrucciones = string_new();
+    char* instruccionActual = malloc(sizeof(char)*BUFFSIZE);
+    fgets(instruccionActual,BUFFSIZE,fileInstrucciones);
+    while(!feof(fileInstrucciones)){
+        string_append(&stringInstrucciones,instruccionActual);
+        instruccionActual=fgets(instruccionActual,BUFFSIZE,fileInstrucciones);
+        printf("\n%s",instruccionActual);
+    }
+    free(instruccionActual);
+    free(fileInstrucciones);
+    return stringInstrucciones;
+}
+
 t_list* obtenerInstrucciones(char* stringInstrucciones){
     
     char** instruccionesSeparadas = string_split(stringInstrucciones,"\n");

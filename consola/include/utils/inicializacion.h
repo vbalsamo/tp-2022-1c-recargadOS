@@ -1,11 +1,13 @@
 #ifndef CONSOLA_INICIALIZACION_H_
 #define CONSOLA_INICIALIZACION_H_
-
+    #define BUFFSIZE 20
     #include <stdlib.h>
     #include <stdio.h>
     #include <commons/string.h>
     #include <commons/collections/list.h>
     #include <instruccion.h>
     void validarParametros(int argc, char* argv[]);
+    char* leerInstrucciones(char* path);
+    //TODO:llevar al kerner
     t_list* obtenerInstrucciones(char* pathInstruccion);
 #endif

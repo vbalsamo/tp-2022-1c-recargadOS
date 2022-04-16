@@ -7,4 +7,7 @@
     #include <commons/string.h>
     #include <commons/config.h>
     #include <sockets/client.h>
+    #include <serializacion/estructuras.h>
+
+
 #endif

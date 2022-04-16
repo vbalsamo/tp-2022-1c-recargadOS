@@ -31,3 +31,19 @@ int esperar_cliente(int socket_servidor)
 
 	return socket_cliente;
 }
+
+t_paquete* recibirPaquete(int server_socket){
+
+	t_paquete* paquete = malloc(sizeof(t_paquete));
+	paquete->buffer = malloc(sizeof(t_buffer));
+
+	recv(server_socket, &(paquete->codigo_operacion), sizeof(t_cod_op), 0);
+
+	recv(server_socket, &(paquete->buffer->size), sizeof(uint32_t), 0);
+
+	paquete->buffer->stream = malloc(paquete->buffer->size);
+
+	recv(server_socket, paquete->buffer->stream, paquete->buffer->size, 0);
+
+	return paquete;
+}
