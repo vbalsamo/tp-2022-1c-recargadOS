@@ -4,5 +4,7 @@
     #include <stdlib.h>
     #include <stdio.h>
     #include <utils/inicializacion.h>
-
+    #include <commons/string.h>
+    #include <commons/config.h>
+    #include <sockets/client.h>
 #endif

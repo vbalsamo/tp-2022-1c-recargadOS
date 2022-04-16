@@ -8,4 +8,5 @@
     #include<netdb.h>
     #include<string.h>
 
-#endif
+    int crear_conexion(char *ip, char* puerto);
+#endif  
