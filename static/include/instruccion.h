@@ -21,6 +21,6 @@
         u_int32_t parametro2;
     }t_instruccion;
 
-    t_instruccion* obtenerInstruccion(char* instruccionTexto);
+    t_instruccion obtenerInstruccion(char* instruccionTexto);
 
 #endif

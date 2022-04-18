@@ -6,7 +6,7 @@
 	#include<unistd.h>
 	#include<sys/socket.h>
 	#include<netdb.h>
-	
+	#include<instruccion.h>
 	typedef enum{
 		PROCESO,
 		ALGO
@@ -25,8 +25,8 @@
 
 	typedef struct{
 		uint32_t tamanioProceso;
-		uint32_t longitudInstrucciones;
-		char* instrucciones;
+		uint32_t sizeInstrucciones;
+		t_instruccion* instrucciones;
 	}t_proceso;
 	void crearBuffer(t_paquete* paquete);
     t_paquete* crearPaquete(t_cod_op cod_op);
@@ -35,7 +35,7 @@
     void enviarPaquete(t_paquete* paquete, int socket_cliente);
     void eliminarPaquete(t_paquete* paquete);
 
-	t_proceso * crearProceso(uint32_t tamanioProceso, uint32_t longitudInstrucciones, char * instrucciones);
+	t_proceso * crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones,t_instruccion* instrucciones);
 	void * serializarProceso(void* stream, void* estructura);
 	t_proceso * deserializarProceso(void* stream);
 	

@@ -68,10 +68,10 @@ void eliminarPaquete(t_paquete* paquete)
 	free(paquete);
 }
 
-t_proceso * crearProceso(uint32_t tamanioProceso, uint32_t longitudInstrucciones, char * instrucciones){
+t_proceso * crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones, t_instruccion * instrucciones){
 	t_proceso * proceso = malloc(sizeof(t_proceso));
 	proceso->tamanioProceso = tamanioProceso;
-	proceso->longitudInstrucciones = longitudInstrucciones;
+	proceso->sizeInstrucciones = sizeInstrucciones;
 	proceso->instrucciones = instrucciones;
 	return proceso;
 }
@@ -80,9 +80,14 @@ void * serializarProceso(void* stream, void* estructura){
     int offset = 0;
     memcpy(stream + offset, &(proceso->tamanioProceso),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	memcpy(stream + offset, &(proceso->longitudInstrucciones),sizeof(uint32_t));
+	memcpy(stream + offset, &(proceso->sizeInstrucciones),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	memcpy(stream + offset, proceso->instrucciones, proceso->longitudInstrucciones);
+	for(int i=0; i<proceso->sizeInstrucciones; i++){
+		memcpy(stream + offset, &(proceso->instrucciones[i]), sizeof(t_instruccion*));
+		printf("\n%d,%d,%d \n",proceso->instrucciones[i].identificador,proceso->instrucciones[i].parametro1,proceso->instrucciones[i].parametro2);
+		offset += sizeof(t_instruccion*);
+	}
+	
 	return stream;
 }
 
@@ -91,10 +96,15 @@ t_proceso * deserializarProceso(void* stream){
     int offset = 0;
     memcpy(&(proceso->tamanioProceso), stream + offset,sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	memcpy(&(proceso->longitudInstrucciones), stream + offset, sizeof(uint32_t));
+	memcpy(&(proceso->sizeInstrucciones), stream + offset, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	proceso->instrucciones = malloc(sizeof(char)*(proceso->longitudInstrucciones));
-	memcpy(proceso->instrucciones, stream + offset, proceso->longitudInstrucciones);
+	proceso->instrucciones = malloc(sizeof(t_instruccion)*(proceso->sizeInstrucciones));
+	for(int i=0; i<proceso->sizeInstrucciones; i++){
+		memcpy(&(proceso->instrucciones[i]),stream + offset , sizeof(t_instruccion));
+		printf("\n%d,%d,%d \n",proceso->instrucciones[i].identificador,proceso->instrucciones[i].parametro1,proceso->instrucciones[i].parametro2);
+		offset += sizeof(t_instruccion*);
+	}
+	
 	return proceso;
 }
 
@@ -119,7 +129,7 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 		case PROCESO:
 		{
 			t_proceso * proceso = (t_proceso *) estructura;
-			return sizeof(uint32_t)*2 + proceso->longitudInstrucciones + 1;
+			return sizeof(uint32_t)*2 + proceso->sizeInstrucciones*(sizeof(t_instruccion));
 		}
 
 		default:
