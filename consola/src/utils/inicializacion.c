@@ -21,15 +21,15 @@ char* leerInstrucciones(char* path){
     return stringInstrucciones;
 }
 
-t_list* obtenerInstrucciones(char* stringInstrucciones){
+t_instruccion* obtenerInstrucciones(char* stringInstrucciones, uint32_t* sizeInstrucciones){
     
     char** instruccionesSeparadas = string_split(stringInstrucciones,"\n");
     int i = 0;
-    t_list* instrucciones = list_create();
+    *sizeInstrucciones = string_array_size(instruccionesSeparadas) - 1;
+    t_instruccion* instrucciones = malloc(sizeof(t_instruccion)*(*sizeInstrucciones));
     
-    while(instruccionesSeparadas[i]!=NULL){
-        t_instruccion* instruccion = obtenerInstruccion(instruccionesSeparadas[i]);
-        list_add(instrucciones, (void *) instruccion);
+    while(i<*sizeInstrucciones){
+        instrucciones[i] = obtenerInstruccion(instruccionesSeparadas[i]);
         i++;
     }
     return instrucciones;

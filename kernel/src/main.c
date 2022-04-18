@@ -4,7 +4,7 @@ void deserializarSegun(t_paquete* paquete, int socket){
 	switch(paquete->codigo_operacion){
 		case PROCESO:{
             t_proceso * proceso = deserializarProceso(paquete->buffer->stream);
-            printf("\n %s %d %d\n",proceso->instrucciones,proceso->longitudInstrucciones,proceso->tamanioProceso);
+            
             free(proceso);
 			break;
         }
