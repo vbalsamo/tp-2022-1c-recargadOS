@@ -16,16 +16,6 @@ void deserializarSegun(t_paquete* paquete, int socket){
 	close(socket);
 }
 
-t_log* iniciar_logger(void)
-{
-    t_log* nuevo_logger;
-    if((nuevo_logger = log_create("kernellog.log", "TP0", 1, LOG_LEVEL_INFO)) == NULL){
-        printf("No se pudo crear el log\n");
-        exit(1);
-    }
-    return nuevo_logger;
-}
-
 int main(int argc, char* argv[]) {  
     
     validarParametros(argc, argv);
@@ -35,7 +25,7 @@ int main(int argc, char* argv[]) {
    
     int socket = iniciar_servidor(IP_KERNEL, PUERTO_ESCUCHA);
 
-    t_log * nuevolog = iniciar_logger();
+    t_log * nuevolog = iniciar_logger("kernel.log", "kernel");
     log_info(nuevolog, "soy un log");
 
     while(1){
