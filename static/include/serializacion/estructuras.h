@@ -31,7 +31,8 @@
 	}t_proceso;	
 	
 	typedef struct{
-		uint32_t tabla_pagina_primer_nivel;
+		uint32_t tamanio_pagina;
+		uint32_t paginas_por_tabla;
 	}t_traduccion_direcciones;
 
 	void* serializarEstructura(void* estructura,int tamanio,t_cod_op codigoOperacion);

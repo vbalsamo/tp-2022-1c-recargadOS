@@ -107,12 +107,21 @@ t_proceso * deserializarProceso(void* stream){
 	
 	return proceso;
 }
+void *  serializarTraduccionDirecciones(void* stream, void* estructura){
+	t_traduccion_direcciones* traduccion_direcciones = (t_traduccion_direcciones*) stream;
+    int offset = 0;
+    memcpy(stream + offset, &(traduccion_direcciones->tamanio_pagina),sizeof(uint32_t));
+	offset = sizeof(uint32_t);
+    memcpy(stream + offset, &(traduccion_direcciones->paginas_por_tabla),sizeof(uint32_t));
+	return stream;
+}
 
 t_traduccion_direcciones * deserializarTraduccionDirecciones(void* stream){
 	t_traduccion_direcciones* traduccion_direcciones = malloc(sizeof(t_traduccion_direcciones));
     int offset = 0;
-    memcpy(&(traduccion_direcciones->tabla_pagina_primer_nivel), stream + offset,sizeof(uint32_t));
-	//......
+    memcpy(&(traduccion_direcciones->tamanio_pagina), stream + offset,sizeof(uint32_t));
+	offset = sizeof(uint32_t);
+	memcpy(&(traduccion_direcciones->paginas_por_tabla), stream + offset,sizeof(uint32_t));
 	return traduccion_direcciones;
 }
 
@@ -126,6 +135,10 @@ void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 			break;
 		}
 		case REQ_TRADUCCION_DIRECCIONES:{
+			break;
+		}
+		case RES_TRADUCCION_DIRECCIONES:{
+			return serializarTraduccionDirecciones(stream,estructura);
 			break;
 		}
 		default:
@@ -148,7 +161,10 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 			return 0;
 			break;
 		}
-
+		case RES_TRADUCCION_DIRECCIONES:{
+			return sizeof(uint32_t);
+			break;
+		}
 		default:
 			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
 			exit(EXIT_FAILURE);

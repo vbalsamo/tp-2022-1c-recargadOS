@@ -5,6 +5,7 @@
     #include <stdio.h>
     #include <sockets/socket.h>
     #include <commons/config.h>
+    #include <commons/log.h>
     #include <utils/inicializacion.h>
     #include <serializacion/estructuras.h>    
     void deserializarSegun(t_paquete* paquete, int socket);

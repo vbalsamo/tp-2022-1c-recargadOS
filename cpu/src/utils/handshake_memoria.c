@@ -6,6 +6,8 @@ t_traduccion_direcciones* obtenerTraduccionDeDirecciones(uint32_t socket){
     enviarPaquete(paquete,socket);
     eliminarPaquete(paquete);
     
+
+    //respuesta
     paquete = recibirPaquete(socket);
     if(paquete->codigo_operacion!=RES_TRADUCCION_DIRECCIONES){
         perror("No se recibio el codigo de operacion esperado para traduccion de direcciones");
