@@ -15,7 +15,8 @@ int main(int argc, char* argv[]) {
     uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     t_traduccion_direcciones* traduccion_direcciones = obtenerTraduccionDeDirecciones(socket_memoria);
 
-    //Servidores  
+    //Servidores 
+    /* 
     uint32_t* socket_dispatch = malloc(sizeof(uint32_t));
     *socket_dispatch = iniciar_servidor(IP_CPU, PUERTO_ESCUCHA_DISPATCH);
     uint32_t * socket_interrupt = malloc(sizeof(uint32_t));
@@ -27,7 +28,7 @@ int main(int argc, char* argv[]) {
     pthread_create(&thread_interrupt, NULL, (void*)servidor, (void*)servidor_interrupt);
     pthread_join(thread_dispatch, NULL);
     pthread_join(thread_interrupt, NULL);
-    
+    */
     //liberar heap
     free(IP_CPU);
     free(PUERTO_ESCUCHA_DISPATCH);
@@ -35,10 +36,11 @@ int main(int argc, char* argv[]) {
     free(IP_MEMORIA);
     free(PUERTO_MEMORIA);
     free(traduccion_direcciones);
-    free(socket_dispatch);
+    /*free(socket_dispatch);
     free(socket_interrupt);
     free(servidor_dispatch);
     free(servidor_interrupt);
+    */
     return 0;
 }
 

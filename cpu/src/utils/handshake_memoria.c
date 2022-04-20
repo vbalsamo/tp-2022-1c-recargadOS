@@ -1,8 +1,11 @@
 #include <utils/handshake_memoria.h>
 
 t_traduccion_direcciones* obtenerTraduccionDeDirecciones(uint32_t socket){
-    
-    t_paquete * paquete = armarPaqueteCon("",REQ_TRADUCCION_DIRECCIONES);
+    t_mensaje * mensaje = malloc(sizeof(t_mensaje));
+    mensaje->texto=malloc(sizeof(char)*5);
+    mensaje->texto="hola";
+    mensaje->longitud=5;
+    t_paquete * paquete = armarPaqueteCon(mensaje,REQ_TRADUCCION_DIRECCIONES);
     enviarPaquete(paquete,socket);
     eliminarPaquete(paquete);
     

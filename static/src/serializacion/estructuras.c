@@ -107,6 +107,25 @@ t_proceso * deserializarProceso(void* stream){
 	
 	return proceso;
 }
+
+void *  serializarMensaje(void* stream, void* estructura){
+	t_mensaje* mensaje = (t_mensaje*) stream;
+    
+	int offset = 0;
+	memcpy(stream + offset, &(mensaje->longitud),sizeof(uint32_t));
+	offset = sizeof(uint32_t);
+    memcpy(stream + offset, mensaje->texto,mensaje->longitud-2);
+	return stream;
+}
+t_mensaje *  deserializarMensaje(void* stream){
+	t_mensaje* mensaje = malloc(sizeof(t_mensaje));
+    int offset = 0;
+	memcpy(&(mensaje->longitud), stream + offset, sizeof(uint32_t));
+	offset = sizeof(uint32_t);
+	mensaje->texto = malloc(sizeof(char)*(mensaje->longitud));
+    memcpy(mensaje->texto, stream + offset, mensaje->longitud-1);
+	return mensaje;
+}
 void *  serializarTraduccionDirecciones(void* stream, void* estructura){
 	t_traduccion_direcciones* traduccion_direcciones = (t_traduccion_direcciones*) stream;
     int offset = 0;
@@ -135,6 +154,7 @@ void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 			break;
 		}
 		case REQ_TRADUCCION_DIRECCIONES:{
+			return serializarMensaje(stream,estructura);
 			break;
 		}
 		case RES_TRADUCCION_DIRECCIONES:{
@@ -158,7 +178,8 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 			break;
 		}
 		case REQ_TRADUCCION_DIRECCIONES:{
-			return 0;
+			t_mensaje * msg = (t_mensaje*) estructura;
+			return msg->longitud + sizeof(uint32_t);
 			break;
 		}
 		case RES_TRADUCCION_DIRECCIONES:{

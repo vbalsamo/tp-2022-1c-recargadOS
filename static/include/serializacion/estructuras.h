@@ -34,7 +34,10 @@
 		uint32_t tamanio_pagina;
 		uint32_t paginas_por_tabla;
 	}t_traduccion_direcciones;
-
+	typedef struct{
+		uint32_t longitud;
+		char * texto;
+	}t_mensaje;
 	void* serializarEstructura(void* estructura,int tamanio,t_cod_op codigoOperacion);
 	int tamanioEstructura(void* estructura ,t_cod_op cod_op);
 	
@@ -54,4 +57,7 @@
 	void * serializarTraduccionDirecciones(void* stream, void* estructura);
 	t_traduccion_direcciones * deserializarTraduccionDirecciones(void* stream);
 	
+
+	t_mensaje *  deserializarMensaje(void* stream);
+	void *  serializarMensaje(void* stream, void* estructura);
 #endif
