@@ -16,7 +16,8 @@ void deserializarSegun(t_paquete* paquete, int socket){
 	close(socket);
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {  
+    t_log * nuevolog = log_create();
     validarParametros(argc, argv);
     t_config * config = config_create(argv[1]);
     char * IP_KERNEL = config_get_string_value(config, "IP_KERNEL");
@@ -30,6 +31,8 @@ int main(int argc, char* argv[]) {
         deserializarSegun(paquete, socket_cliente);
         break;
     }
+
+    
     return 0;
 }
 

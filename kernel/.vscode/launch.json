@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/kernel.out",
-            "args": ["/home/juan-dell/git/tp-2022-1c-recargadOS/kernel/config/kernel.cfg"],
+            "args": ["/home/utnso/tp-2022-1c-recargadOS/kernel/config/kernel.cfg"],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}",
             "environment": [],
