@@ -1,0 +1,35 @@
+{
+	"folders": [
+		{
+			"path": "../static"
+		},
+		{
+			"path": "../kernel"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"main.h": "c",
+			"inicializacion.h": "c",
+			"cstdlib": "c",
+			"stdio.h": "c",
+			"string.h": "c",
+			"list.h": "c",
+			"stdlib.h": "c",
+			"instruccion.h": "c",
+			"cspec.h": "c",
+			"stdbool.h": "c",
+			"sockets.h": "c",
+			"client.h": "c",
+			"signal.h": "c",
+			"unistd.h": "c",
+			"server.h": "c",
+			"socket.h": "c",
+			"config.h": "c",
+			"string_view": "c",
+			"paquete.h": "c",
+			"estructuras.h": "c",
+			"stdint.h": "c"
+		}
+	}
+}
