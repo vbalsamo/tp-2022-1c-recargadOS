@@ -83,9 +83,9 @@ void * serializarProceso(void* stream, void* estructura){
 	memcpy(stream + offset, &(proceso->sizeInstrucciones),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 	for(int i=0; i<proceso->sizeInstrucciones; i++){
-		memcpy(stream + offset, &(proceso->instrucciones[i]), sizeof(t_instruccion*));
+		memcpy(stream + offset, &(proceso->instrucciones[i]), sizeof(t_instruccion));
 		printf("\n%d,%d,%d \n",proceso->instrucciones[i].identificador,proceso->instrucciones[i].parametro1,proceso->instrucciones[i].parametro2);
-		offset += sizeof(t_instruccion*);
+		offset += sizeof(t_instruccion);
 	}
 	
 	return stream;
@@ -108,16 +108,29 @@ t_proceso * deserializarProceso(void* stream){
 	return proceso;
 }
 
-void* serializarEstructura(void* estructura,int tamanio,t_cod_op codigoOperacion){
+t_traduccion_direcciones * deserializarTraduccionDirecciones(void* stream){
+	t_traduccion_direcciones* traduccion_direcciones = malloc(sizeof(t_traduccion_direcciones));
+    int offset = 0;
+    memcpy(&(traduccion_direcciones->tabla_pagina_primer_nivel), stream + offset,sizeof(uint32_t));
+	//......
+	return traduccion_direcciones;
+}
+
+void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 
 	void* stream = malloc(tamanio);
 
-	switch(codigoOperacion){
-		case PROCESO:
+	switch(cod_op){
+		case PROCESO:{
 			return serializarProceso(stream,estructura);
+			break;
+		}
+		case REQ_TRADUCCION_DIRECCIONES:{
+			break;
+		}
 		default:
-			//printf("\n No pusiste el tipo de estructura para poder serializar negro \n");
-			exit(1);
+			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
+			exit(EXIT_FAILURE);
 	}
 
 }
@@ -126,15 +139,19 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 
 	switch(cod_op){
 
-		case PROCESO:
-		{
+		case PROCESO:{
 			t_proceso * proceso = (t_proceso *) estructura;
 			return sizeof(uint32_t)*2 + proceso->sizeInstrucciones*(sizeof(t_instruccion));
+			break;
+		}
+		case REQ_TRADUCCION_DIRECCIONES:{
+			return 0;
+			break;
 		}
 
 		default:
-				//printf("\n No pusiste el tipo de estructura para ver el tamanio negro \n");
-				exit(1);
+			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
+			exit(EXIT_FAILURE);
 	}
 
 }

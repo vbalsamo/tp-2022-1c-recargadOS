@@ -6,7 +6,7 @@
     #include <utils/inicializacion.h>
     #include <commons/string.h>
     #include <commons/config.h>
-    #include <sockets/client.h>
+    #include <sockets/socket.h>
     #include <serializacion/estructuras.h>
 
 
