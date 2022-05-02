@@ -109,21 +109,21 @@ t_proceso * deserializarProceso(void* stream){
 }
 
 void *  serializarMensaje(void* stream, void* estructura){
-	t_mensaje* mensaje = (t_mensaje*) stream;
+	t_mensaje* mensaje = (t_mensaje*) estructura;
     
 	int offset = 0;
 	memcpy(stream + offset, &(mensaje->longitud),sizeof(uint32_t));
-	offset = sizeof(uint32_t);
-    memcpy(stream + offset, mensaje->texto,mensaje->longitud-2);
+	offset += sizeof(uint32_t);
+    memcpy(stream + offset, mensaje->texto,mensaje->longitud);
 	return stream;
 }
 t_mensaje *  deserializarMensaje(void* stream){
 	t_mensaje* mensaje = malloc(sizeof(t_mensaje));
     int offset = 0;
 	memcpy(&(mensaje->longitud), stream + offset, sizeof(uint32_t));
-	offset = sizeof(uint32_t);
+	offset += sizeof(uint32_t);
 	mensaje->texto = malloc(sizeof(char)*(mensaje->longitud));
-    memcpy(mensaje->texto, stream + offset, mensaje->longitud-1);
+    memcpy(mensaje->texto, stream + offset, mensaje->longitud);
 	return mensaje;
 }
 void *  serializarTraduccionDirecciones(void* stream, void* estructura){

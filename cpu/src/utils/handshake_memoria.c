@@ -2,9 +2,9 @@
 
 t_traduccion_direcciones* obtenerTraduccionDeDirecciones(uint32_t socket){
     t_mensaje * mensaje = malloc(sizeof(t_mensaje));
-    mensaje->texto=malloc(sizeof(char)*5);
-    mensaje->texto="hola";
-    mensaje->longitud=5;
+    mensaje->texto=string_new();
+    string_append(&mensaje->texto,"hola");
+    mensaje->longitud=strlen(mensaje->texto)+1;
     t_paquete * paquete = armarPaqueteCon(mensaje,REQ_TRADUCCION_DIRECCIONES);
     enviarPaquete(paquete,socket);
     eliminarPaquete(paquete);
