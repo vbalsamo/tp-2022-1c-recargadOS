@@ -28,7 +28,17 @@
 		uint32_t tamanioProceso;
 		uint32_t sizeInstrucciones;
 		t_instruccion* instrucciones;
-	}t_proceso;	
+	}t_proceso;
+	typedef struct{
+		uint32_t id;
+		uint32_t tamanio;
+		//uint32_t tamanioInstrucciones;
+		t_instruccion* instrucciones;
+		uint32_t program_counter;
+		uint32_t tabla_paginas;
+		//double estimacion_rafaga;
+	}t_pcb;
+	
 	
 	typedef struct{
 		uint32_t tamanio_pagina;
