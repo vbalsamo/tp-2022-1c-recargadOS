@@ -4,17 +4,19 @@ int main(int argc, char* argv[]) {
     validarParametros(argc, argv);
     t_config * config = config_create(argv[1]);
     //t_log * log = log_create("./cpu.log","CPU",true,LOG_LEVEL_ERROR);
-    char * IP_CPU = config_get_string_value(config, "IP_CPU");
-    char * PUERTO_ESCUCHA_DISPATCH = config_get_string_value(config, "PUERTO_ESCUCHA_DISPATCH");
-    char * PUERTO_ESCUCHA_INTERRUPT = config_get_string_value(config, "PUERTO_ESCUCHA_INTERRUPT");
-    
-    char * IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA");
-    char * PUERTO_MEMORIA = config_get_string_value(config, "PUERTO_MEMORIA");
+    IP_CPU = config_get_string_value(config, "IP_CPU");
+    PUERTO_ESCUCHA_DISPATCH = config_get_string_value(config, "PUERTO_ESCUCHA_DISPATCH");
+    PUERTO_ESCUCHA_INTERRUPT = config_get_string_value(config, "PUERTO_ESCUCHA_INTERRUPT");
+    IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA");
+    PUERTO_MEMORIA = config_get_string_value(config, "PUERTO_MEMORIA");
 
     //handshake con memoria
     uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     t_traduccion_direcciones* traduccion_direcciones = obtenerTraduccionDeDirecciones(socket_memoria);
-
+    close(socket_memoria);
+    
+    execute_read(1);
+    execute_write(1,NULL);
     //Servidores 
     /* 
     uint32_t* socket_dispatch = malloc(sizeof(uint32_t));

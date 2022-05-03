@@ -13,5 +13,6 @@
     #include <servidor/dispatch.h>
     #include <servidor/interrupt.h>
     #include <pthread.h>
-    
+    #include <utils/variables_globales.h>
+    #include <utils/ciclo_instruccion.h>
 #endif

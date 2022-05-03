@@ -11,16 +11,36 @@ t_log * log_;
 void deserializarSegun(t_paquete* paquete, int socket){
 
 	switch(paquete->codigo_operacion){
-		case REQ_TRADUCCION_DIRECCIONES:{
+		case REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA:{
             log_info(log_, "se solicita traducciones de direciones");
             t_traduccion_direcciones * traduccionDirecciones = malloc(sizeof(t_traduccion_direcciones));
             
 
             traduccionDirecciones->tamanio_pagina = TAM_PAGINA;
             traduccionDirecciones->paginas_por_tabla = PAGINAS_POR_TABLA;
-            t_paquete* paquete = armarPaqueteCon(traduccionDirecciones, RES_TRADUCCION_DIRECCIONES);
+            t_paquete* paquete = armarPaqueteCon(traduccionDirecciones, RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU);
             enviarPaquete(paquete,socket);
             log_info(log_, "se envia traducciones de direciones");
+			break;
+        }
+        case REQ_DATO_DIRECCION_LOGICA_CPU_MEMORIA:{
+            log_info(log_, "se solicita dato en direccion de memoria");
+            t_mensaje * mensaje = malloc(sizeof(t_mensaje));
+            mensaje->longitud = 12;
+            mensaje->texto = "IMPLEMENTAR";
+            t_paquete* paquete = armarPaqueteCon(mensaje, RES_DATO_DIRECCION_LOGICA_MEMORIA_CPU);
+            enviarPaquete(paquete,socket);
+            log_info(log_, "se envia dato en direccion de memoria");
+			break;
+        }
+        case REQ_ESCRIBIR_DIRECCION_LOGICA_CPU_MEMORIA:{
+            log_info(log_, "se solicita escribir dato en direccion de memoria");
+            t_mensaje * mensaje = malloc(sizeof(t_mensaje));
+            mensaje->longitud = 12;
+            mensaje->texto = "IMPLEMENTAR";
+            t_paquete* paquete = armarPaqueteCon(mensaje, RES_ESCRIBIR_DIRECCION_LOGICA_MEMORIA_CPU);
+            enviarPaquete(paquete,socket);
+            log_info(log_, "se escribio dato en direccion de memoria");
 			break;
         }
 		default:{
@@ -48,7 +68,6 @@ int main(int argc, char* argv[]) {
         uint32_t socket_cliente = esperar_cliente(socket);
         t_paquete * paquete = recibirPaquete(socket_cliente);
         deserializarSegun(paquete, socket_cliente);
-        break;
     }
     return 0;
 }

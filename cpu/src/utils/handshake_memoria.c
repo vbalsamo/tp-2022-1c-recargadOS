@@ -5,14 +5,14 @@ t_traduccion_direcciones* obtenerTraduccionDeDirecciones(uint32_t socket){
     mensaje->texto=string_new();
     string_append(&mensaje->texto,"hola");
     mensaje->longitud=strlen(mensaje->texto)+1;
-    t_paquete * paquete = armarPaqueteCon(mensaje,REQ_TRADUCCION_DIRECCIONES);
+    t_paquete * paquete = armarPaqueteCon(mensaje,REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA);
     enviarPaquete(paquete,socket);
     eliminarPaquete(paquete);
     
 
     //respuesta
     paquete = recibirPaquete(socket);
-    if(paquete->codigo_operacion!=RES_TRADUCCION_DIRECCIONES){
+    if(paquete->codigo_operacion!=RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU){
         perror("No se recibio el codigo de operacion esperado para traduccion de direcciones");
         exit(EXIT_FAILURE);
     }
