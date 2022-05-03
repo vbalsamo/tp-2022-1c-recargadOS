@@ -78,10 +78,13 @@ t_proceso * crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones, t_
 void * serializarProceso(void* stream, void* estructura){
     t_proceso* proceso = (t_proceso*) estructura;
     int offset = 0;
-    memcpy(stream + offset, &(proceso->tamanioProceso),sizeof(uint32_t));
+    memcpy(stream + offset, &proceso->tamanioProceso,sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	memcpy(stream + offset, &(proceso->sizeInstrucciones),sizeof(uint32_t));
+	memcpy(stream + offset, &proceso->sizeInstrucciones,sizeof(uint32_t));
 	offset += sizeof(uint32_t);
+	memcpy(stream + offset, proceso->instrucciones, sizeof(t_instruccion)*(proceso->sizeInstrucciones));
+	return stream;
+	/*
 	for(int i=0; i<proceso->sizeInstrucciones; i++){
 		memcpy(stream + offset, &(proceso->instrucciones[i]), sizeof(t_instruccion));
 		printf("\n%d,%d,%d \n",proceso->instrucciones[i].identificador,proceso->instrucciones[i].parametro1,proceso->instrucciones[i].parametro2);
@@ -89,25 +92,29 @@ void * serializarProceso(void* stream, void* estructura){
 	}
 	
 	return stream;
+
+	*/
 }
 
 t_proceso * deserializarProceso(void* stream){
     t_proceso* proceso = malloc(sizeof(t_proceso));
-    int offset = 0;
-    memcpy(&(proceso->tamanioProceso), stream + offset,sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(&(proceso->sizeInstrucciones), stream + offset, sizeof(uint32_t));
-	offset += sizeof(uint32_t);
+    //int offset = 0;
+    memcpy(&(proceso->tamanioProceso), stream, sizeof(uint32_t));
+	stream += sizeof(uint32_t);
+	memcpy(&(proceso->sizeInstrucciones), stream, sizeof(uint32_t));
+	stream += sizeof(uint32_t);
 	proceso->instrucciones = malloc(sizeof(t_instruccion)*(proceso->sizeInstrucciones));
-	for(int i=0; i<proceso->sizeInstrucciones; i++){
-		memcpy(&(proceso->instrucciones[i]),stream + offset , sizeof(t_instruccion));
-		printf("\n%d,%d,%d \n",proceso->instrucciones[i].identificador,proceso->instrucciones[i].parametro1,proceso->instrucciones[i].parametro2);
-		offset += sizeof(t_instruccion*);
-	}
+	memcpy(proceso->instrucciones, stream, proceso->sizeInstrucciones);
+	
+	// for(int i=0; i<proceso->sizeInstrucciones; i++){
+	// 	memcpy(&(proceso->instrucciones[i]),stream + offset , sizeof(t_instruccion));
+	// 	printf("\n%d,%d,%d \n",proceso->instrucciones[i].identificador,proceso->instrucciones[i].parametro1,proceso->instrucciones[i].parametro2);
+	// 	offset += sizeof(t_instruccion*);
+	// }
 	
 	return proceso;
 }
-void *  serializarTraduccionDirecciones(void* stream, void* estructura){
+void * serializarTraduccionDirecciones(void* stream, void* estructura){
 	t_traduccion_direcciones* traduccion_direcciones = (t_traduccion_direcciones*) stream;
     int offset = 0;
     memcpy(stream + offset, &(traduccion_direcciones->tamanio_pagina),sizeof(uint32_t));

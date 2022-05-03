@@ -21,6 +21,7 @@ int main(int argc, char* argv[]) {
     t_proceso* proceso = crearProceso(tamanioProceso, *sizeInstrucciones, instrucciones);
     t_paquete * paquete = armarPaqueteCon(proceso,PROCESO);
     enviarPaquete(paquete , socket_cliente);
-    
+    eliminarPaquete(paquete);
+
     return 0;
 }

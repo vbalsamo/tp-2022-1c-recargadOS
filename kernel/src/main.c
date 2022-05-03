@@ -1,10 +1,17 @@
 #include <main.h>
+#include <inttypes.h>
 void deserializarSegun(t_paquete* paquete, int socket){
 
 	switch(paquete->codigo_operacion){
 		case PROCESO:{
             t_proceso * proceso = deserializarProceso(paquete->buffer->stream);
-            
+
+            t_log * nuevolog = log_create("kernel.log", "kernel", 1, LOG_LEVEL_INFO);
+            log_info(nuevolog, "Bienvenido al servidor del kernel");
+            char lineaprint[64];
+            sprintf(lineaprint,"%lu", proceso->tamanioProceso);
+            log_info(nuevolog, lineaprint);
+            //printf("%" PRIu32 "\n",proceso->tamanioProceso);
             free(proceso);
 			break;
         }
@@ -22,11 +29,10 @@ int main(int argc, char* argv[]) {
     t_config * config = config_create(argv[1]);
     char * IP_KERNEL = config_get_string_value(config, "IP_KERNEL");
     char * PUERTO_ESCUCHA = config_get_string_value(config, "PUERTO_ESCUCHA");
-   
+
     int socket = iniciar_servidor(IP_KERNEL, PUERTO_ESCUCHA);
 
-    t_log * nuevolog = iniciar_logger("kernel.log", "kernel");
-    log_info(nuevolog, "soy un log");
+    
 
     while(1){
         int socket_cliente = esperar_cliente(socket);
