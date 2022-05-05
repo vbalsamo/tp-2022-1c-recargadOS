@@ -36,3 +36,16 @@ t_instruccion obtenerInstruccion(char* instruccionTexto){
     }
     return instruccion;
 }
+
+const char* instruccion_idAString(instruccion_id instruccion){
+        switch (instruccion) 
+        {
+            case NO_OP: return "NO_OP";
+            case IO: return "IO";
+            case READ: return "READ";
+            case COPY: return "COPY";
+            case WRITE: return "WRITE";
+            case EXIT: return "EXIT";
+
+        }
+    }

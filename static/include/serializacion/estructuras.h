@@ -14,6 +14,7 @@
 		ALGO
 	}t_cod_op;
 
+
 	typedef struct{
         uint32_t size;
         void* stream;
@@ -34,6 +35,18 @@
 		uint32_t tamanio_pagina;
 		uint32_t paginas_por_tabla;
 	}t_traduccion_direcciones;
+
+	typedef struct{
+		uint32_t id;
+		uint32_t tamanioProceso;
+		uint32_t sizeInstrucciones;
+		t_instruccion* instrucciones;
+		
+
+
+	}t_pcb;
+
+
 
 	void* serializarEstructura(void* estructura,int tamanio,t_cod_op codigoOperacion);
 	int tamanioEstructura(void* estructura ,t_cod_op cod_op);
