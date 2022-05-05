@@ -5,18 +5,8 @@ void deserializarSegun(t_paquete* paquete, int socket){
 	switch(paquete->codigo_operacion){
 		case PROCESO:{
             t_proceso * proceso = deserializarProceso(paquete->buffer->stream);
-            t_log * nuevolog = log_create("kernel.log", "kernel", 1, LOG_LEVEL_INFO);
-            log_info(nuevolog, "Bienvenido al servidor del kernel");
-            //printf("%s", proceso->instrucciones->identificador);
-            
-            
-            // int i 
-            // for(i=0, i < proceso->sizeInstrucciones, i++){
-            //     printf("%s", &proceso.instrucciones[i])
-            // }
-            // char * structToString(proceso);
-            
-            
+            inicializarPcb(proceso);
+            //t_log * nuevolog = log_create("kernel.log", "kernel", 1, LOG_LEVEL_INFO);
             free(proceso);
 			break;
         }

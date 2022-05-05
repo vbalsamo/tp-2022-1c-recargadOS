@@ -6,3 +6,6 @@ void validarParametros(int argc, char* argv[]){
         exit(EXIT_FAILURE);
     }
 }
+
+//TO DO: 
+// mostrar_instrucciones_deserializados

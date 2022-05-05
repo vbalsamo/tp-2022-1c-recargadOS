@@ -3,10 +3,13 @@
 	#include <stdlib.h>
 	#include <stdint.h>
 	#include <string.h>
-	#include<unistd.h>
-	#include<sys/socket.h>
-	#include<netdb.h>
-	#include<instruccion.h>
+	#include <unistd.h>
+	#include <sys/socket.h>
+	#include <netdb.h>
+	#include <instruccion.h>
+	#include <commons/collections/list.h>
+	#include <commons/collections/queue.h>
+
 	typedef enum{
 		PROCESO,
 		REQ_TRADUCCION_DIRECCIONES,
@@ -14,7 +17,17 @@
 		ALGO
 	}t_cod_op;
 
+	
 
+	t_list * estado_ready;
+	t_list * estado_new;
+	t_list * estado_exec;
+	t_list * estadp_exit;
+	t_list * estado_susp_ready;
+	t_queue * estado_blocked;
+	t_queue * estado_susp_bloq;
+	
+	
 	typedef struct{
         uint32_t size;
         void* stream;
@@ -41,9 +54,9 @@
 		uint32_t tamanioProceso;
 		uint32_t sizeInstrucciones;
 		t_instruccion* instrucciones;
-		
-
-
+		uint32_t PC;
+		t_list * tablaDePaginas;
+		uint32_t estimacionRafaga;
 	}t_pcb;
 
 
