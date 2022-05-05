@@ -11,7 +11,7 @@ t_proceso * crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones, t_
 	return proceso;
 */
 
-t_pcb * crearPcb(t_proceso * proceso){
+t_pcb * iniciarPcb(t_proceso * proceso){
     t_pcb * pcb = malloc(sizeof(t_pcb));
     
     //uint32_t id_pcb = id_nuevo_proceso;
@@ -24,6 +24,7 @@ t_pcb * crearPcb(t_proceso * proceso){
     pcb->tablaDePaginas = NULL;
     pcb->estimacionRafaga = 0;
     printf("id: %d", pcb->id);
+    list_add(estado_ready, pcb);
     return pcb;
 }
 

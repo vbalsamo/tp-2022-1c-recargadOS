@@ -8,8 +8,8 @@
     #include <instruccion.h>
     #include <serializacion/estructuras.h>
 
-    t_pcb * crearPcb(t_proceso * proceso);
-    void * inicializarPcb(t_proceso * proceso);
+    t_pcb * iniciarPcb(t_proceso * proceso);
+    //void * inicializarPcb(t_proceso * proceso);
    
     
 

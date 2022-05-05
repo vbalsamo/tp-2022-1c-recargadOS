@@ -22,7 +22,7 @@
 	t_list * estado_ready;
 	t_list * estado_new;
 	t_list * estado_exec;
-	t_list * estadp_exit;
+	t_list * estado_exit;
 	t_list * estado_susp_ready;
 	t_queue * estado_blocked;
 	t_queue * estado_susp_bloq;

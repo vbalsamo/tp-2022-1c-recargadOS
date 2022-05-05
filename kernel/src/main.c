@@ -5,10 +5,18 @@ void deserializarSegun(t_paquete* paquete, int socket){
 	switch(paquete->codigo_operacion){
 		case PROCESO:{
             t_proceso * proceso = deserializarProceso(paquete->buffer->stream);
-            inicializarPcb(proceso);
+            iniciarPcb(proceso);
             //t_log * nuevolog = log_create("kernel.log", "kernel", 1, LOG_LEVEL_INFO);
             free(proceso);
 			break;
+        }
+
+        case REQ_TRADUCCION_DIRECCIONES:{
+            return;
+        }
+
+        case RES_TRADUCCION_DIRECCIONES:{
+            return;
         }
 			
 		case ALGO:
@@ -25,9 +33,9 @@ int main(int argc, char* argv[]) {
     char * IP_KERNEL = config_get_string_value(config, "IP_KERNEL");
     char * PUERTO_ESCUCHA = config_get_string_value(config, "PUERTO_ESCUCHA");
 
-    int socket = iniciar_servidor(IP_KERNEL, PUERTO_ESCUCHA);
+    int socket = iniciar_servidor(IP_KERNEL, PUERTO_ESCUCHA); 
 
-    
+    inicializarEstados();
 
     while(1){
         int socket_cliente = esperar_cliente(socket);

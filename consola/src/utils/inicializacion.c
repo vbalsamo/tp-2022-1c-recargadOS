@@ -31,7 +31,7 @@ t_instruccion* obtenerInstrucciones(char* stringInstrucciones, uint32_t* sizeIns
     
     while(i<*sizeInstrucciones){
         instrucciones[i] = obtenerInstruccion(instruccionesSeparadas[i]);
-        printf("instrucciones: %s %d %d\n", instruccion_idAString(instrucciones[i].identificador), instrucciones[i].parametro1, instrucciones[i].parametro2);
+        //printf("instrucciones: %s %d %d\n", instruccion_idAString(instrucciones[i].identificador), instrucciones[i].parametro1, instrucciones[i].parametro2);
         i++;
     }
     return instrucciones;
