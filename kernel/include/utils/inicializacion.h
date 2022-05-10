@@ -6,6 +6,8 @@
     #include <commons/string.h>
     #include <commons/collections/list.h>
     #include <instruccion.h>
+    #include <serializacion/estructuras.h>
     void validarParametros(int argc, char* argv[]);
     t_list* obtenerInstrucciones(char* pathInstruccion);
+    void inicializarEstados();
 #endif

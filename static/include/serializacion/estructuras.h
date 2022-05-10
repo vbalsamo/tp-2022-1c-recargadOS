@@ -3,10 +3,13 @@
 	#include <stdlib.h>
 	#include <stdint.h>
 	#include <string.h>
-	#include<unistd.h>
-	#include<sys/socket.h>
-	#include<netdb.h>
-	#include<instruccion.h>
+	#include <unistd.h>
+	#include <sys/socket.h>
+	#include <netdb.h>
+	#include <instruccion.h>
+	#include <commons/collections/list.h>
+	#include <commons/collections/queue.h>
+
 	typedef enum{
 		PROCESO,
 		REQ_INTERRUPCION_KERNEL_CPU, //HILO INTERRUPT
@@ -20,6 +23,17 @@
 		ALGO
 	}t_cod_op;
 
+	
+
+	t_list * estado_ready;
+	t_list * estado_new;
+	t_list * estado_exec;
+	t_list * estado_exit;
+	t_list * estado_susp_ready;
+	t_queue * estado_blocked;
+	t_queue * estado_susp_bloq;
+	
+	
 	typedef struct{
         uint32_t size;
         void* stream;
@@ -50,10 +64,22 @@
 		uint32_t tamanio_pagina;
 		uint32_t paginas_por_tabla;
 	}t_traduccion_direcciones;
+
 	typedef struct{
 		uint32_t longitud;
 		char * texto;
 	}t_mensaje;
+
+	typedef struct{
+		uint32_t id;
+		uint32_t tamanioProceso;
+		uint32_t sizeInstrucciones;
+		t_instruccion* instrucciones;
+		uint32_t PC;
+		t_list * tablaDePaginas;
+		uint32_t estimacionRafaga;
+	}t_pcb;
+
 	void* serializarEstructura(void* estructura,int tamanio,t_cod_op codigoOperacion);
 	int tamanioEstructura(void* estructura ,t_cod_op cod_op);
 	

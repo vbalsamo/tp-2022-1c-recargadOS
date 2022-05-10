@@ -2,7 +2,7 @@
     "configurations": [
         {
             "name": "Linux",
-            "includePath": [                
+            "includePath": [
                 "${workspaceFolder}/include"
             ],
             "defines": [],
