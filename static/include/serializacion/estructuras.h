@@ -12,6 +12,10 @@
 
 	typedef enum{
 		PROCESO,
+		REQ_PCB_A_EJECUTAR_KERNEL_CPU,
+		PCB_EJECUTADO_IO_CPU_KERNEL,
+		PCB_EJECUTADO_EXIT_CPU_KERNEL,
+		PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL,
 		REQ_INTERRUPCION_KERNEL_CPU, //HILO INTERRUPT
 		RES_INTERRUPCION_CPU_KERNEL, //HILO DISPATCH
 		REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA,
@@ -49,16 +53,6 @@
 		uint32_t sizeInstrucciones;
 		t_instruccion* instrucciones;
 	}t_proceso;
-	typedef struct{
-		uint32_t id;
-		uint32_t tamanio;
-		//uint32_t tamanioInstrucciones;
-		t_instruccion* instrucciones;
-		uint32_t program_counter;
-		uint32_t tabla_paginas;
-		//double estimacion_rafaga;
-	}t_pcb;
-	
 	
 	typedef struct{
 		uint32_t tamanio_pagina;
@@ -69,6 +63,11 @@
 		uint32_t longitud;
 		char * texto;
 	}t_mensaje;
+	
+	typedef struct{
+        t_pcb * pcb;
+        uint32_t tiempoBloqueo;
+    }t_IO;
 
 	typedef struct{
 		uint32_t id;

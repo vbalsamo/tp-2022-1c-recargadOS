@@ -2,44 +2,66 @@
 #include <utils/variables_globales.h>
 
 t_instruccion fetch(t_pcb *  pcb){
-    t_instruccion instruccion_actual = pcb->instrucciones[pcb->program_counter];
+    t_instruccion instruccion_actual = pcb->instrucciones[pcb->PC];
     return instruccion_actual;
 }
-/*  t_pcb * pcb;
-    while(condicion){
-        wait(hayPcb)//otro hilo lo va a activar
-        pcb = ciclo_instruccion()
-        lock(mutex_interrupcion);
-        if hayInterrupcion
-            return pcb;
-        unlock(mutex_interrupcion);
-        post(hayPcb)
-    }
-*/
 /*  lock(mutex_interrupcion);
     hilo interrupt -> hayInterrupcion=true;
     unlock(mutex_interrupcion);
 */
-t_pcb * ciclo_instruccion(t_pcb *  pcb, t_instruccion instruccion, uint32_t tiempoSleep){
+
+t_paquete * cicloInstruccion(t_pcb * pcb) {
+    t_paquete * paquete;
+    bool hayInterrupcion = false;//TODO:variable compartida con dispatch
+    bool seguirEjecutando = true;
+    t_instruccion instruccion;
+    while(seguirEjecutando ){
+        instruccion = fetch(pcb);
+        seguirEjecutando = execute(instruccion);
+        pcb->PC++;
+
+        //lock(mutex_interrupcion);
+        if (hayInterrupcion){
+            //unlock(mutex_interrupcion);
+            paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL);
+            return paquete;
+        }
+        else{
+            //unlock(mutex_interrupcion);
+        }   
+        
+    }
+    
+    switch (instruccion.identificador){
+        case IO:{
+            t_IO * io = malloc(sizeof(t_IO));
+            io->pcb = pcb;
+            io->tiempoBloqueo = instruccion.parametro1;
+            paquete = armarPaqueteCon(io, PCB_EJECUTADO_IO_CPU_KERNEL);
+        }
+        case EXIT:{
+            paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL);
+        }
+    }
+    
+    return paquete;
+}
+
+
+bool execute(t_instruccion instruccion){
     switch (instruccion.identificador){
         case NO_OP:
-            sleep(tiempoSleep);
-            break;
+            for(int i=0; i<instruccion.parametro1; i++){
+                sleep(RETARDO_NOOP);
+            }
+            return true;
         case IO:
-            // hablarlo con los chicos :P
-            // Esta instrucción representa una syscall de I/O bloqueante.
-            //Se deberá devolver el PCB actualizado al Kernel junto al
-            //tiempo de bloqueo en milisegundos.
-            return pcb;
-            break;
+            return false;
         case READ:
-            //Se deberá leer el valor de memoria correspondiente a esa
-            //dirección lógica e imprimirlo por pantalla.
             execute_read(instruccion.parametro1);
-            break;
+            return true;
         case COPY:{
             //DECODE
-
             char* dato = execute_read(instruccion.parametro2);//fetch opera
             //solo hace falta buscar operandos cuando la instruccion es COPY
             //instruccion.parametro2 representa la direccion logica del valor a escribir
@@ -48,7 +70,7 @@ t_pcb * ciclo_instruccion(t_pcb *  pcb, t_instruccion instruccion, uint32_t tiem
             execute_write(instruccion.parametro1, dato);
             //Se deberá escribir en memoria el valor del segundo parámetro
             //en la dirección lógica del primer parámetro.
-            break;
+            return true;
         }
         case WRITE:
             // Se deberá escribir en memoria el valor ubicado en la dirección
@@ -57,14 +79,10 @@ t_pcb * ciclo_instruccion(t_pcb *  pcb, t_instruccion instruccion, uint32_t tiem
             //accionar es similar a la instrucción WRITE ya que el valor a
             //escribir ya se debería haber obtenido en la etapa anterior.
             execute_write(instruccion.parametro1, instruccion.parametro2);
-            break; 
+            return true;
         case EXIT:
-            return pcb;
-            break;
-        default:
-            break;
+            return false;
     }
-    pcb->program_counter ++;
 }
 void * execute_read(u_int32_t direccion_logica){
     uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);

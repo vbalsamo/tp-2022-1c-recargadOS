@@ -10,15 +10,6 @@ void deserializarSegun(t_paquete* paquete, int socket){
             free(proceso);
 			break;
         }
-
-        case REQ_TRADUCCION_DIRECCIONES:{
-            return;
-        }
-
-        case RES_TRADUCCION_DIRECCIONES:{
-            return;
-        }
-			
 		case ALGO:
 			break;
     }

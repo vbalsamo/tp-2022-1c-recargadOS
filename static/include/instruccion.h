@@ -17,8 +17,8 @@
 
     typedef struct{
         instruccion_id identificador;
-        u_int32_t parametro1;
-        u_int32_t parametro2;
+        uint32_t parametro1;
+        uint32_t parametro2;
     }t_instruccion;
 
     t_instruccion obtenerInstruccion(char* instruccionTexto);
