@@ -59,8 +59,6 @@
 		t_instruccion* instrucciones;
 	}t_pcb;
 
-
-
 	void* serializarEstructura(void* estructura,int tamanio,t_cod_op codigoOperacion);
 	int tamanioEstructura(void* estructura ,t_cod_op cod_op);
 	

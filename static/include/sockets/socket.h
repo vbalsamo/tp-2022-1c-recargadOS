@@ -8,6 +8,7 @@
     #include<netdb.h>
     #include<string.h>
     #include<serializacion/estructuras.h>
+    #include<commons/log.h>
     
     uint32_t iniciar_servidor(char* IP, char* PORT);
     uint32_t esperar_cliente(uint32_t socket_servidor);

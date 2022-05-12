@@ -26,6 +26,7 @@ t_pcb * iniciarPcb(t_proceso * proceso){
     printf("id: %d", pcb->id);
     list_add(estado_ready, pcb);
     return pcb;
+    free(pcb);
 }
 
 /*
