@@ -9,6 +9,7 @@
     #include <serializacion/estructuras.h>
     #include <commons/log.h>
     #include <utils/planificador.h>
+    #include <utils/variables_globales.h>
 
     void deserializarSegun(t_paquete* paquete, int socket);
 #endif

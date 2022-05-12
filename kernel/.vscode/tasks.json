@@ -17,7 +17,7 @@
         },
         {
             "label": "run",
-            "command": "${workspaceFolder}/bin/kernel.out \"/home/utnso/tp-2022-1c-recargadOS/kernel/config/kernel.cfg\"",
+            "command": "${workspaceFolder}/bin/kernel.out \"${workspaceFolder}/kernel/config/kernel.cfg\"",
             "type": "shell",
             "group": {
                 "kind": "none",
