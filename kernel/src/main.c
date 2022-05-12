@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
     nuevo_proceso = malloc(sizeof(t_proceso));
 
     validarParametros(argc, argv);
-    t_config * config = config_create("/home/juan-dell/tp-2022-1c-recargadOS/kernel/config/kernel.cfg");
+    t_config * config = config_create("/home/utnso/tp-2022-1c-recargadOS/kernel/config/kernel.cfg");
     log = log_create("kernel.log", "kernel", 1, LOG_LEVEL_INFO);
     char * IP_KERNEL = config_get_string_value(config, "IP_KERNEL");
     char * PUERTO_ESCUCHA = config_get_string_value(config, "PUERTO_ESCUCHA");
