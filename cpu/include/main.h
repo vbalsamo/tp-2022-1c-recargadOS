@@ -13,5 +13,12 @@
     #include <servidor/dispatch.h>
     #include <servidor/interrupt.h>
     #include <pthread.h>
-    
+    #include <utils/variables_globales.h>
+    #include <utils/ciclo_instruccion.h>
+
+    uint32_t* socket_dispatch;
+    uint32_t * socket_interrupt;
+    t_servidor * servidor_dispatch;
+    t_servidor * servidor_interrupt;
+
 #endif

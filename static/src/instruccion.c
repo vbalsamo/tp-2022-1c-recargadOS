@@ -4,7 +4,7 @@ t_instruccion obtenerInstruccion(char* instruccionTexto){
     
     t_instruccion instruccion;
     char** instruccionSeparada = string_split(instruccionTexto," ");
-    
+    //si es no op generar tantos no op como indica el parametro
     if(string_contains(instruccionSeparada[0],"NO_OP")){
         instruccion.identificador=NO_OP;
         instruccion.parametro1=atoi(instruccionSeparada[1]);

@@ -12,8 +12,18 @@
 
 	typedef enum{
 		PROCESO,
-		REQ_TRADUCCION_DIRECCIONES,
-		RES_TRADUCCION_DIRECCIONES,
+		REQ_PCB_A_EJECUTAR_KERNEL_CPU,
+		PCB_EJECUTADO_IO_CPU_KERNEL,
+		PCB_EJECUTADO_EXIT_CPU_KERNEL,
+		PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL,
+		REQ_INTERRUPCION_KERNEL_CPU, //HILO INTERRUPT
+		RES_INTERRUPCION_CPU_KERNEL, //HILO DISPATCH
+		REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA,
+		RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU,
+		REQ_DATO_DIRECCION_LOGICA_CPU_MEMORIA,
+		RES_DATO_DIRECCION_LOGICA_MEMORIA_CPU,
+		REQ_ESCRIBIR_DIRECCION_LOGICA_CPU_MEMORIA,
+		RES_ESCRIBIR_DIRECCION_LOGICA_MEMORIA_CPU,
 		ALGO
 	}t_cod_op;
 
@@ -42,12 +52,22 @@
 		uint32_t tamanioProceso;
 		uint32_t sizeInstrucciones;
 		t_instruccion* instrucciones;
-	}t_proceso;	
+	}t_proceso;
 	
 	typedef struct{
 		uint32_t tamanio_pagina;
 		uint32_t paginas_por_tabla;
 	}t_traduccion_direcciones;
+
+	typedef struct{
+		uint32_t longitud;
+		char * texto;
+	}t_mensaje;
+	
+	typedef struct{
+        t_pcb * pcb;
+        uint32_t tiempoBloqueo;
+    }t_IO;
 
 	typedef struct{
 		uint32_t id;
@@ -81,4 +101,7 @@
 	void * serializarTraduccionDirecciones(void* stream, void* estructura);
 	t_traduccion_direcciones * deserializarTraduccionDirecciones(void* stream);
 	
+
+	t_mensaje *  deserializarMensaje(void* stream);
+	void *  serializarMensaje(void* stream, void* estructura);
 #endif

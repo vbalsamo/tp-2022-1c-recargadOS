@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../cpu"
+		},
+		{
+			"path": "../memoria"
 		}
 	],
 	"settings": {
@@ -36,7 +39,10 @@
 			"interrupt.h": "c",
 			"dispatch.h": "c",
 			"abstract_servidor.h": "c",
-			"handshake_memoria.h": "c"
+			"handshake_memoria.h": "c",
+			"ciclo_instruccion.h": "c",
+			"variables_globales.h": "c",
+			"mmu.h": "c"
 		}
 	}
 }
