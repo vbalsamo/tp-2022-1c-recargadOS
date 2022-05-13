@@ -120,17 +120,19 @@ t_proceso * deserializarProceso(void* stream){
 	return proceso;
 }
 void * serializarInstrucciones(void* stream, void* estructura){
+	int offset = 0;
 	uint32_t sizeInstrucciones;
-	memcpy(&(sizeInstrucciones), stream, sizeof(uint32_t));
+	memcpy(&(sizeInstrucciones), stream + offset, sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 	t_instruccion* instrucciones = (t_instruccion*) estructura;
 
 	for(int i=0; i<sizeInstrucciones; i++){
-		memcpy(stream, &((instrucciones + i)->identificador), sizeof(instruccion_id));
-		stream += sizeof(instruccion_id);
-		memcpy(stream, &((instrucciones + i)->parametro1), sizeof(uint32_t));
-		stream += sizeof(uint32_t);
-		memcpy(stream, &((instrucciones + i)->parametro2), sizeof(uint32_t));
-		stream += sizeof(uint32_t);
+		memcpy(stream + offset, &((instrucciones + i)->identificador), sizeof(instruccion_id));
+		offset += sizeof(uint32_t);
+		memcpy(stream + offset, &((instrucciones + i)->parametro1), sizeof(uint32_t));
+		offset += sizeof(uint32_t);
+		memcpy(stream + offset, &((instrucciones + i)->parametro2), sizeof(uint32_t));
+		offset += sizeof(uint32_t);
 	}
 
 	return stream;
@@ -138,6 +140,7 @@ void * serializarInstrucciones(void* stream, void* estructura){
 t_instruccion * deserializarInstrucciones(void * stream){
 	uint32_t sizeInstrucciones;
 	memcpy(&(sizeInstrucciones), stream, sizeof(uint32_t));
+	stream += sizeof(uint32_t);
 	t_instruccion* instrucciones = malloc(sizeof(t_instruccion)*sizeInstrucciones);
 
 	for(int i=0; i<sizeInstrucciones; i++){
