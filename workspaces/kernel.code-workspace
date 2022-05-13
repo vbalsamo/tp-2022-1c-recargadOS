@@ -29,7 +29,11 @@
 			"string_view": "c",
 			"paquete.h": "c",
 			"estructuras.h": "c",
-			"stdint.h": "c"
+			"stdint.h": "c",
+			"cmath": "c",
+			"variables_globales.h": "c",
+			"planificador.h": "c",
+			"log.h": "c"
 		}
 	}
 }

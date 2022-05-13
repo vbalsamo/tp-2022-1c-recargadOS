@@ -21,11 +21,12 @@ t_pcb * iniciarPcb(t_proceso * proceso){
     pcb->sizeInstrucciones = proceso->sizeInstrucciones;
     pcb->instrucciones = proceso->instrucciones;
     pcb->PC = 0;
-    pcb->tablaDePaginas = NULL;
+    pcb->tablaDePaginas = 0;//¿iniciar conexion con memomoria para solicitar tabla de paginas?
     pcb->estimacionRafaga = 0;
     printf("id: %d", pcb->id);
     list_add(estado_ready, pcb);
     return pcb;
+    free(pcb);
 }
 
 /*

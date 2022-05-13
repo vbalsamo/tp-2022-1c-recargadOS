@@ -28,7 +28,8 @@ uint32_t esperar_cliente(uint32_t socket_servidor)
 {
 	// Aceptamos un nuevo cliente
 	uint32_t socket_cliente = accept(socket_servidor, NULL, NULL);
-
+	t_log * logger = log_create("log.log", "Servidor", 1, LOG_LEVEL_DEBUG);
+	log_info(logger, "Se conecto un cliente!");
 	return socket_cliente;
 }
 

@@ -8,6 +8,6 @@
     #include <commons/config.h>
     #include <sockets/socket.h>
     #include <serializacion/estructuras.h>
-
+    #include <utils/variables_globales.h>
 
 #endif

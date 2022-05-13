@@ -72,11 +72,11 @@
 	typedef struct{
 		uint32_t id;
 		uint32_t tamanioProceso;
+		uint32_t PC;
+		uint32_t * tablaDePaginas;
+		uint32_t estimacionRafaga;
 		uint32_t sizeInstrucciones;
 		t_instruccion* instrucciones;
-		uint32_t PC;
-		t_list * tablaDePaginas;
-		uint32_t estimacionRafaga;
 	}t_pcb;
 
 	void* serializarEstructura(void* estructura,int tamanio,t_cod_op codigoOperacion);
@@ -90,6 +90,9 @@
     void enviarPaquete(t_paquete* paquete, int socket_cliente);
     void eliminarPaquete(t_paquete* paquete);
 	
+	void * serializarInstrucciones(void* stream, void* estructura);
+	t_instruccion * deserializarInstrucciones(void * stream);
+
 	t_proceso * crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones,t_instruccion* instrucciones);
 	void * serializarProceso(void* stream, void* estructura);
 	t_proceso * deserializarProceso(void* stream);
