@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
     IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA"); 
     PUERTO_MEMORIA = config_get_string_value(config,"PUERTO_MEMORIA");
 
-    int socket_cliente = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
+    //int socket_cliente = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
 
     int socket = iniciar_servidor(IP_KERNEL, PUERTO_ESCUCHA); 
 

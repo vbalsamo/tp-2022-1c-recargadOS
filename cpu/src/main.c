@@ -14,7 +14,7 @@ void iniciarHilos(){
 }
 int main(int argc, char* argv[]) {
     validarParametros(argc, argv);
-    t_config * config = config_create(argv[1]);
+    t_config * config = config_create("/home/utnso/tp-2022-1c-recargadOS/cpu/config/cpu.cfg");
     //t_log * log = log_create("./cpu.log","CPU",true,LOG_LEVEL_ERROR);
     IP_CPU = config_get_string_value(config, "IP_CPU");
     PUERTO_ESCUCHA_DISPATCH = config_get_string_value(config, "PUERTO_ESCUCHA_DISPATCH");
@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
     t_traduccion_direcciones* traduccion_direcciones = obtenerTraduccionDeDirecciones(socket_memoria);
     close(socket_memoria);
 
-    iniciar_hilos();
+    iniciarHilos();
     
     //liberar heap
     free(IP_CPU);

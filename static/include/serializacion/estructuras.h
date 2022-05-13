@@ -65,19 +65,20 @@
 	}t_mensaje;
 	
 	typedef struct{
-        t_pcb * pcb;
-        uint32_t tiempoBloqueo;
-    }t_IO;
-
-	typedef struct{
 		uint32_t id;
 		uint32_t tamanioProceso;
 		uint32_t PC;
-		uint32_t * tablaDePaginas;
+		uint32_t tablaDePaginas;
 		uint32_t estimacionRafaga;
 		uint32_t sizeInstrucciones;
 		t_instruccion* instrucciones;
 	}t_pcb;
+
+	typedef struct{
+        t_pcb * pcb;
+        uint32_t tiempoBloqueo;
+    }t_IO;
+
 
 	void* serializarEstructura(void* estructura,int tamanio,t_cod_op codigoOperacion);
 	int tamanioEstructura(void* estructura ,t_cod_op cod_op);

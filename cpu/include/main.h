@@ -20,5 +20,5 @@
     uint32_t * socket_interrupt;
     t_servidor * servidor_dispatch;
     t_servidor * servidor_interrupt;
-
+    void iniciar_hilos(void);
 #endif

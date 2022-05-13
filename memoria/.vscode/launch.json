@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/memoria.out",
-            "args": ["/home/utnso/git/tp-2022-1c-recargadOS/memoria/config/memoria.cfg"],
+            "args": ["/home/utnso/tp-2022-1c-recargadOS/memoria/config/memoria.cfg"],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}",
             "environment": [],
