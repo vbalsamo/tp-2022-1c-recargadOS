@@ -2,10 +2,12 @@
 void deserializarDispatch(t_paquete * paquete, uint32_t socket_cliente){
     switch(paquete->codigo_operacion){
 		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:{
-            t_pcb * pcb;// = deserializar
-            t_paquete* paqute = cicloInstruccion(pcb);
+            t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
+            log_info(logger, "recibido pcb a ejecutar");
             
-            enviarPaquete(paquete, socket_cliente);
+            t_paquete* resPaquete = cicloInstruccion(pcb);
+            
+            enviarPaquete(resPaquete, socket_cliente);
             break;
         }
         default:{

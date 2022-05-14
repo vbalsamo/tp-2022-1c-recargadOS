@@ -6,8 +6,10 @@
     #include <instruccion.h>
     #include <serializacion/estructuras.h>
     #include <sockets/socket.h>
+    t_paquete * cicloInstruccion(t_pcb * pcb);
     t_instruccion fetch(t_pcb *  pcb);
     bool execute(t_instruccion instruccion);
     void * execute_read(u_int32_t direccion_logica);
     void execute_write(u_int32_t direccion_logica, void * dato);
+    
 #endif

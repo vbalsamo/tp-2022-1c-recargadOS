@@ -6,4 +6,5 @@ char * PUERTO_ESCUCHA_INTERRUPT;
 char * IP_MEMORIA;
 char * PUERTO_MEMORIA;
 int RETARDO_NOOP;
+t_log * logger;
 #endif

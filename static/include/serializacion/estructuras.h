@@ -91,7 +91,7 @@
     void enviarPaquete(t_paquete* paquete, int socket_cliente);
     void eliminarPaquete(t_paquete* paquete);
 	
-	void * serializarInstrucciones(void* stream, void* estructura);
+	void * serializarInstrucciones(void* stream, void* estructura, int offset);
 	t_instruccion * deserializarInstrucciones(void * stream);
 
 	t_proceso * crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones,t_instruccion* instrucciones);
@@ -105,4 +105,7 @@
 
 	t_mensaje *  deserializarMensaje(void* stream);
 	void *  serializarMensaje(void* stream, void* estructura);
+
+	void * serializarPCB(void* stream, void* estructura, int offset);
+	t_pcb * deserializarPCB(void* stream, int offset);
 #endif

@@ -76,12 +76,12 @@ t_proceso * crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones, t_
 	return proceso;
 }
 void * serializarProceso(void* stream, void* estructura){
-  t_proceso* proceso = (t_proceso*) estructura;
-  int offset = 0;
-  memcpy(stream + offset, &proceso->tamanioProceso,sizeof(uint32_t));
+ 	t_proceso* proceso = (t_proceso*) estructura;
+	int offset = 0;
+  	memcpy(stream + offset, &(proceso->tamanioProceso),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	memcpy(stream + offset, &proceso->sizeInstrucciones,sizeof(uint32_t));
-	serializarInstrucciones(stream + offset, (void*)proceso->instrucciones);
+	memcpy(stream + offset, &(proceso->sizeInstrucciones),sizeof(uint32_t));
+	serializarInstrucciones(stream, (void*)proceso->instrucciones, offset);
 	return stream;
 }
 
@@ -95,9 +95,8 @@ t_proceso * deserializarProceso(void* stream){
 	return proceso;
 }
 
-void * serializarInstrucciones(void* stream, void* estructura){
-	int offset = 0;
-	uint32_t sizeInstrucciones;
+void * serializarInstrucciones(void* stream, void* estructura, int offset){
+	uint32_t sizeInstrucciones=0;
 	memcpy(&(sizeInstrucciones), stream + offset, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 	t_instruccion* instrucciones = (t_instruccion*) estructura;
@@ -109,23 +108,26 @@ void * serializarInstrucciones(void* stream, void* estructura){
 		offset += sizeof(uint32_t);
 		memcpy(stream + offset, &((instrucciones + i)->parametro2), sizeof(uint32_t));
 		offset += sizeof(uint32_t);
+		printf("\nidentificador: %d, param1: %d, param2: %d",(instrucciones + i)->identificador, (instrucciones + i)->parametro1, (instrucciones + i)->parametro2);
 	}
 
 	return stream;
 }
 t_instruccion * deserializarInstrucciones(void * stream){
 	uint32_t sizeInstrucciones;
+	int offset = 0;
 	memcpy(&(sizeInstrucciones), stream, sizeof(uint32_t));
-	stream += sizeof(uint32_t);
+	offset += sizeof(uint32_t);//TODO: Puede estar causando memory leak, estamos perdiendo referencia del inicio de la memoria alocada
 	t_instruccion* instrucciones = malloc(sizeof(t_instruccion)*sizeInstrucciones);
 
 	for(int i=0; i<sizeInstrucciones; i++){
-		memcpy(&((instrucciones + i)->identificador), stream, sizeof(instruccion_id));
-		stream += sizeof(instruccion_id);
-		memcpy(&((instrucciones + i)->parametro1), stream, sizeof(uint32_t));
-		stream += sizeof(uint32_t);
-		memcpy(&((instrucciones + i)->parametro2), stream, sizeof(uint32_t));
-		stream += sizeof(uint32_t);
+		memcpy(&((instrucciones + i)->identificador), stream + offset, sizeof(instruccion_id));
+		offset += sizeof(instruccion_id);
+		memcpy(&((instrucciones + i)->parametro1), stream + offset, sizeof(uint32_t));
+		offset += sizeof(uint32_t);
+		memcpy(&((instrucciones + i)->parametro2), stream + offset, sizeof(uint32_t));
+		offset += sizeof(uint32_t);
+		printf("\nidentificador: %d, param1: %d, param2: %d",(instrucciones + i)->identificador, (instrucciones + i)->parametro1, (instrucciones + i)->parametro2);
 	}
 	return instrucciones;
 }
@@ -150,19 +152,18 @@ t_mensaje *  deserializarMensaje(void* stream){
 	return mensaje;
 }
 void * serializarPCB(void* stream, void* estructura, int offset){
-	t_pcb* pcb = (t_pcb*) stream;
+	t_pcb* pcb = (t_pcb*) estructura;
 	memcpy(stream + offset, &(pcb->id),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 	memcpy(stream + offset, &(pcb->tamanioProceso),sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(stream + offset, &(pcb->sizeInstrucciones),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 	memcpy(stream + offset, &(pcb->tablaDePaginas),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 	memcpy(stream + offset, &(pcb->estimacionRafaga),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
+	memcpy(stream + offset, &(pcb->sizeInstrucciones),sizeof(uint32_t));
 	
-	serializarInstrucciones(stream + offset, (void*)pcb->instrucciones);
+	serializarInstrucciones(stream, (void*)pcb->instrucciones,  offset);
 	return stream;
 }
 t_pcb * deserializarPCB(void* stream, int offset){
@@ -171,14 +172,13 @@ t_pcb * deserializarPCB(void* stream, int offset){
 	offset += sizeof(uint32_t);
 	memcpy(&(pcb->tamanioProceso),stream + offset,sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	memcpy(&(pcb->sizeInstrucciones), stream + offset, sizeof(uint32_t));
-	offset += sizeof(uint32_t);
 	memcpy(&(pcb->tablaDePaginas), stream + offset, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 	memcpy(&(pcb->estimacionRafaga), stream + offset, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 	memcpy(&(pcb->sizeInstrucciones), stream + offset, sizeof(uint32_t));
-	pcb->instrucciones = deserializarInstrucciones(stream+offset);
+	void * stream2 = stream+offset;
+	pcb->instrucciones = deserializarInstrucciones(stream2);
 	
 	return pcb;
 }
@@ -300,15 +300,18 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 			return sizeof(uint32_t)*6 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
 		}
 		case PCB_EJECUTADO_IO_CPU_KERNEL:{
-			return sizeof(t_pcb) + sizeof(uint32_t);
+			t_pcb * pcb = (t_pcb *) estructura; 
+			return sizeof(uint32_t)*6 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
 			break;
 		}
 		case PCB_EJECUTADO_EXIT_CPU_KERNEL:{
-			return sizeof(t_pcb);
+			t_pcb * pcb = (t_pcb *) estructura; 
+			return sizeof(uint32_t)*6 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
 			break;
 		}
 		case PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL:{
-			return sizeof(t_pcb);
+			t_pcb * pcb = (t_pcb *) estructura; 
+			return sizeof(uint32_t)*6 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
 			break;
 		}
 		

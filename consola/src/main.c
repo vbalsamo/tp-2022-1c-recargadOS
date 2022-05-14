@@ -12,17 +12,18 @@ int main(int argc, char* argv[]) {
     //t_list* instrucciones = obtenerInstrucciones(stringInstrucciones);
     uint32_t * sizeInstrucciones=malloc(sizeof(uint32_t));
     t_instruccion* instrucciones = obtenerInstrucciones(stringInstrucciones,sizeInstrucciones);
-    log = log_create("consola.log", "consola", 1, LOG_LEVEL_INFO);
+    logger = log_create("consola.log", "consola", 1, LOG_LEVEL_INFO);
     t_config* config = config_create("/home/utnso/tp-2022-1c-recargadOS/consola/config/consola.cfg");
     char * IP_KERNEL = config_get_string_value(config,"IP_KERNEL");
     char * PUERTO_KERNEL = config_get_string_value(config,"PUERTO_KERNEL");
- 
+    log_info(logger, "variables configuracion obtenidas");
     int socket_cliente = crear_conexion(IP_KERNEL, PUERTO_KERNEL);
+    log_info(logger, "conectado a kernel");
     t_proceso* proceso = crearProceso(tamanioProceso, *sizeInstrucciones, instrucciones);
     t_paquete * paquete = armarPaqueteCon(proceso,PROCESO);
-    
-    enviarPaquete(paquete , socket_cliente);
-    eliminarPaquete(paquete);
 
+    enviarPaquete(paquete , socket_cliente);
+    log_info(logger, "proceso enviado a kernel");
+    eliminarPaquete(paquete);
     return 0;
 }
