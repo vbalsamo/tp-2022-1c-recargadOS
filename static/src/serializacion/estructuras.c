@@ -108,7 +108,6 @@ void * serializarInstrucciones(void* stream, void* estructura, int offset){
 		offset += sizeof(uint32_t);
 		memcpy(stream + offset, &((instrucciones + i)->parametro2), sizeof(uint32_t));
 		offset += sizeof(uint32_t);
-		printf("\nidentificador: %d, param1: %d, param2: %d",(instrucciones + i)->identificador, (instrucciones + i)->parametro1, (instrucciones + i)->parametro2);
 	}
 
 	return stream;
@@ -127,7 +126,6 @@ t_instruccion * deserializarInstrucciones(void * stream){
 		offset += sizeof(uint32_t);
 		memcpy(&((instrucciones + i)->parametro2), stream + offset, sizeof(uint32_t));
 		offset += sizeof(uint32_t);
-		printf("\nidentificador: %d, param1: %d, param2: %d",(instrucciones + i)->identificador, (instrucciones + i)->parametro1, (instrucciones + i)->parametro2);
 	}
 	return instrucciones;
 }
@@ -260,6 +258,9 @@ void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 		case PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL:{
 			return serializarPCB(stream,estructura,0);
 		}
+		case REQ_INTERRUPCION_KERNEL_CPU:{
+			return NULL;
+		}
 		default:
 			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
 			exit(EXIT_FAILURE);
@@ -314,7 +315,10 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 			return sizeof(uint32_t)*6 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
 			break;
 		}
-		
+		case REQ_INTERRUPCION_KERNEL_CPU:{
+			return 0;
+			break;
+		}
 		default:
 			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
 			exit(EXIT_FAILURE);

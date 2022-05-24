@@ -40,7 +40,11 @@
 			"ciclo_instruccion.h": "c",
 			"variables_globales.h": "c",
 			"mmu.h": "c",
-			"cmath": "c"
+			"cmath": "c",
+			"*.tcc": "c",
+			"fstream": "c",
+			"ostream": "c",
+			"semaphore.h": "c"
 		}
 	}
 }

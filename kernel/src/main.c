@@ -24,8 +24,9 @@ void deserializarSegun(t_paquete* paquete, int socket){
             enviarPaquete(paquete, socket_cpu);
             log_info(logger, "pcb enviado a cpu");
             eliminarPaquete(paquete);
+            
             paquete = recibirPaquete(socket_cpu);
-            log_info(logger, "pcb recibido decpu");
+            log_info(logger, "pcb recibido de cpu");
            
 			break;
         }
@@ -54,10 +55,14 @@ int main(int argc, char* argv[]) {
     log_info(logger, "se conecto cliente");
     //int socket_cliente = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
 
-    int socket = iniciar_servidor(IP_KERNEL, PUERTO_ESCUCHA); 
+    int socket = iniciar_servidor(IP_KERNEL, PUERTO_ESCUCHA);
+    
+    int socketInterrupt = crear_conexion(IP_CPU, PUERTO_CPU_INTERRUPT);
+    t_paquete * paquete = armarPaqueteCon(NULL, REQ_INTERRUPCION_KERNEL_CPU);
+    enviarPaquete(paquete, socketInterrupt);
 
     inicializarEstados();
-
+    
     //pruebita
     
 

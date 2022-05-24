@@ -32,7 +32,8 @@
 			"stdint.h": "c",
 			"array": "c",
 			"cmath": "c",
-			"variables_globales.h": "c"
+			"variables_globales.h": "c",
+			"log.h": "c"
 		}
 	}
 }

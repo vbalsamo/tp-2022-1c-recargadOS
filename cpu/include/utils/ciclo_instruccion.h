@@ -6,6 +6,7 @@
     #include <instruccion.h>
     #include <serializacion/estructuras.h>
     #include <sockets/socket.h>
+    #include <pthread.h>
     t_paquete * cicloInstruccion(t_pcb * pcb);
     t_instruccion fetch(t_pcb *  pcb);
     bool execute(t_instruccion instruccion);

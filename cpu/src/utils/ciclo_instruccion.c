@@ -5,14 +5,9 @@ t_instruccion fetch(t_pcb *  pcb){
     t_instruccion instruccion_actual = pcb->instrucciones[pcb->PC];
     return instruccion_actual;
 }
-/*  lock(mutex_interrupcion);
-    hilo interrupt -> hayInterrupcion=true;
-    unlock(mutex_interrupcion);
-*/
 
 t_paquete * cicloInstruccion(t_pcb * pcb) {
     t_paquete * paquete;
-    bool hayInterrupcion = false;//TODO:variable compartida con dispatch
     bool seguirEjecutando = true;
     t_instruccion instruccion;
     log_info(logger, "Inicia ciclo instruccion");
@@ -21,15 +16,16 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
         seguirEjecutando = execute(instruccion);
         pcb->PC++;
 
-        //lock(mutex_interrupcion);
+        pthread_mutex_lock(mutex_interrupcion);
         if (hayInterrupcion){
-            //unlock(mutex_interrupcion);
+            hayInterrupcion=false;
+            pthread_mutex_unlock(mutex_interrupcion);
             log_info(logger, "Hay interrupcion, devulve el pcb");
             paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL);
             return paquete;
         }
         else{
-            //unlock(mutex_interrupcion);
+            pthread_mutex_unlock(mutex_interrupcion);
         }   
         
     }
@@ -61,10 +57,8 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
 bool execute(t_instruccion instruccion){
     switch (instruccion.identificador){
         case NO_OP:
-            for(int i=0; i<instruccion.parametro1; i++){
-                log_info(logger, "Ejecutado NO_OP");
-                usleep(RETARDO_NOOP);
-            }
+            log_info(logger, "Ejecutado NO_OP");
+            usleep(RETARDO_NOOP);
             return true;
         case IO:
             log_info(logger, "Ejecutado IO");
@@ -96,6 +90,7 @@ bool execute(t_instruccion instruccion){
             log_info(logger, "Ejecutado Write");
             return true;
         case EXIT:
+            log_info(logger, "Ejecutado Exit");
             return false;
         default:{
             log_error(logger, "IDENTIFICADOR INSTRUCCION NO CONTEMPLADO-> %d", instruccion.identificador);

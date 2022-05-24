@@ -25,14 +25,23 @@ char* leerInstrucciones(char* path){
 t_instruccion* obtenerInstrucciones(char* stringInstrucciones, uint32_t* sizeInstrucciones){
     
     char** instruccionesSeparadas = string_split(stringInstrucciones,"\n");
-    int i = 0;
-    *sizeInstrucciones = string_array_size(instruccionesSeparadas) - 1;
+    int sizeInstruccionesSeparadas = string_array_size(instruccionesSeparadas)-1;
+    *sizeInstrucciones = sizeInstruccionesSeparadas;
     t_instruccion* instrucciones = malloc(sizeof(t_instruccion)*(*sizeInstrucciones));
     
-    while(i<*sizeInstrucciones){
-        instrucciones[i] = obtenerInstruccion(instruccionesSeparadas[i]);
-        //printf("instrucciones: %s %d %d\n", instruccion_idAString(instrucciones[i].identificador), instrucciones[i].parametro1, instrucciones[i].parametro2);
-        i++;
+    int k = 0;
+    for(int i=0; i<sizeInstruccionesSeparadas;i++){
+        instrucciones[k] = obtenerInstruccion(instruccionesSeparadas[i]);
+        if(instrucciones[k].identificador==NO_OP){
+            *sizeInstrucciones = *sizeInstrucciones + instrucciones[i].parametro1 - 1;
+            t_instruccion* nuevasInstrucciones = realloc(instrucciones,sizeof(t_instruccion)*(*sizeInstrucciones));
+            instrucciones =nuevasInstrucciones;
+            for(int j=i+1; j<i+instrucciones[i].parametro1;j++){
+                instrucciones[j] = obtenerInstruccion(instruccionesSeparadas[i]);
+            }
+            k = i + instrucciones[i].parametro1 - 1;
+        }
+        k++;
     }
     return instrucciones;
 } 
