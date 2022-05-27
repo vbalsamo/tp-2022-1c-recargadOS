@@ -1,0 +1,43 @@
+{
+    "folders": [
+		{
+			"name": "tp-2022-1c-recargadOS",
+			"path": "."
+		},
+		{
+			"name": "consola",
+			"path": "consola"
+		},
+		{
+			"name": "cpu",
+			"path": "cpu"
+		},
+		{
+			"name": "kernel",
+			"path": "kernel"
+		},
+		{
+			"name": "memoria",
+			"path": "memoria"
+		},
+		{
+			"name": "static",
+			"path": "static"
+		}
+	],
+    "settings": {
+		"makefile.extensionOutputFolder": "./.vscode",
+		"files.associations": {
+			"main.h": "c",
+			"estructuras.h": "c",
+			"socket.h": "c",
+			"planificador.h": "c",
+			"list.h": "c",
+			"semaphore.h": "c",
+			"variables_globales.h": "c",
+			"inicializacion.h": "c",
+			"instruccion.h": "c",
+			"log.h": "c"
+		}
+    }
+}

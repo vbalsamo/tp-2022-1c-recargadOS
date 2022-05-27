@@ -29,8 +29,8 @@
 
 	
 
+	t_queue * estado_new;
 	t_list * estado_ready;
-	t_list * estado_new;
 	t_list * estado_exec;
 	t_list * estado_exit;
 	t_list * estado_susp_ready;
