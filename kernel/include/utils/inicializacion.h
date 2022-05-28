@@ -7,7 +7,9 @@
     #include <commons/collections/list.h>
     #include <instruccion.h>
     #include <serializacion/estructuras.h>
+    #include <utils/variables_globales.h>
     void validarParametros(int argc, char* argv[]);
     t_list* obtenerInstrucciones(char* pathInstruccion);
     void inicializarEstados();
+    void inicializarVariablesGlobales();
 #endif
