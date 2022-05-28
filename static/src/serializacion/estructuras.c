@@ -1,5 +1,44 @@
 #include<serializacion/estructuras.h>
+char * codOPtoString(t_cod_op cod_op){
 
+	switch (expression){
+		case PROCESO:
+			return "PROCESO";
+		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:
+			return "REQ_PCB_A_EJECUTAR_KERNEL_CPU";
+		case PCB_EJECUTADO_IO_CPU_KERNEL:
+			return "PCB_EJECUTADO_IO_CPU_KERNEL";
+		case PCB_EJECUTADO_EXIT_CPU_KERNEL:
+			return "PCB_EJECUTADO_EXIT_CPU_KERNEL";
+		case PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL:
+			return "PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL";
+		case REQ_INTERRUPCION_KERNEL_CPU, //HILO INTERRUP:
+			return "REQ_INTERRUPCION_KERNEL_CPU";
+		case RES_INTERRUPCION_CPU_KERNEL, //HILO DISPATC:
+			return "RES_INTERRUPCION_CPU_KERNEL";
+		case REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA:
+			return "REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA";
+		case RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU:
+			return "RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU";
+		case REQ_DATO_DIRECCION_LOGICA_CPU_MEMORIA:
+			return "REQ_DATO_DIRECCION_LOGICA_CPU_MEMORIA";
+		case RES_DATO_DIRECCION_LOGICA_MEMORIA_CPU:
+			return "RES_DATO_DIRECCION_LOGICA_MEMORIA_CPU";
+		case REQ_ESCRIBIR_DIRECCION_LOGICA_CPU_MEMORIA:
+			return "REQ_ESCRIBIR_DIRECCION_LOGICA_CPU_MEMORIA";
+		case RES_ESCRIBIR_DIRECCION_LOGICA_MEMORIA_CPU:
+			return "RES_ESCRIBIR_DIRECCION_LOGICA_MEMORIA_CPU";
+		case ALGO:
+			return "ALGO";
+		default:{
+			char * error = string_new();
+            string_append_with_format(&error,"Código de operacion no contemplado"s);
+            perror(error);
+            exit(1);
+		}
+			break;
+	}
+}
 void crearBuffer(t_paquete* paquete)
 {
 	paquete->buffer = malloc(sizeof(t_buffer));

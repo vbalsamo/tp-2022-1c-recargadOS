@@ -12,5 +12,6 @@
     char * IP_MEMORIA;
     char * PUERTO_MEMORIA;
     int GRADO_MULTIPROGRAMACION;
+    char * ALGORITMO_PLANIFICACION;
 
 #endif
