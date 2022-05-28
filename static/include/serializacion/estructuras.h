@@ -79,6 +79,7 @@
         uint32_t tiempoBloqueo;
     }t_IO;
 
+	char * codOPtoString(t_cod_op);
 
 	void* serializarEstructura(void* estructura,int tamanio,t_cod_op codigoOperacion);
 	int tamanioEstructura(void* estructura ,t_cod_op cod_op);
@@ -108,4 +109,7 @@
 
 	void * serializarPCB(void* stream, void* estructura, int offset);
 	t_pcb * deserializarPCB(void* stream, int offset);
+
+	t_mensaje *  deserializarIO(void* stream);
+	void *  serializarIO(void* stream, void* estructura);
 #endif
