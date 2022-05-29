@@ -16,17 +16,26 @@
     pthread_mutex_t mutex_estado_ready;
     pthread_mutex_t mutex_estado_exec;
     pthread_mutex_t mutex_estado_exit;
-    
+    pthread_mutex_t mutex_estado_blocked;
     sem_t sem_multiprogramacion;
     sem_t sem_new;
     sem_t sem_ready;
+    sem_t sem_fin_proceso;
+    
     
 
     t_pcb * iniciarPcb(t_proceso * proceso);//void * inicializarPcb(t_proceso * proceso);
     void inicializarPlanificacion();
-    void addEstadoExit(t_pcb * pcb);    void addEstadoReady(t_pcb * pcb);
-    void readyExit();  
-    
-    
+    void addEstadoExit(t_pcb * pcb);
+    void addEstadoReady(t_pcb * pcb);
+    void addEstadoExec(t_pcb * pcb);
+    void addEstadoBlocked(t_IO * io);
+    void comunicacionCPU(t_pcb * pcb);
+    t_pcb * planificacionFIFO();
+    t_pcb * planificacionSRT();
+    void newAready();
+    void readyAexec();
+    void ingresarANew(t_pcb * pcb);
+    t_pcb * algoritmoPlanificacion();
 
 #endif

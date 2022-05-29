@@ -28,5 +28,12 @@ int main(int argc, char* argv[]) {
     enviarPaquete(paquete , socket_cliente);
     log_info(logger, "proceso enviado a kernel");
     eliminarPaquete(paquete);
+
+
+    t_paquete * paqueteRespuesta = recibirPaquete(socket_cliente);
+    t_mensaje * mensaje = deserializarMensaje(paqueteRespuesta->buffer->stream);
+    log_info(logger, "respuesta kernel: %s", mensaje->texto);
+
+    close(socket_cliente);
     return 0;
 }

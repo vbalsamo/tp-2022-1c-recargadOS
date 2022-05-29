@@ -6,6 +6,7 @@
     #include <sockets/socket.h>
     #include <commons/config.h>
     #include <commons/collections/dictionary.h>
+    #include <commons/collections/list.h>
     #include <utils/inicializacion.h>
     #include <serializacion/estructuras.h>
     #include <commons/log.h>

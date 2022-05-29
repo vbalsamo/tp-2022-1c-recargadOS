@@ -1,7 +1,7 @@
 #include<serializacion/estructuras.h>
 char * codOPtoString(t_cod_op cod_op){
 
-	switch (expression){
+	switch (cod_op){
 		case PROCESO:
 			return "PROCESO";
 		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:
@@ -12,9 +12,9 @@ char * codOPtoString(t_cod_op cod_op){
 			return "PCB_EJECUTADO_EXIT_CPU_KERNEL";
 		case PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL:
 			return "PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL";
-		case REQ_INTERRUPCION_KERNEL_CPU, //HILO INTERRUP:
+		case REQ_INTERRUPCION_KERNEL_CPU: //HILO INTERRUP:
 			return "REQ_INTERRUPCION_KERNEL_CPU";
-		case RES_INTERRUPCION_CPU_KERNEL, //HILO DISPATC:
+		case RES_INTERRUPCION_CPU_KERNEL: //HILO DISPATC:
 			return "RES_INTERRUPCION_CPU_KERNEL";
 		case REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA:
 			return "REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA";
@@ -28,11 +28,13 @@ char * codOPtoString(t_cod_op cod_op){
 			return "REQ_ESCRIBIR_DIRECCION_LOGICA_CPU_MEMORIA";
 		case RES_ESCRIBIR_DIRECCION_LOGICA_MEMORIA_CPU:
 			return "RES_ESCRIBIR_DIRECCION_LOGICA_MEMORIA_CPU";
+		case RES_FIN_PROCESO_KERNEL_CONSOLA:
+			return "RES_FIN_PROCESO_KERNEL_CONSOLA";
 		case ALGO:
 			return "ALGO";
 		default:{
 			char * error = string_new();
-            string_append_with_format(&error,"Código de operacion no contemplado"s);
+            string_append_with_format(&error,"Código de operacion no contemplado");
             perror(error);
             exit(1);
 		}
@@ -228,7 +230,8 @@ void *  serializarIO(void* stream, void* estructura){
 	serializarPCB(stream, estructura, offset);
 	return stream;
 }
-t_mensaje *  deserializarIO(void* stream){
+
+t_mensaje * deserializarIO(void* stream){
 	t_mensaje* mensaje = malloc(sizeof(t_mensaje));
     int offset = 0;
 	memcpy(&(mensaje->longitud), stream + offset, sizeof(uint32_t));
@@ -300,6 +303,10 @@ void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 		case REQ_INTERRUPCION_KERNEL_CPU:{
 			return NULL;
 		}
+		case RES_FIN_PROCESO_KERNEL_CONSOLA:{
+			return serializarPCB(stream,estructura,0);
+			break;
+		}
 		default:
 			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
 			exit(EXIT_FAILURE);
@@ -358,6 +365,12 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 			return 0;
 			break;
 		}
+		case RES_FIN_PROCESO_KERNEL_CONSOLA:{
+			t_mensaje * msg = (t_mensaje*) estructura;
+			return msg->longitud + sizeof(uint32_t);
+			break;
+		}
+		
 		default:
 			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
 			exit(EXIT_FAILURE);

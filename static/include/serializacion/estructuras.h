@@ -24,6 +24,7 @@
 		RES_DATO_DIRECCION_LOGICA_MEMORIA_CPU,
 		REQ_ESCRIBIR_DIRECCION_LOGICA_CPU_MEMORIA,
 		RES_ESCRIBIR_DIRECCION_LOGICA_MEMORIA_CPU,
+		RES_FIN_PROCESO_KERNEL_CONSOLA,
 		ALGO
 	}t_cod_op;
 
@@ -109,7 +110,8 @@
 
 	void * serializarPCB(void* stream, void* estructura, int offset);
 	t_pcb * deserializarPCB(void* stream, int offset);
-
-	t_mensaje *  deserializarIO(void* stream);
+	
 	void *  serializarIO(void* stream, void* estructura);
+	t_mensaje *  deserializarIO(void* stream);
+	
 #endif
