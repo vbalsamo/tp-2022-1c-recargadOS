@@ -14,15 +14,17 @@
     #include <utils/variables_globales.h>
     pthread_mutex_t mutex_estado_new;
     pthread_mutex_t mutex_estado_ready;
-    pthread_mutex_t mutex_estado_exec;
     pthread_mutex_t mutex_estado_exit;
     pthread_mutex_t mutex_estado_blocked;
+    pthread_mutex_t mutex_pcb_ejecutando;
     sem_t sem_multiprogramacion;
     sem_t sem_new;
     sem_t sem_ready;
     sem_t sem_fin_proceso;
-    
-    t_pcb * iniciarPcb(t_proceso * proceso);//void * inicializarPcb(t_proceso * proceso);
+    t_pcb * pcbEjecutando;
+    int id_nuevo_proceso;
+
+    t_pcb * iniciarPcb(t_proceso * proceso);
     void inicializarPlanificacion();
     void addEstadoExit(t_pcb * pcb);
     void addEstadoReady(t_pcb * pcb);
@@ -36,4 +38,5 @@
     void ingresarANew(t_pcb * pcb);
     t_pcb * algoritmoPlanificacion();
     void comunicacionMemoria(t_pcb *);
+    
 #endif

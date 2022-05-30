@@ -72,6 +72,7 @@
 		uint32_t PC;
 		uint32_t tablaDePaginas;
 		uint32_t estimacionRafaga;
+		uint32_t lengthUltimaRafaga;
 		uint32_t sizeInstrucciones;
 		t_instruccion* instrucciones;
 	}t_pcb;

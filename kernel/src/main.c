@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     inicializarVariablesGlobales();
     pthread_mutex_init(&mutex_estado_new, (void *)NULL);
     pthread_mutex_init(&mutex_estado_ready, (void *)NULL);
-    pthread_mutex_init(&mutex_estado_exec, (void *)NULL);
+    pthread_mutex_init(&mutex_pcb_ejecutando, (void *)NULL);
     pthread_mutex_init(&mutex_estado_exit, (void *)NULL);
     pthread_mutex_init(&mutex_estado_blocked, (void *)NULL);
     pthread_mutex_init(&mutex_consolas_conectadas, (void *)NULL);

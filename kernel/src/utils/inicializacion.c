@@ -16,6 +16,7 @@ void inicializarEstados(){
     estado_susp_ready = list_create();
     estado_blocked = queue_create();
     estado_susp_bloq = queue_create();
+    
 }
 
 void inicializarVariablesGlobales(){
@@ -31,6 +32,7 @@ void inicializarVariablesGlobales(){
     PUERTO_MEMORIA = config_get_string_value(config,"PUERTO_MEMORIA");
     GRADO_MULTIPROGRAMACION = config_get_int_value(config, "GRADO_MULTIPROGRAMACION");
     ALGORITMO_PLANIFICACION = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
+    ALFA = config_get_double_value(config, "ALFA");
 }
 
 //TO DO: 

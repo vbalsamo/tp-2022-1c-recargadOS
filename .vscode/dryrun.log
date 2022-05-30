@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/utnso/tp-2022-1c-recargadOS'
+make: Leaving directory '/home/utnso/tp-2022-1c-recargadOS'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+

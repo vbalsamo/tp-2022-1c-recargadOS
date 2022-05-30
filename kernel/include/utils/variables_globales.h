@@ -13,6 +13,7 @@
     char * PUERTO_MEMORIA;
     int GRADO_MULTIPROGRAMACION;
     char * ALGORITMO_PLANIFICACION;
+    double ALFA;
 
     typedef struct {
         int * socket;

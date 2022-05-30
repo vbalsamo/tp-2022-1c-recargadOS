@@ -10,6 +10,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
     t_paquete * paquete;
     bool seguirEjecutando = true;
     t_instruccion instruccion;
+    uint32_t PC_inicial = pcb->PC;
     log_info(logger, "Inicia ciclo instruccion");
     while(seguirEjecutando ){
         instruccion = fetch(pcb);
@@ -29,6 +30,8 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
         }   
         
     }
+
+    pcb->lengthUltimaRafaga = pcb->PC - PC_inicial;
     
     switch (instruccion.identificador){
         case IO:{
@@ -49,6 +52,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
            break;
         }
     }
+
     log_info(logger, "finaliza ciclo instruccion");
     return paquete;
 }

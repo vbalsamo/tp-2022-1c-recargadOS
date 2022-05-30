@@ -199,6 +199,8 @@ void * serializarPCB(void* stream, void* estructura, int offset){
 	offset += sizeof(uint32_t);
 	memcpy(stream + offset, &(pcb->estimacionRafaga),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
+	memcpy(stream + offset, &(pcb->lengthUltimaRafaga),sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 	memcpy(stream + offset, &(pcb->sizeInstrucciones),sizeof(uint32_t));
 	
 	serializarInstrucciones(stream, (void*)pcb->instrucciones,  offset);
@@ -213,6 +215,8 @@ t_pcb * deserializarPCB(void* stream, int offset){
 	memcpy(&(pcb->tablaDePaginas), stream + offset, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 	memcpy(&(pcb->estimacionRafaga), stream + offset, sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+	memcpy(&(pcb->lengthUltimaRafaga), stream + offset, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 	memcpy(&(pcb->sizeInstrucciones), stream + offset, sizeof(uint32_t));
 	void * stream2 = stream+offset;

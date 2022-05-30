@@ -1,6 +1,6 @@
 #include <utils/planificador.h>
 
-int id_nuevo_proceso = 0;
+id_nuevo_proceso = 0;
 
 /*
 t_proceso * crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones, t_instruccion * instrucciones){
@@ -18,6 +18,7 @@ t_pcb * iniciarPcb(t_proceso * proceso){
     pcb->tamanioProceso = proceso->tamanioProceso;
     pcb->sizeInstrucciones = proceso->sizeInstrucciones;
     pcb->instrucciones = proceso->instrucciones;
+    pcb->lengthUltimaRafaga = 0;
     pcb->PC = 0;
     pcb->tablaDePaginas = 0; //¿iniciar conexion con memomoria para solicitar tabla de paginas?
     pcb->estimacionRafaga = 0;
@@ -51,24 +52,67 @@ void newAready(){
         addEstadoReady(pcb);
         log_info(logger, "se agregó el proceso %d a la lista de ready", pcb->id);
         sem_post(&sem_ready);
+
+        
     }
 }
 
 void readyAexec(){
+    //hilo de ejecucion
     while(1){
         sem_wait(&sem_ready);
-        t_pcb * pcb = algoritmoPlanificacion();
+        t_pcb * pcb;
+ 
+        pcb = algoritmoPlanificacion();
+        bool filtro(void* pcbAux){
+        return ((t_pcb*) pcbAux)->id == pcb->id;
+        };
         
-        comunicacionCPU(pcb);      
+        list_remove_by_condition(estado_ready, filtro);
+        comunicacionCPU(pcb);
 
-        
     }
 }
-/*
-t_pcb * obtenerSiguientePCB(){
-    
+//pcb->estimacionRafaga = alfa*pcb->lengthUltimaRafaga + (1-alfa)*pcb->estimacionRafaga
+
+t_pcb* obtenerSiguienteSRT(){
+
+	t_pcb* pcbPlanificado = NULL;
+	t_pcb* pcbAux = NULL;
+    int i;
+	int indexAPlanificar;
+	float shortestJob;
+
+	pthread_mutex_lock(&mutex_estado_ready);
+	pcbAux = list_get(estado_ready,0);
+	pthread_mutex_unlock(&mutex_estado_ready);
+
+	indexAPlanificar = 0;
+	shortestJob = pcbAux->estimacionRafaga;
+
+	//itero por la lista de Ready
+	//sem_wait(&contadorReady);
+	pthread_mutex_lock(&mutex_estado_ready);
+
+	printf("PCBS EN READY: %d \n", list_size(estado_ready));
+
+    for(i=1;i<list_size(estado_ready);i++){
+    	pcbAux = list_get(estado_ready,i);
+    	
+        
+    	if(shortestJob > pcbAux->estimacionRafaga){
+    		shortestJob = pcbAux->estimacionRafaga;
+    		indexAPlanificar = i;
+    	}
+
+    }
+
+    pcbPlanificado = list_get(estado_ready, indexAPlanificar);
+    pthread_mutex_unlock(&mutex_estado_ready);
+
+	return pcbPlanificado;
 }
-*/
+
 void execAexit(t_pcb * pcb){
     bool filtro(void* consola){
         return ((t_consola*) consola)->id == pcb->id;
@@ -141,38 +185,64 @@ t_pcb * planificacionFIFO(){
 }
 
 t_pcb * planificacionSRT(){
-    //magic 
-    return NULL;
+
+    t_pcb* pcb = obtenerSiguienteSRT();
+    //REVISAR TODOS LOS CASO DE NEW A READY, de supended-ready a ready, el que este ejecutando en ese momento en cpu
+
+    return pcb;
 }
+
+// t_pcb * desalojarYEjecutar(t_pcb * pcb){
+//     int socket_interrupt = crear_conexion(IP_CPU, PUERTO_CPU_INTERRUPT);
+//     t_paquete * paquete = armarPaqueteCon(NULL, REQ_INTERRUPCION_KERNEL_CPU);
+//     enviarPaquete(paquete, socket_interrupt);
+
+//     bool filtro(void* pcbFiltro){
+//         return ((t_pcb*) pcbFiltro)->id == pcb->id;
+//     };
+    
+//     pthread_mutex_lock(&mutex_estado_ready);
+//     t_pcb * pcb = list_remove_by_condition(lista_ready, filtro);
+//     pthread_mutex_unlock(&mutex_estado_ready);
+//     return pcb;
+// }
 
 void comunicacionCPU(t_pcb * pcb){
     int socketDispatch = crear_conexion(IP_CPU, PUERTO_CPU_DISPATCH);
     
     t_paquete * paquete = armarPaqueteCon(pcb, REQ_PCB_A_EJECUTAR_KERNEL_CPU);
     enviarPaquete(paquete, socketDispatch);
-    free(paquete);
-
+    eliminarPaquete(paquete);
+    free(pcb);
+    
     t_paquete * paqueteRespuesta = recibirPaquete(socketDispatch);
     switch (paqueteRespuesta->codigo_operacion){
         case PCB_EJECUTADO_IO_CPU_KERNEL:{
             
             //DESCOMENTAR
             // t_IO * io = deserializarIO(paqueteRespuesta->buffer->stream);
-            // addEstadoBlocked(io);
+            //io->pcb->estimacionRafaga = ALFA*io->pcb->lengthUltimaRafaga + (1-ALFA)*io->pcb->estimacionRafaga;
+            //addEstadoBlocked(io);
             
             //el hilo de bloqueados es el que se bloquea con usleep(io->tiempoBloqueo)
             break;
         }
         case PCB_EJECUTADO_EXIT_CPU_KERNEL:{
-            t_pcb * pcb = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
-
-            execAexit(pcb);
+            log_info(logger, "entró un pcb a exit");
+            t_pcb * pcbActualizado = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
+            execAexit(pcbActualizado);
             
             break;
         }
         case PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL:{
-            t_pcb * pcb = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
-            //enviar a donde corresponda
+            t_pcb * pcbActualizado = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
+            pcbActualizado->estimacionRafaga = ALFA*pcbActualizado->lengthUltimaRafaga + (1-ALFA)*pcbActualizado->estimacionRafaga;
+            addEstadoReady(pcbActualizado);
+            sem_post(&sem_ready);
+            // pthread_mutex_lock(&mutex_pcb_ejecutando);
+            // pcbEjecutando = pcbActualizado;
+            // pthread_mutex_unlock(&mutex_pcb_ejecutando);
+
             break; 
         }   
         default:{
@@ -184,7 +254,7 @@ void comunicacionCPU(t_pcb * pcb){
         }
         
     }
-    log_info(logger, "pcb ejecutó y devolvió el pcb");  
+    log_info(logger, "CPU ejecutó y devolvió el pcb");  
 }
 
 
@@ -193,11 +263,11 @@ void addEstadoReady(t_pcb * pcb){
     list_add(estado_ready, (void *) pcb);
     pthread_mutex_unlock(&mutex_estado_ready); 
 }
-void addEstadoExec(t_pcb * pcb){
-    pthread_mutex_lock(&mutex_estado_exec);
-    list_add(estado_exec, (void *) pcb);
-    pthread_mutex_unlock(&mutex_estado_exec); 
-}
+// void addEstadoExec(t_pcb * pcb){
+//     pthread_mutex_lock(&mutex_estado_exec);
+//     list_add(estado_exec, (void *) pcb);
+//     pthread_mutex_unlock(&mutex_estado_exec); 
+// }
 // void addEstadoExit(t_pcb * pcb){
 //     pthread_mutex_lock(&mutex_estado_exit);
 //     list_add(estado_exit, (void *) pcb);
