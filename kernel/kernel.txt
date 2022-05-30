@@ -1,0 +1,799 @@
+[INFO] 19:21:11:393 kernel/(7312:7312): soy un log
+[INFO] 19:21:35:030 kernel/(7426:7426): soy un log
+[INFO] 19:33:26:667 kernel/(8247:8247): soy un log
+[INFO] 19:44:18:642 kernel/(9204:9204): 127.0.0.1
+[INFO] 19:44:58:529 kernel/(9334:9334): Bienvenido al servidor del kernel
+[INFO] 19:45:25:048 kernel/(9450:9450): Bienvenido al servidor del kernel
+[INFO] 19:46:28:303 kernel/(9505:9505): Bienvenido al servidor del kernel
+[INFO] 19:46:43:649 kernel/(9702:9702): Bienvenido al servidor del kernel
+[INFO] 19:47:30:482 kernel/(9724:9724): Bienvenido al servidor del kernel
+[INFO] 19:47:39:656 kernel/(9740:9740): Bienvenido al servidor del kernel
+[INFO] 19:48:07:358 kernel/(9985:9985): Bienvenido al servidor del kernel
+[INFO] 19:48:20:788 kernel/(9995:9995): Bienvenido al servidor del kernel
+[INFO] 19:48:33:699 kernel/(10019:10019): Bienvenido al servidor del kernel
+[INFO] 19:48:48:350 kernel/(10027:10027): Bienvenido al servidor del kernel
+[INFO] 19:49:04:170 kernel/(10059:10059): Bienvenido al servidor del kernel
+[INFO] 19:49:18:877 kernel/(10082:10082): Bienvenido al servidor del kernel
+[INFO] 19:49:46:447 kernel/(10410:10410): Bienvenido al servidor del kernel
+[INFO] 19:50:12:293 kernel/(10739:10739): Bienvenido al servidor del kernel
+[INFO] 19:50:41:492 kernel/(11119:11119): Bienvenido al servidor del kernel
+[INFO] 19:52:54:185 kernel/(11579:11579): Bienvenido al servidor del kernel
+[INFO] 19:53:29:807 kernel/(11797:11797): Bienvenido al servidor del kernel
+[INFO] 19:55:23:383 kernel/(12233:12233): Bienvenido al servidor del kernel
+[INFO] 19:55:52:040 kernel/(12246:12246): Bienvenido al servidor del kernel
+[INFO] 19:56:08:290 kernel/(12449:12449): Bienvenido al servidor del kernel
+[INFO] 19:56:39:197 kernel/(12663:12663): Bienvenido al servidor del kernel
+[INFO] 19:58:21:230 kernel/(13115:13115): Bienvenido al servidor del kernel
+[INFO] 19:59:01:613 kernel/(13351:13351): Bienvenido al servidor del kernel
+[INFO] 19:59:21:783 kernel/(13551:13551): Bienvenido al servidor del kernel
+[INFO] 19:59:53:567 kernel/(13762:13762): Bienvenido al servidor del kernel
+[INFO] 20:12:26:871 kernel/(14803:14803): Bienvenido al servidor del kernel
+[INFO] 20:12:26:871 kernel/(14803:14803): 1
+[INFO] 20:46:17:962 kernel/(16447:16447): Bienvenido al servidor del kernel
+[INFO] 20:46:17:962 kernel/(16447:16447): 3
+[INFO] 14:39:15:157 kernel/(922:922): Bienvenido al servidor del kernel
+[INFO] 14:39:15:158 kernel/(922:922): 3
+[INFO] 14:40:39:344 kernel/(1746:1746): Bienvenido al servidor del kernel
+[INFO] 14:40:39:344 kernel/(1746:1746): 4
+[INFO] 14:42:34:220 kernel/(2721:2721): Bienvenido al servidor del kernel
+[INFO] 14:42:34:220 kernel/(2721:2721): 1
+[INFO] 14:44:09:687 kernel/(3483:3483): Bienvenido al servidor del kernel
+[INFO] 14:44:09:687 kernel/(3483:3483): 3
+[INFO] 14:45:37:302 kernel/(4414:4414): Bienvenido al servidor del kernel
+[INFO] 14:45:37:303 kernel/(4414:4414): 10
+[INFO] 19:30:01:619 kernel/(4407:4407): Bienvenido al servidor del kernel
+[INFO] 19:30:01:619 kernel/(4407:4407): 0
+[INFO] 19:38:52:062 kernel/(5734:5734): Bienvenido al servidor del kernel
+[INFO] 19:40:29:706 kernel/(6873:6873): Bienvenido al servidor del kernel
+[INFO] 20:34:23:015 kernel/(10387:10387): se conecto cliente
+[INFO] 14:19:21:797 kernel/(15938:15938): se conecto cliente
+[INFO] 14:21:01:201 kernel/(16474:16474): se conecto cliente
+[INFO] 14:23:46:621 kernel/(17338:17338): se conecto cliente main
+[INFO] 14:24:18:368 kernel/(17526:17526): se conecto cliente main
+[INFO] 14:24:29:756 kernel/(17659:17659): se conecto cliente main 2
+[INFO] 14:26:06:471 kernel/(17988:17988): se conecto cliente main 2
+[INFO] 14:34:23:352 kernel/(19069:19069): se conecto cliente
+[INFO] 14:34:23:352 kernel/(19069:19069): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:934698416
+[INFO] 14:34:23:353 kernel/(19069:19069): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:1662902096
+[INFO] 14:34:23:353 kernel/(19069:19069): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:1662902096
+[INFO] 14:34:23:353 kernel/(19069:19069): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:1662902096
+[INFO] 14:34:23:353 kernel/(19069:19069): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:1662902096
+[INFO] 14:34:23:353 kernel/(19069:19069): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:1662902096
+[INFO] 14:34:23:353 kernel/(19069:19069): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:1662902096
+[INFO] 14:34:23:353 kernel/(19069:19069): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 14:34:23:353 kernel/(19069:19069): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 14:34:23:353 kernel/(19069:19069): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 14:42:53:618 kernel/(20249:20249): se conecto cliente
+[INFO] 14:42:53:618 kernel/(20249:20249): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:748068272
+[INFO] 14:42:53:618 kernel/(20249:20249): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:709159840
+[INFO] 14:42:53:619 kernel/(20249:20249): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:709159840
+[INFO] 14:42:53:619 kernel/(20249:20249): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:709159840
+[INFO] 14:42:53:619 kernel/(20249:20249): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:709159840
+[INFO] 14:42:53:619 kernel/(20249:20249): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:709159840
+[INFO] 14:42:53:619 kernel/(20249:20249): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:709159840
+[INFO] 14:42:53:619 kernel/(20249:20249): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 14:42:53:619 kernel/(20249:20249): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 14:42:53:619 kernel/(20249:20249): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 14:44:46:565 kernel/(20892:20892): se conecto cliente
+[INFO] 14:44:46:565 kernel/(20892:20892): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:27958704
+[INFO] 14:44:46:565 kernel/(20892:20892): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:-1292882208
+[INFO] 14:44:46:565 kernel/(20892:20892): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:-1292882208
+[INFO] 14:44:46:565 kernel/(20892:20892): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:-1292882208
+[INFO] 14:44:46:565 kernel/(20892:20892): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:-1292882208
+[INFO] 14:44:46:565 kernel/(20892:20892): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:-1292882208
+[INFO] 14:44:46:565 kernel/(20892:20892): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:-1292882208
+[INFO] 14:44:46:565 kernel/(20892:20892): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 14:44:46:566 kernel/(20892:20892): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 14:44:46:566 kernel/(20892:20892): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 14:44:46:566 kernel/(20892:20892): se liberó el paquete
+[INFO] 14:50:25:030 kernel/(21582:21582): se conecto cliente
+[INFO] 14:50:25:030 kernel/(21582:21582): se liberó el paquete
+[INFO] 14:50:25:030 kernel/(21582:21582): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:-713179728
+[INFO] 14:50:25:030 kernel/(21582:21582): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:-746538384
+[INFO] 14:50:25:031 kernel/(21582:21582): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:-746538384
+[INFO] 14:50:25:031 kernel/(21582:21582): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:-746538384
+[INFO] 14:50:25:031 kernel/(21582:21582): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:-746538384
+[INFO] 14:50:25:031 kernel/(21582:21582): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:-746538384
+[INFO] 14:50:25:031 kernel/(21582:21582): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:-746538384
+[INFO] 14:50:25:031 kernel/(21582:21582): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 14:50:25:031 kernel/(21582:21582): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 14:50:25:031 kernel/(21582:21582): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 14:59:09:573 kernel/(23072:23072): se conecto cliente
+[INFO] 14:59:09:575 kernel/(23072:23072): se liberó el paquete
+[INFO] 14:59:09:576 kernel/(23072:23072): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:-2067817040
+[INFO] 14:59:09:576 kernel/(23072:23072): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:-1496724240
+[INFO] 14:59:09:576 kernel/(23072:23072): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:-1496724240
+[INFO] 14:59:09:577 kernel/(23072:23072): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:-1496724240
+[INFO] 14:59:09:577 kernel/(23072:23072): instruccion_id:0, instruccion_string:NO_OP, parametro1:5, parametro2:-1496724240
+[INFO] 14:59:09:577 kernel/(23072:23072): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:-1496724240
+[INFO] 14:59:09:577 kernel/(23072:23072): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:-1496724240
+[INFO] 14:59:09:578 kernel/(23072:23072): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 14:59:09:578 kernel/(23072:23072): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 14:59:09:578 kernel/(23072:23072): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 15:59:30:395 kernel/(25035:25035): se conecto cliente main 2
+[INFO] 16:02:32:050 kernel/(25415:25415): se conecto cliente
+[INFO] 16:02:32:050 kernel/(25415:25415): se liberó el paquete
+[INFO] 16:02:32:050 kernel/(25415:25415): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:2140339632
+[INFO] 16:02:32:050 kernel/(25415:25415): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:2140339632
+[INFO] 16:02:32:050 kernel/(25415:25415): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 16:02:32:050 kernel/(25415:25415): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 16:02:32:050 kernel/(25415:25415): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 16:02:32:051 kernel/(25415:25415): conectado a cpu
+[INFO] 16:12:04:775 kernel/(27477:27477): se conecto cliente
+[INFO] 16:12:04:775 kernel/(27477:27477): se liberó el paquete
+[INFO] 16:12:04:776 kernel/(27477:27477): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:-1251656176
+[INFO] 16:12:04:776 kernel/(27477:27477): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:-1251656176
+[INFO] 16:12:04:776 kernel/(27477:27477): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 16:12:04:776 kernel/(27477:27477): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 16:12:04:776 kernel/(27477:27477): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 16:16:43:535 kernel/(28892:28892): se conecto cliente
+[INFO] 16:16:43:535 kernel/(28892:28892): se liberó el paquete
+[INFO] 16:16:43:535 kernel/(28892:28892): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:-1204195824
+[INFO] 16:16:43:535 kernel/(28892:28892): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:-1204195824
+[INFO] 16:16:43:535 kernel/(28892:28892): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 16:16:43:535 kernel/(28892:28892): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 16:16:43:535 kernel/(28892:28892): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 16:16:43:536 kernel/(28892:28892): conectado a cpu
+[INFO] 16:16:43:536 kernel/(28892:28892): pcb enviado a cpu
+[INFO] 16:16:43:537 kernel/(28892:28892): pcb recibido de cpu
+[INFO] 16:20:24:367 kernel/(29412:29412): se conecto cliente
+[INFO] 16:20:24:367 kernel/(29412:29412): se liberó el paquete
+[INFO] 16:20:24:368 kernel/(29412:29412): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:-878629360
+[INFO] 16:20:24:368 kernel/(29412:29412): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:-878629360
+[INFO] 16:20:24:368 kernel/(29412:29412): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 16:20:24:368 kernel/(29412:29412): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 16:20:24:368 kernel/(29412:29412): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 16:20:24:368 kernel/(29412:29412): conectado a cpu
+[INFO] 16:20:24:368 kernel/(29412:29412): pcb enviado a cpu
+[INFO] 16:20:24:369 kernel/(29412:29412): pcb recibido de cpu
+[INFO] 15:31:43:730 kernel/(4517:4517): se conecto cliente
+[INFO] 15:31:43:731 kernel/(4517:4572): se liberó el paquete
+[INFO] 15:31:43:731 kernel/(4517:4572): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:443248144
+[INFO] 15:31:43:731 kernel/(4517:4572): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:443248144
+[INFO] 15:31:43:731 kernel/(4517:4572): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 15:31:43:731 kernel/(4517:4572): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 15:31:43:731 kernel/(4517:4572): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 15:31:51:893 kernel/(4517:4517): se conecto cliente
+[INFO] 15:31:51:893 kernel/(4517:4637): se liberó el paquete
+[INFO] 15:31:51:893 kernel/(4517:4637): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:-1639272944
+[INFO] 15:31:51:893 kernel/(4517:4637): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:-1639272944
+[INFO] 15:31:51:893 kernel/(4517:4637): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 15:31:51:894 kernel/(4517:4637): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 15:31:51:894 kernel/(4517:4637): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 15:32:02:920 kernel/(4517:4517): se conecto cliente
+[INFO] 15:32:02:920 kernel/(4517:4812): se liberó el paquete
+[INFO] 15:32:02:920 kernel/(4517:4812): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:870690320
+[INFO] 15:32:02:920 kernel/(4517:4812): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:870690320
+[INFO] 15:32:02:920 kernel/(4517:4812): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 15:32:02:920 kernel/(4517:4812): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 15:32:02:920 kernel/(4517:4812): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 16:58:57:057 kernel/(13310:13310): se conecto cliente
+[INFO] 16:58:57:092 kernel/(13310:13536): se liberó el paquete
+[INFO] 16:58:57:094 kernel/(13310:13536): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:-988008944
+[INFO] 16:58:57:095 kernel/(13310:13536): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:-988008944
+[INFO] 16:58:57:095 kernel/(13310:13536): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 16:58:57:096 kernel/(13310:13536): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 16:58:57:096 kernel/(13310:13536): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 16:58:57:102 kernel/(13310:13319): se elimino el proceso 0 de la cola de new
+[INFO] 16:58:57:105 kernel/(13310:13319): se agrego a la lista de ready
+[INFO] 16:59:37:763 kernel/(13310:13310): se conecto cliente
+[INFO] 16:59:37:765 kernel/(13310:13721): se liberó el paquete
+[INFO] 16:59:37:765 kernel/(13310:13721): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:1699409424
+[INFO] 16:59:37:766 kernel/(13310:13721): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:1699409424
+[INFO] 16:59:37:766 kernel/(13310:13721): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 16:59:37:767 kernel/(13310:13721): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 16:59:37:767 kernel/(13310:13721): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 17:12:17:753 kernel/(15292:15292): se conecto cliente
+[INFO] 17:12:17:753 kernel/(15292:15402): se liberó el paquete
+[INFO] 17:12:17:753 kernel/(15292:15402): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:1421946384
+[INFO] 17:12:17:753 kernel/(15292:15402): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:1421946384
+[INFO] 17:12:17:753 kernel/(15292:15402): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 17:12:17:753 kernel/(15292:15402): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 17:12:17:753 kernel/(15292:15402): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 17:19:03:966 kernel/(16348:16349): entró a newAready
+[INFO] 17:19:03:966 kernel/(16348:16349): pasa multiprogramación
+[INFO] 17:20:10:938 kernel/(16348:16348): se conecto cliente
+[INFO] 17:20:10:938 kernel/(16348:16498): se liberó el paquete
+[INFO] 17:20:10:938 kernel/(16348:16498): instruccion_id:2, instruccion_string:READ, parametro1:0, parametro2:-1110094320
+[INFO] 17:20:10:938 kernel/(16348:16498): instruccion_id:1, instruccion_string:IO, parametro1:3000, parametro2:-1110094320
+[INFO] 17:20:10:938 kernel/(16348:16498): instruccion_id:4, instruccion_string:WRITE, parametro1:4, parametro2:42
+[INFO] 17:20:10:938 kernel/(16348:16498): instruccion_id:3, instruccion_string:COPY, parametro1:0, parametro2:4
+[INFO] 17:20:10:938 kernel/(16348:16498): instruccion_id:5, instruccion_string:EXIT, parametro1:0, parametro2:4
+[INFO] 17:20:10:938 kernel/(16348:16498): se agrega 0
+[INFO] 17:22:41:917 kernel/(17059:17060): entró a newAready
+[INFO] 17:22:41:917 kernel/(17059:17060): pasa multiprogramación
+[INFO] 17:22:58:872 kernel/(17059:17059): se conecto cliente
+[INFO] 17:22:58:872 kernel/(17059:17175): se liberó el paquete
+[INFO] 17:22:58:873 kernel/(17059:17175): se agrega 0
+[INFO] 17:28:26:913 kernel/(18097:18098): entró a newAready
+[INFO] 17:28:26:913 kernel/(18097:18098): pasa multiprogramación
+[INFO] 17:28:36:690 kernel/(18097:18097): se conecto cliente
+[INFO] 17:28:36:690 kernel/(18097:18213): se liberó el paquete
+[INFO] 17:28:36:690 kernel/(18097:18213): se agrega 0
+[INFO] 17:28:36:690 kernel/(18097:18213): paso el mutex
+[INFO] 17:28:36:691 kernel/(18097:18213): signal sem_new
+[INFO] 17:28:36:691 kernel/(18097:18098): pasó sem_new
+[INFO] 17:28:36:691 kernel/(18097:18098): se elimino el proceso 0 de la cola de new
+[INFO] 17:28:36:691 kernel/(18097:18098): se agrego el proceso 0 a la lista de ready
+[INFO] 17:28:36:691 kernel/(18097:18098): entró a newAready
+[INFO] 17:29:06:915 kernel/(18460:18470): entró a newAready
+[INFO] 17:29:06:952 kernel/(18460:18470): pasa multiprogramación
+[INFO] 17:30:35:706 kernel/(19147:19148): entró a newAready
+[INFO] 17:30:35:740 kernel/(19147:19148): pasa multiprogramación
+[INFO] 17:30:44:726 kernel/(19147:19147): se conecto cliente
+[INFO] 17:30:44:761 kernel/(19147:19275): se liberó el paquete
+[INFO] 17:30:44:762 kernel/(19147:19275): se agrega 0
+[INFO] 17:30:44:765 kernel/(19147:19275): paso el mutex
+[INFO] 17:30:44:766 kernel/(19147:19275): signal sem_new
+[INFO] 17:30:44:766 kernel/(19147:19148): pasó sem_new
+[INFO] 17:30:44:771 kernel/(19147:19148): se elimino el proceso 0 de la cola de new
+[INFO] 17:30:44:772 kernel/(19147:19148): se agrego el proceso 0 a la lista de ready
+[INFO] 17:30:44:772 kernel/(19147:19148): se agrego el proceso 0 a la lista de ready
+[INFO] 17:54:06:325 kernel/(22781:22782): entró a newAready
+[INFO] 17:54:06:325 kernel/(22781:22782): pasa multiprogramación
+[INFO] 17:54:12:599 kernel/(22781:22781): se conecto cliente
+[INFO] 17:54:12:600 kernel/(22781:22848): se liberó el paquete
+[INFO] 17:54:12:600 kernel/(22781:22848): se agrega 0
+[INFO] 17:54:12:600 kernel/(22781:22848): paso el mutex
+[INFO] 17:54:12:600 kernel/(22781:22848): signal sem_new
+[INFO] 17:54:12:600 kernel/(22781:22782): pasó sem_new
+[INFO] 17:54:12:600 kernel/(22781:22782): se elimino el proceso 0 de la cola de new
+[INFO] 17:54:12:600 kernel/(22781:22782): se agrego el proceso 0 a la lista de ready
+[INFO] 17:54:12:600 kernel/(22781:22782): entró a newAready
+[INFO] 17:54:12:600 kernel/(22781:22783): se agrego a la cola de exit
+[INFO] 17:54:12:600 kernel/(22781:22782): pasa multiprogramación
+[INFO] 17:54:47:872 kernel/(22781:22781): se conecto cliente
+[INFO] 17:54:47:872 kernel/(22781:23108): se liberó el paquete
+[INFO] 17:54:47:872 kernel/(22781:23108): se agrega 0
+[INFO] 17:54:47:872 kernel/(22781:23108): paso el mutex
+[INFO] 17:54:47:872 kernel/(22781:23108): signal sem_new
+[INFO] 17:54:47:872 kernel/(22781:22782): pasó sem_new
+[INFO] 17:54:47:872 kernel/(22781:22782): se elimino el proceso 0 de la cola de new
+[INFO] 17:54:47:872 kernel/(22781:22782): se agrego el proceso 0 a la lista de ready
+[INFO] 17:54:47:872 kernel/(22781:22782): entró a newAready
+[INFO] 17:54:47:872 kernel/(22781:22783): se agrego a la cola de exit
+[INFO] 17:54:47:872 kernel/(22781:22782): pasa multiprogramación
+[INFO] 13:55:01:691 kernel/(28019:28019): se conecto cliente
+[INFO] 13:55:01:691 kernel/(28019:28100): se liberó el paquete
+[INFO] 13:55:01:691 kernel/(28019:28100): se agrega proceso id:0 a cola new
+[INFO] 15:18:28:276 kernel/(31348:31348): se conecto cliente
+[INFO] 15:18:28:276 kernel/(31348:31367): se liberó el paquete
+[INFO] 15:18:28:277 kernel/(31348:31367): se agrega proceso id:0 a cola new
+[INFO] 15:18:46:475 kernel/(31348:31348): se conecto cliente
+[INFO] 15:18:46:476 kernel/(31348:31504): se liberó el paquete
+[INFO] 15:18:46:476 kernel/(31348:31504): se agrega proceso id:0 a cola new
+[INFO] 15:23:47:170 kernel/(32479:32479): se conecto cliente
+[INFO] 15:23:47:170 kernel/(32479:32594): se liberó el paquete
+[INFO] 15:23:47:170 kernel/(32479:32594): se agrega proceso id:0 a cola new
+[INFO] 15:23:55:836 kernel/(32479:32479): se conecto cliente
+[INFO] 15:23:55:836 kernel/(32479:32723): se liberó el paquete
+[INFO] 15:23:55:836 kernel/(32479:32723): se agrega proceso id:1 a cola new
+[INFO] 15:24:28:458 kernel/(32479:32479): se conecto cliente
+[INFO] 15:24:28:459 kernel/(32479:390): se liberó el paquete
+[INFO] 15:24:28:459 kernel/(32479:390): se agrega proceso id:2 a cola new
+[INFO] 16:02:58:009 kernel/(6121:6122): entró a newAready
+[INFO] 16:02:58:009 kernel/(6121:6122): pasa multiprogramación
+[INFO] 16:03:15:013 kernel/(6121:6121): se conecto cliente
+[INFO] 16:03:15:013 kernel/(6121:6121): se liberó el paquete
+[INFO] 16:03:15:013 kernel/(6121:6121): se agrega proceso id:0 a cola new
+[INFO] 16:03:15:013 kernel/(6121:6122): pasó sem_new
+[INFO] 16:03:15:013 kernel/(6121:6122): se eliminó el proceso 0 de la cola de new
+[INFO] 16:03:15:013 kernel/(6121:6122): se agregó el proceso 0 a la lista de ready
+[INFO] 16:03:15:013 kernel/(6121:6122): entró a newAready
+[INFO] 16:04:54:851 kernel/(6575:6576): entró a newAready
+[INFO] 16:04:54:851 kernel/(6575:6576): pasa multiprogramación
+[INFO] 16:06:14:864 kernel/(7148:7149): entró a newAready
+[INFO] 16:06:14:864 kernel/(7148:7149): pasa multiprogramación
+[INFO] 16:06:34:410 kernel/(7148:7148): se conecto cliente
+[INFO] 16:06:34:410 kernel/(7148:7148): se liberó el paquete
+[INFO] 16:06:34:410 kernel/(7148:7148): se agrega proceso id:0 a cola new
+[INFO] 16:06:34:410 kernel/(7148:7149): pasó sem_new
+[INFO] 16:06:34:410 kernel/(7148:7149): se eliminó el proceso 0 de la cola de new
+[INFO] 16:06:34:410 kernel/(7148:7149): se agregó el proceso 0 a la lista de ready
+[INFO] 16:06:34:410 kernel/(7148:7149): entró a newAready
+[INFO] 16:06:34:417 kernel/(7148:7150): se agrego a la cola de exit
+[INFO] 16:06:34:417 kernel/(7148:7149): pasa multiprogramación
+[INFO] 16:08:12:056 kernel/(7148:7148): se conecto cliente
+[INFO] 16:08:12:056 kernel/(7148:7148): se liberó el paquete
+[INFO] 16:08:12:056 kernel/(7148:7148): se agrega proceso id:1 a cola new
+[INFO] 16:08:12:056 kernel/(7148:7149): pasó sem_new
+[INFO] 16:08:12:056 kernel/(7148:7149): se eliminó el proceso 1 de la cola de new
+[INFO] 16:08:12:056 kernel/(7148:7149): se agregó el proceso 1 a la lista de ready
+[INFO] 16:08:12:056 kernel/(7148:7149): entró a newAready
+[INFO] 16:08:12:063 kernel/(7148:7150): se agrego a la cola de exit
+[INFO] 16:08:12:063 kernel/(7148:7149): pasa multiprogramación
+[INFO] 16:53:05:900 kernel/(12875:12876): entró a newAready
+[INFO] 16:53:05:901 kernel/(12875:12876): pasa multiprogramación
+[INFO] 16:53:14:149 kernel/(12875:12875): se conecto cliente
+[INFO] 16:53:14:149 kernel/(12875:12875): se liberó el paquete
+[INFO] 16:53:14:149 kernel/(12875:12875): se agrega proceso id:0 a cola new
+[INFO] 16:53:14:149 kernel/(12875:12876): pasó sem_new
+[INFO] 16:53:14:149 kernel/(12875:12876): se eliminó el proceso 0 de la cola de new
+[INFO] 16:53:14:150 kernel/(12875:12876): se agregó el proceso 0 a la lista de ready
+[INFO] 16:53:14:150 kernel/(12875:12876): entró a newAready
+[INFO] 16:53:14:156 kernel/(12875:12877): se agrego a la cola de exec
+[INFO] 16:56:13:576 kernel/(14371:14372): entró a newAready
+[INFO] 16:56:13:577 kernel/(14371:14372): pasa multiprogramación
+[INFO] 16:56:21:616 kernel/(14371:14371): se conecto cliente
+[INFO] 16:56:21:616 kernel/(14371:14371): se liberó el paquete
+[INFO] 16:56:21:616 kernel/(14371:14371): se agrega proceso id:0 a cola new
+[INFO] 16:56:21:616 kernel/(14371:14372): pasó sem_new
+[INFO] 16:56:21:616 kernel/(14371:14372): se eliminó el proceso 0 de la cola de new
+[INFO] 16:56:21:616 kernel/(14371:14372): se agregó el proceso 0 a la lista de ready
+[INFO] 16:56:21:616 kernel/(14371:14372): entró a newAready
+[INFO] 16:56:21:623 kernel/(14371:14373): se agrego a la cola de exec
+[INFO] 17:00:07:755 kernel/(16482:16483): entró a newAready
+[INFO] 17:00:07:755 kernel/(16482:16483): pasa multiprogramación
+[INFO] 17:00:32:183 kernel/(16482:16482): se conecto cliente
+[INFO] 17:00:32:187 kernel/(16482:16482): se liberó el paquete
+[INFO] 17:00:32:187 kernel/(16482:16482): se agrega proceso id:0 a cola new
+[INFO] 17:00:32:187 kernel/(16482:16483): pasó sem_new
+[INFO] 17:00:32:187 kernel/(16482:16483): se eliminó el proceso 0 de la cola de new
+[INFO] 17:00:32:187 kernel/(16482:16483): se agregó el proceso 0 a la lista de ready
+[INFO] 17:00:32:187 kernel/(16482:16483): entró a newAready
+[INFO] 17:00:32:194 kernel/(16482:16484): se agrego a la cola de exec
+[INFO] 17:05:16:614 kernel/(18081:18082): entró a newAready
+[INFO] 17:05:16:614 kernel/(18081:18082): pasa multiprogramación
+[INFO] 17:05:27:055 kernel/(18081:18081): se conecto cliente
+[INFO] 17:05:27:056 kernel/(18081:18081): se liberó el paquete
+[INFO] 17:05:27:056 kernel/(18081:18081): se agrega proceso id:0 a cola new
+[INFO] 17:05:27:056 kernel/(18081:18082): pasó sem_new
+[INFO] 17:05:27:056 kernel/(18081:18082): se eliminó el proceso 0 de la cola de new
+[INFO] 17:05:27:056 kernel/(18081:18082): se agregó el proceso 0 a la lista de ready
+[INFO] 17:05:27:056 kernel/(18081:18082): entró a newAready
+[INFO] 17:05:27:063 kernel/(18081:18083): se agrego a la cola de exec
+[INFO] 17:05:47:163 kernel/(18081:18081): se conecto cliente
+[INFO] 17:05:47:163 kernel/(18081:18081): se liberó el paquete
+[INFO] 17:05:47:164 kernel/(18081:18081): se agrega proceso id:1 a cola new
+[INFO] 17:11:34:641 kernel/(21065:21066): entró a newAready
+[INFO] 17:11:34:641 kernel/(21065:21066): pasa multiprogramación
+[INFO] 17:11:44:331 kernel/(21065:21065): se conecto cliente
+[INFO] 17:11:44:331 kernel/(21065:21065): se liberó el paquete
+[INFO] 17:11:44:331 kernel/(21065:21065): se agrega proceso id:0 a cola new
+[INFO] 17:11:44:331 kernel/(21065:21066): pasó sem_new
+[INFO] 17:11:44:331 kernel/(21065:21066): se eliminó el proceso 0 de la cola de new
+[INFO] 17:11:44:331 kernel/(21065:21066): se agregó el proceso 0 a la lista de ready
+[INFO] 17:11:44:331 kernel/(21065:21066): entró a newAready
+[INFO] 17:11:44:338 kernel/(21065:21067): se agrego a la cola de exec
+[INFO] 17:14:08:870 kernel/(21065:21065): se conecto cliente
+[INFO] 17:14:08:870 kernel/(21065:21065): se liberó el paquete
+[INFO] 17:14:08:870 kernel/(21065:21065): se agrega proceso id:1 a cola new
+[INFO] 17:16:59:992 kernel/(22510:22511): entró a newAready
+[INFO] 17:16:59:992 kernel/(22510:22511): pasa multiprogramación
+[INFO] 17:17:28:953 kernel/(22640:22641): entró a newAready
+[INFO] 17:17:28:953 kernel/(22640:22641): pasa multiprogramación
+[INFO] 17:19:34:192 kernel/(23637:23790): entró a newAready
+[INFO] 17:19:34:192 kernel/(23637:23790): pasa multiprogramación
+[INFO] 17:20:45:009 kernel/(23637:23637): se conecto cliente
+[INFO] 17:20:45:009 kernel/(23637:23637): se liberó el paquete
+[INFO] 17:20:45:009 kernel/(23637:23637): se agrega proceso id:0 a cola new
+[INFO] 17:20:45:009 kernel/(23637:23790): pasó sem_new
+[INFO] 17:20:45:009 kernel/(23637:23790): se eliminó el proceso 0 de la cola de new
+[INFO] 17:20:45:010 kernel/(23637:23790): se agregó el proceso 0 a la lista de ready
+[INFO] 17:22:13:250 kernel/(24319:24320): entró a newAready
+[INFO] 17:22:13:250 kernel/(24319:24320): pasa multiprogramación
+[INFO] 17:22:18:562 kernel/(24319:24319): se conecto cliente
+[INFO] 17:22:18:562 kernel/(24319:24319): se liberó el paquete
+[INFO] 17:22:18:562 kernel/(24319:24319): se agrega proceso id:0 a cola new
+[INFO] 17:22:18:562 kernel/(24319:24320): pasó sem_new
+[INFO] 17:22:18:562 kernel/(24319:24320): se eliminó el proceso 0 de la cola de new
+[INFO] 17:22:18:562 kernel/(24319:24320): se agregó el proceso 0 a la lista de ready
+[INFO] 17:22:18:562 kernel/(24319:24320): entró a newAready
+[INFO] 17:22:18:569 kernel/(24319:24321): se agrego a la cola de exec
+[INFO] 17:22:18:569 kernel/(24319:24321): finalizó el proceso con ID: 0
+[INFO] 17:23:50:585 kernel/(24732:24733): entró a newAready
+[INFO] 17:23:50:618 kernel/(24732:24733): pasa multiprogramación
+[INFO] 17:23:57:587 kernel/(24732:24732): se conecto cliente
+[INFO] 17:23:57:589 kernel/(24732:24732): se liberó el paquete
+[INFO] 17:23:57:592 kernel/(24732:24732): se agrega proceso id:0 a cola new
+[INFO] 17:23:57:594 kernel/(24732:24733): pasó sem_new
+[INFO] 17:23:57:595 kernel/(24732:24733): se eliminó el proceso 0 de la cola de new
+[INFO] 17:23:57:596 kernel/(24732:24733): se agregó el proceso 0 a la lista de ready
+[INFO] 17:23:57:597 kernel/(24732:24733): entró a newAready
+[INFO] 17:28:35:057 kernel/(25238:25239): entró a newAready
+[INFO] 17:28:35:092 kernel/(25238:25239): pasa multiprogramación
+[INFO] 17:28:44:921 kernel/(25238:25238): se conecto cliente
+[INFO] 17:28:44:923 kernel/(25238:25238): se liberó el paquete
+[INFO] 17:28:44:927 kernel/(25238:25238): se agrega proceso id:0 a cola new
+[INFO] 17:28:44:928 kernel/(25238:25239): pasó sem_new
+[INFO] 17:28:44:930 kernel/(25238:25239): se eliminó el proceso 0 de la cola de new
+[INFO] 17:28:44:930 kernel/(25238:25239): se agregó el proceso 0 a la lista de ready
+[INFO] 17:28:44:931 kernel/(25238:25239): entró a newAready
+[INFO] 17:29:58:243 kernel/(26215:26216): entró a newAready
+[INFO] 17:29:58:277 kernel/(26215:26216): pasa multiprogramación
+[INFO] 17:30:05:639 kernel/(26215:26215): se conecto cliente
+[INFO] 17:30:05:642 kernel/(26215:26215): se liberó el paquete
+[INFO] 17:30:05:645 kernel/(26215:26215): se agrega proceso id:0 a cola new
+[INFO] 17:30:05:647 kernel/(26215:26216): pasó sem_new
+[INFO] 17:30:05:648 kernel/(26215:26216): se eliminó el proceso 0 de la cola de new
+[INFO] 17:30:05:649 kernel/(26215:26216): se agregó el proceso 0 a la lista de ready
+[INFO] 17:30:05:649 kernel/(26215:26216): entró a newAready
+[INFO] 17:30:05:662 kernel/(26215:26217): se agrego a la cola de exec
+[INFO] 17:30:05:664 kernel/(26215:26217): finalizó el proceso con ID: 0
+[INFO] 17:30:05:666 kernel/(26215:26216): pasa multiprogramación
+[INFO] 17:30:39:927 kernel/(26215:26215): se conecto cliente
+[INFO] 17:30:39:927 kernel/(26215:26215): se liberó el paquete
+[INFO] 17:30:39:927 kernel/(26215:26215): se agrega proceso id:1 a cola new
+[INFO] 17:30:39:928 kernel/(26215:26216): pasó sem_new
+[INFO] 17:30:39:928 kernel/(26215:26216): se eliminó el proceso 1 de la cola de new
+[INFO] 17:30:39:929 kernel/(26215:26216): se agregó el proceso 1 a la lista de ready
+[INFO] 17:30:39:929 kernel/(26215:26216): entró a newAready
+[INFO] 17:40:08:522 kernel/(29413:29414): entró a newAready
+[INFO] 17:40:08:522 kernel/(29413:29414): pasa multiprogramación
+[INFO] 17:40:15:473 kernel/(29413:29413): se conecto cliente
+[INFO] 17:40:15:473 kernel/(29413:29413): se liberó el paquete
+[INFO] 17:40:15:473 kernel/(29413:29413): se agrega proceso id:0 a cola new
+[INFO] 17:40:15:474 kernel/(29413:29414): pasó sem_new
+[INFO] 17:40:15:474 kernel/(29413:29414): se eliminó el proceso 0 de la cola de new
+[INFO] 17:40:15:474 kernel/(29413:29414): se agregó el proceso 0 a la lista de ready
+[INFO] 17:40:15:474 kernel/(29413:29414): entró a newAready
+[INFO] 17:40:15:480 kernel/(29413:29415): se agrego a la cola de exec
+[INFO] 17:44:06:089 kernel/(30533:30534): entró a newAready
+[INFO] 17:44:06:089 kernel/(30533:30534): pasa multiprogramación
+[INFO] 17:44:12:072 kernel/(30533:30533): se conecto cliente
+[INFO] 17:44:12:072 kernel/(30533:30533): se liberó el paquete
+[INFO] 17:44:12:072 kernel/(30533:30533): se agrega proceso id:0 a cola new
+[INFO] 17:44:12:072 kernel/(30533:30534): pasó sem_new
+[INFO] 17:44:12:072 kernel/(30533:30534): se eliminó el proceso 0 de la cola de new
+[INFO] 17:44:12:072 kernel/(30533:30534): se agregó el proceso 0 a la lista de ready
+[INFO] 17:44:12:072 kernel/(30533:30534): entró a newAready
+[INFO] 17:45:32:854 kernel/(31494:31495): entró a newAready
+[INFO] 17:45:32:854 kernel/(31494:31495): pasa multiprogramación
+[INFO] 17:45:38:404 kernel/(31494:31494): se conecto cliente
+[INFO] 17:45:38:404 kernel/(31494:31494): se liberó el paquete
+[INFO] 17:45:38:404 kernel/(31494:31494): se agrega proceso id:0 a cola new
+[INFO] 17:45:38:405 kernel/(31494:31495): pasó sem_new
+[INFO] 17:45:38:405 kernel/(31494:31495): se eliminó el proceso 0 de la cola de new
+[INFO] 17:45:38:405 kernel/(31494:31495): se agregó el proceso 0 a la lista de ready
+[INFO] 17:45:38:405 kernel/(31494:31495): entró a newAready
+[INFO] 17:45:38:411 kernel/(31494:31496): finalizó el proceso con ID: 0
+[INFO] 17:47:13:759 kernel/(32482:32483): entró a newAready
+[INFO] 17:47:13:794 kernel/(32482:32483): pasa multiprogramación
+[INFO] 17:47:18:576 kernel/(32482:32482): se conecto cliente
+[INFO] 17:47:18:579 kernel/(32482:32482): se liberó el paquete
+[INFO] 17:47:18:582 kernel/(32482:32482): se agrega proceso id:0 a cola new
+[INFO] 17:47:18:584 kernel/(32482:32483): pasó sem_new
+[INFO] 17:47:18:585 kernel/(32482:32483): se eliminó el proceso 0 de la cola de new
+[INFO] 17:47:18:586 kernel/(32482:32483): se agregó el proceso 0 a la lista de ready
+[INFO] 17:47:18:586 kernel/(32482:32483): entró a newAready
+[INFO] 17:47:18:600 kernel/(32482:32484): finalizó el proceso con ID: 0
+[INFO] 17:47:18:603 kernel/(32482:32484): pcb ejecutó y devolvió el pcb
+[INFO] 17:47:18:603 kernel/(32482:32483): pasa multiprogramación
+[INFO] 17:47:47:901 kernel/(32482:32482): se conecto cliente
+[INFO] 17:47:47:902 kernel/(32482:32482): se liberó el paquete
+[INFO] 17:47:47:902 kernel/(32482:32482): se agrega proceso id:1 a cola new
+[INFO] 17:47:47:902 kernel/(32482:32483): pasó sem_new
+[INFO] 17:47:47:903 kernel/(32482:32483): se eliminó el proceso 1 de la cola de new
+[INFO] 17:47:47:903 kernel/(32482:32483): se agregó el proceso 1 a la lista de ready
+[INFO] 17:47:47:903 kernel/(32482:32483): entró a newAready
+[INFO] 17:47:47:910 kernel/(32482:32484): finalizó el proceso con ID: 1
+[INFO] 17:47:47:910 kernel/(32482:32484): pcb ejecutó y devolvió el pcb
+[INFO] 17:47:47:911 kernel/(32482:32483): pasa multiprogramación
+[INFO] 17:50:12:751 kernel/(32482:32482): se conecto cliente
+[INFO] 17:50:12:752 kernel/(32482:32482): se liberó el paquete
+[INFO] 17:50:12:752 kernel/(32482:32482): se agrega proceso id:2 a cola new
+[INFO] 17:50:12:752 kernel/(32482:32483): pasó sem_new
+[INFO] 17:50:12:753 kernel/(32482:32483): se eliminó el proceso 2 de la cola de new
+[INFO] 17:50:12:753 kernel/(32482:32483): se agregó el proceso 2 a la lista de ready
+[INFO] 17:50:12:753 kernel/(32482:32483): entró a newAready
+[INFO] 17:50:12:760 kernel/(32482:32484): finalizó el proceso con ID: 2
+[INFO] 17:50:12:761 kernel/(32482:32484): pcb ejecutó y devolvió el pcb
+[INFO] 17:50:12:761 kernel/(32482:32483): pasa multiprogramación
+[INFO] 19:01:36:975 kernel/(2081:2082): entró a newAready
+[INFO] 19:01:36:976 kernel/(2081:2082): pasa multiprogramación
+[INFO] 19:01:46:210 kernel/(2081:2081): se conecto cliente
+[INFO] 19:01:46:210 kernel/(2081:2081): se liberó el paquete
+[INFO] 19:01:46:210 kernel/(2081:2081): se agrega proceso id:0 a cola new
+[INFO] 19:01:46:210 kernel/(2081:2082): pasó sem_new
+[INFO] 19:01:46:210 kernel/(2081:2082): se eliminó el proceso 0 de la cola de new
+[INFO] 19:01:46:210 kernel/(2081:2082): se agregó el proceso 0 a la lista de ready
+[INFO] 19:01:46:210 kernel/(2081:2082): entró a newAready
+[INFO] 19:01:46:217 kernel/(2081:2083): finalizó el proceso con ID: 0
+[INFO] 19:04:38:988 kernel/(3416:3417): entró a newAready
+[INFO] 19:04:38:988 kernel/(3416:3417): pasa multiprogramación
+[INFO] 19:04:46:984 kernel/(3416:3416): se conecto cliente
+[INFO] 19:04:46:984 kernel/(3416:3416): se liberó el paquete
+[INFO] 19:04:46:984 kernel/(3416:3416): se agrega proceso id:0 a cola new
+[INFO] 19:04:46:984 kernel/(3416:3417): pasó sem_new
+[INFO] 19:04:46:984 kernel/(3416:3417): se eliminó el proceso 0 de la cola de new
+[INFO] 19:04:46:984 kernel/(3416:3417): se agregó el proceso 0 a la lista de ready
+[INFO] 19:04:46:984 kernel/(3416:3417): entró a newAready
+[INFO] 19:04:46:990 kernel/(3416:3418): finalizó el proceso con ID: 0
+[INFO] 19:05:48:747 kernel/(4426:4427): entró a newAready
+[INFO] 19:05:48:747 kernel/(4426:4427): pasa multiprogramación
+[INFO] 19:05:52:827 kernel/(4426:4426): se conecto cliente
+[INFO] 19:05:52:827 kernel/(4426:4426): se liberó el paquete
+[INFO] 19:05:52:827 kernel/(4426:4426): se agrega proceso id:0 a cola new
+[INFO] 19:05:52:827 kernel/(4426:4427): pasó sem_new
+[INFO] 19:05:52:827 kernel/(4426:4427): se eliminó el proceso 0 de la cola de new
+[INFO] 19:05:52:827 kernel/(4426:4427): se agregó el proceso 0 a la lista de ready
+[INFO] 19:05:52:827 kernel/(4426:4427): entró a newAready
+[INFO] 19:06:55:450 kernel/(5329:5330): entró a newAready
+[INFO] 19:06:55:450 kernel/(5329:5330): pasa multiprogramación
+[INFO] 19:07:05:441 kernel/(5329:5329): se conecto cliente
+[INFO] 19:07:05:441 kernel/(5329:5329): se liberó el paquete
+[INFO] 19:07:05:441 kernel/(5329:5329): se agrega proceso id:0 a cola new
+[INFO] 19:07:05:441 kernel/(5329:5330): pasó sem_new
+[INFO] 19:07:05:441 kernel/(5329:5330): se eliminó el proceso 0 de la cola de new
+[INFO] 19:07:05:441 kernel/(5329:5330): se agregó el proceso 0 a la lista de ready
+[INFO] 19:07:05:441 kernel/(5329:5330): entró a newAready
+[INFO] 19:11:05:001 kernel/(6433:6434): entró a newAready
+[INFO] 19:11:05:001 kernel/(6433:6434): pasa multiprogramación
+[INFO] 19:11:11:124 kernel/(6433:6433): se conecto cliente
+[INFO] 19:11:11:124 kernel/(6433:6433): se liberó el paquete
+[INFO] 19:12:36:162 kernel/(7455:7456): entró a newAready
+[INFO] 19:12:36:163 kernel/(7455:7456): pasa multiprogramación
+[INFO] 19:12:45:046 kernel/(7455:7455): se conecto cliente
+[INFO] 19:12:45:046 kernel/(7455:7455): se liberó el paquete
+[INFO] 19:12:45:046 kernel/(7455:7455): se agrega proceso id:0 a cola new
+[INFO] 19:12:45:046 kernel/(7455:7456): pasó sem_new
+[INFO] 19:12:45:046 kernel/(7455:7456): se eliminó el proceso 0 de la cola de new
+[INFO] 19:12:45:046 kernel/(7455:7456): se agregó el proceso 0 a la lista de ready
+[INFO] 19:12:45:046 kernel/(7455:7456): entró a newAready
+[INFO] 19:14:11:106 kernel/(8367:8368): entró a newAready
+[INFO] 19:14:11:106 kernel/(8367:8368): pasa multiprogramación
+[INFO] 19:14:17:198 kernel/(8367:8367): se conecto cliente
+[INFO] 19:14:17:198 kernel/(8367:8367): se liberó el paquete
+[INFO] 19:14:17:198 kernel/(8367:8367): se agrega proceso id:0 a cola new
+[INFO] 19:14:17:198 kernel/(8367:8368): pasó sem_new
+[INFO] 19:14:17:198 kernel/(8367:8368): se eliminó el proceso 0 de la cola de new
+[INFO] 19:14:17:198 kernel/(8367:8368): se agregó el proceso 0 a la lista de ready
+[INFO] 19:14:17:198 kernel/(8367:8368): entró a newAready
+[INFO] 19:15:23:035 kernel/(9223:9224): entró a newAready
+[INFO] 19:15:23:035 kernel/(9223:9224): pasa multiprogramación
+[INFO] 19:15:27:584 kernel/(9223:9223): se conecto cliente
+[INFO] 19:15:27:584 kernel/(9223:9223): se liberó el paquete
+[INFO] 19:15:27:584 kernel/(9223:9223): se agrega proceso id:0 a cola new
+[INFO] 19:15:27:584 kernel/(9223:9224): pasó sem_new
+[INFO] 19:15:27:584 kernel/(9223:9224): se eliminó el proceso 0 de la cola de new
+[INFO] 19:15:27:584 kernel/(9223:9224): se agregó el proceso 0 a la lista de ready
+[INFO] 19:15:27:584 kernel/(9223:9224): entró a newAready
+[INFO] 19:18:31:683 kernel/(10214:10215): entró a newAready
+[INFO] 19:18:31:683 kernel/(10214:10215): pasa multiprogramación
+[INFO] 19:18:37:021 kernel/(10214:10214): se conecto cliente
+[INFO] 19:18:37:021 kernel/(10214:10214): se liberó el paquete
+[INFO] 19:18:37:021 kernel/(10214:10214): se agrega proceso id:0 a cola new
+[INFO] 19:18:37:021 kernel/(10214:10215): pasó sem_new
+[INFO] 19:18:37:021 kernel/(10214:10215): se eliminó el proceso 0 de la cola de new
+[INFO] 19:18:37:021 kernel/(10214:10215): se agregó el proceso 0 a la lista de ready
+[INFO] 19:18:37:021 kernel/(10214:10215): entró a newAready
+[INFO] 19:18:49:850 kernel/(10214:10214): se conecto cliente
+[INFO] 19:18:49:850 kernel/(10214:10214): se liberó el paquete
+[INFO] 19:18:49:850 kernel/(10214:10214): se agrega proceso id:1 a cola new
+[INFO] 19:19:33:240 kernel/(10214:10214): se conecto cliente
+[INFO] 19:19:33:240 kernel/(10214:10214): se liberó el paquete
+[INFO] 19:19:33:240 kernel/(10214:10214): se agrega proceso id:2 a cola new
+[INFO] 19:21:17:631 kernel/(11455:11456): entró a newAready
+[INFO] 19:21:17:631 kernel/(11455:11456): pasa multiprogramación
+[INFO] 19:21:22:337 kernel/(11455:11455): se conecto cliente
+[INFO] 19:21:22:338 kernel/(11455:11455): se liberó el paquete
+[INFO] 19:21:22:338 kernel/(11455:11455): se agrega proceso id:0 a cola new
+[INFO] 19:21:22:338 kernel/(11455:11456): pasó sem_new
+[INFO] 19:21:22:338 kernel/(11455:11456): se eliminó el proceso 0 de la cola de new
+[INFO] 19:21:22:338 kernel/(11455:11456): se agregó el proceso 0 a la lista de ready
+[INFO] 19:21:22:338 kernel/(11455:11456): entró a newAready
+[INFO] 19:24:19:749 kernel/(12393:12394): entró a newAready
+[INFO] 19:24:19:749 kernel/(12393:12394): pasa multiprogramación
+[INFO] 19:24:23:902 kernel/(12393:12393): se conecto cliente
+[INFO] 19:24:23:902 kernel/(12393:12393): se liberó el paquete
+[INFO] 19:24:23:902 kernel/(12393:12393): se agrega proceso id:0 a cola new
+[INFO] 19:24:23:902 kernel/(12393:12394): pasó sem_new
+[INFO] 19:24:23:902 kernel/(12393:12394): se eliminó el proceso 0 de la cola de new
+[INFO] 19:24:23:902 kernel/(12393:12394): se agregó el proceso 0 a la lista de ready
+[INFO] 19:24:23:903 kernel/(12393:12394): entró a newAready
+[INFO] 19:26:00:702 kernel/(13654:13655): entró a newAready
+[INFO] 19:26:00:735 kernel/(13654:13655): pasa multiprogramación
+[INFO] 19:26:10:237 kernel/(13654:13654): se conecto cliente
+[INFO] 19:26:10:240 kernel/(13654:13654): se liberó el paquete
+[INFO] 19:26:10:243 kernel/(13654:13654): se agrega proceso id:0 a cola new
+[INFO] 19:26:10:244 kernel/(13654:13655): pasó sem_new
+[INFO] 19:26:10:246 kernel/(13654:13655): se eliminó el proceso 0 de la cola de new
+[INFO] 19:26:10:247 kernel/(13654:13655): se agregó el proceso 0 a la lista de ready
+[INFO] 19:26:10:247 kernel/(13654:13655): entró a newAready
+[INFO] 19:26:50:686 kernel/(14550:14551): entró a newAready
+[INFO] 19:26:50:701 kernel/(14550:14551): pasa multiprogramación
+[INFO] 19:27:50:328 kernel/(14911:14912): entró a newAready
+[INFO] 19:27:50:364 kernel/(14911:14912): pasa multiprogramación
+[INFO] 19:27:55:754 kernel/(14911:14911): se conecto cliente
+[INFO] 19:27:55:757 kernel/(14911:14911): se liberó el paquete
+[INFO] 19:27:55:760 kernel/(14911:14911): se agrega proceso id:0 a cola new
+[INFO] 19:27:55:761 kernel/(14911:14912): pasó sem_new
+[INFO] 19:27:55:763 kernel/(14911:14912): se eliminó el proceso 0 de la cola de new
+[INFO] 19:27:55:763 kernel/(14911:14912): se agregó el proceso 0 a la lista de ready
+[INFO] 19:27:55:764 kernel/(14911:14912): entró a newAready
+[INFO] 19:27:55:778 kernel/(14911:14913): finalizó el proceso con ID: 0
+[INFO] 19:27:55:780 kernel/(14911:14913): pcb ejecutó y devolvió el pcb
+[INFO] 19:27:55:781 kernel/(14911:14912): pasa multiprogramación
+[INFO] 19:28:25:665 kernel/(14911:14911): se conecto cliente
+[INFO] 19:28:25:665 kernel/(14911:14911): se liberó el paquete
+[INFO] 19:28:25:665 kernel/(14911:14911): se agrega proceso id:1 a cola new
+[INFO] 19:28:25:666 kernel/(14911:14912): pasó sem_new
+[INFO] 19:28:25:666 kernel/(14911:14912): se eliminó el proceso 1 de la cola de new
+[INFO] 19:28:25:666 kernel/(14911:14912): se agregó el proceso 1 a la lista de ready
+[INFO] 19:28:25:667 kernel/(14911:14912): entró a newAready
+[INFO] 19:28:25:673 kernel/(14911:14913): finalizó el proceso con ID: 1
+[INFO] 19:28:25:673 kernel/(14911:14913): pcb ejecutó y devolvió el pcb
+[INFO] 19:28:25:674 kernel/(14911:14912): pasa multiprogramación
+[INFO] 19:40:24:379 kernel/(16531:16532): entró a newAready
+[INFO] 19:40:24:412 kernel/(16531:16532): pasa multiprogramación
+[INFO] 19:40:28:185 kernel/(16531:16531): se conecto cliente
+[INFO] 19:40:28:188 kernel/(16531:16531): se liberó el paquete
+[INFO] 19:40:28:191 kernel/(16531:16531): se agrega proceso id:0 a cola new
+[INFO] 19:40:28:192 kernel/(16531:16532): pasó sem_new
+[INFO] 19:40:28:194 kernel/(16531:16532): se eliminó el proceso 0 de la cola de new
+[INFO] 19:40:28:194 kernel/(16531:16532): se agregó el proceso 0 a la lista de ready
+[INFO] 19:40:28:195 kernel/(16531:16532): entró a newAready
+[INFO] 19:40:28:209 kernel/(16531:16533): finalizó el proceso con ID: 0
+[INFO] 19:40:28:211 kernel/(16531:16533): pcb ejecutó y devolvió el pcb
+[INFO] 19:40:28:211 kernel/(16531:16532): pasa multiprogramación
+[INFO] 19:42:53:147 kernel/(17714:17720): entró a newAready
+[INFO] 19:42:53:179 kernel/(17714:17720): pasa multiprogramación
+[INFO] 19:42:55:340 kernel/(17714:17714): se conecto cliente
+[INFO] 19:42:55:343 kernel/(17714:17714): se liberó el paquete
+[INFO] 19:42:55:346 kernel/(17714:17714): se agrega proceso id:0 a cola new
+[INFO] 19:42:55:347 kernel/(17714:17720): pasó sem_new
+[INFO] 19:42:55:349 kernel/(17714:17720): se eliminó el proceso 0 de la cola de new
+[INFO] 19:42:55:350 kernel/(17714:17720): se agregó el proceso 0 a la lista de ready
+[INFO] 19:42:55:350 kernel/(17714:17720): entró a newAready
+[INFO] 19:42:55:366 kernel/(17714:17721): finalizó el proceso con ID: 0
+[INFO] 19:42:55:369 kernel/(17714:17721): pcb ejecutó y devolvió el pcb
+[INFO] 19:42:55:369 kernel/(17714:17720): pasa multiprogramación
+[INFO] 19:44:29:379 kernel/(17933:17934): entró a newAready
+[INFO] 19:44:29:395 kernel/(17933:17934): pasa multiprogramación
+[INFO] 19:44:34:508 kernel/(17933:17933): se conecto cliente
+[INFO] 19:44:34:510 kernel/(17933:17933): se liberó el paquete
+[INFO] 19:44:34:512 kernel/(17933:17933): se agrega proceso id:0 a cola new
+[INFO] 19:44:34:513 kernel/(17933:17934): pasó sem_new
+[INFO] 19:44:34:514 kernel/(17933:17934): se eliminó el proceso 0 de la cola de new
+[INFO] 19:44:34:515 kernel/(17933:17934): se agregó el proceso 0 a la lista de ready
+[INFO] 19:44:34:515 kernel/(17933:17934): entró a newAready
+[INFO] 19:44:34:526 kernel/(17933:17935): finalizó el proceso con ID: 0
+[INFO] 19:50:37:608 kernel/(20147:20149): entró a newAready
+[INFO] 19:50:37:624 kernel/(20147:20149): pasa multiprogramación
+[INFO] 19:50:53:406 kernel/(20147:20147): se conecto cliente
+[INFO] 19:50:53:407 kernel/(20147:20147): se liberó el paquete
+[INFO] 19:50:53:410 kernel/(20147:20147): se agrega proceso id:0 a cola new
+[INFO] 19:50:53:411 kernel/(20147:20149): pasó sem_new
+[INFO] 19:50:53:412 kernel/(20147:20149): se eliminó el proceso 0 de la cola de new
+[INFO] 19:50:53:412 kernel/(20147:20149): se agregó el proceso 0 a la lista de ready
+[INFO] 19:50:53:413 kernel/(20147:20149): entró a newAready
+[INFO] 19:50:53:423 kernel/(20147:20150): muere aca
+[INFO] 19:50:53:424 kernel/(20147:20150): MENSAJE: finalizó el proceso con ID: 0
+[INFO] 19:50:53:424 kernel/(20147:20150): muere aca2
+[INFO] 20:20:54:950 kernel/(21830:21831): entró a newAready
+[INFO] 20:20:54:950 kernel/(21830:21831): pasa multiprogramación
+[INFO] 20:21:05:781 kernel/(21830:21830): se conecto cliente
+[INFO] 20:21:05:781 kernel/(21830:21830): se liberó el paquete
+[INFO] 20:21:05:781 kernel/(21830:21830): se agrega proceso id:0 a cola new
+[INFO] 20:21:05:781 kernel/(21830:21831): pasó sem_new
+[INFO] 20:21:05:781 kernel/(21830:21831): se eliminó el proceso 0 de la cola de new
+[INFO] 20:21:05:781 kernel/(21830:21831): se agregó el proceso 0 a la lista de ready
+[INFO] 20:21:05:781 kernel/(21830:21831): entró a newAready
+[INFO] 20:21:05:788 kernel/(21830:21832): chau
+[INFO] 20:21:05:788 kernel/(21830:21832): pcb ejecutó y devolvió el pcb
+[INFO] 20:22:35:708 kernel/(21830:21830): se conecto cliente
+[INFO] 20:22:35:708 kernel/(21830:21830): se liberó el paquete
+[INFO] 20:22:35:708 kernel/(21830:21830): se agrega proceso id:1 a cola new
+[INFO] 20:23:22:505 kernel/(22940:22941): entró a newAready
+[INFO] 20:23:22:505 kernel/(22940:22941): pasa multiprogramación
+[INFO] 20:25:17:796 kernel/(24146:24147): entró a newAready
+[INFO] 20:25:17:796 kernel/(24146:24147): pasa multiprogramación
+[INFO] 20:25:22:864 kernel/(24146:24146): se conecto cliente
+[INFO] 20:25:22:864 kernel/(24146:24146): se liberó el paquete
+[INFO] 20:25:22:864 kernel/(24146:24146): se agrega proceso id:0 a cola new
+[INFO] 20:25:22:864 kernel/(24146:24147): pasó sem_new
+[INFO] 20:25:22:864 kernel/(24146:24147): se eliminó el proceso 0 de la cola de new
+[INFO] 20:25:22:864 kernel/(24146:24147): se agregó el proceso 0 a la lista de ready
+[INFO] 20:25:22:865 kernel/(24146:24147): entró a newAready
+[INFO] 20:25:22:871 kernel/(24146:24148): pcb ejecutó y devolvió el pcb
+[INFO] 20:26:18:714 kernel/(25205:25206): entró a newAready
+[INFO] 20:26:18:715 kernel/(25205:25206): pasa multiprogramación
+[INFO] 20:26:58:599 kernel/(26081:26082): entró a newAready
+[INFO] 20:26:58:599 kernel/(26081:26082): pasa multiprogramación
+[INFO] 20:27:02:312 kernel/(26081:26081): se conecto cliente
+[INFO] 20:27:02:313 kernel/(26081:26081): se liberó el paquete
+[INFO] 20:27:02:313 kernel/(26081:26081): se agrega proceso id:0 a cola new
+[INFO] 20:27:02:313 kernel/(26081:26082): pasó sem_new
+[INFO] 20:27:02:313 kernel/(26081:26082): se eliminó el proceso 0 de la cola de new
+[INFO] 20:27:02:313 kernel/(26081:26082): se agregó el proceso 0 a la lista de ready
+[INFO] 20:27:02:313 kernel/(26081:26082): entró a newAready
+[INFO] 20:28:47:955 kernel/(26899:26900): entró a newAready
+[INFO] 20:28:47:955 kernel/(26899:26900): pasa multiprogramación
+[INFO] 20:28:51:534 kernel/(26899:26899): se conecto cliente
+[INFO] 20:28:51:534 kernel/(26899:26899): se liberó el paquete
+[INFO] 20:28:51:535 kernel/(26899:26899): se agrega proceso id:0 a cola new
+[INFO] 20:28:51:535 kernel/(26899:26900): pasó sem_new
+[INFO] 20:28:51:535 kernel/(26899:26900): se eliminó el proceso 0 de la cola de new
+[INFO] 20:28:51:535 kernel/(26899:26900): se agregó el proceso 0 a la lista de ready
+[INFO] 20:28:51:535 kernel/(26899:26900): entró a newAready
+[INFO] 20:28:51:541 kernel/(26899:26901): MENSAJE: finalizó el proceso con ID: 0
+[INFO] 20:28:51:541 kernel/(26899:26901): pcb ejecutó y devolvió el pcb
+[INFO] 20:29:06:619 kernel/(26899:26899): se conecto cliente
+[INFO] 20:29:06:619 kernel/(26899:26899): se liberó el paquete
+[INFO] 20:29:06:620 kernel/(26899:26899): se agrega proceso id:1 a cola new
+[INFO] 20:30:32:075 kernel/(27972:27973): entró a newAready
+[INFO] 20:30:32:075 kernel/(27972:27973): pasa multiprogramación
+[INFO] 20:30:35:802 kernel/(27972:27972): se conecto cliente
+[INFO] 20:30:35:802 kernel/(27972:27972): se liberó el paquete
+[INFO] 20:30:35:802 kernel/(27972:27972): se agrega proceso id:0 a cola new
+[INFO] 20:30:35:803 kernel/(27972:27973): pasó sem_new
+[INFO] 20:30:35:803 kernel/(27972:27973): se eliminó el proceso 0 de la cola de new
+[INFO] 20:30:35:803 kernel/(27972:27973): se agregó el proceso 0 a la lista de ready
+[INFO] 20:30:35:803 kernel/(27972:27973): entró a newAready
+[INFO] 20:30:35:809 kernel/(27972:27974): MENSAJE: finalizó el proceso con ID: 0
+[INFO] 20:38:59:247 kernel/(29831:29832): entró a newAready
+[INFO] 20:38:59:247 kernel/(29831:29832): pasa multiprogramación
+[INFO] 20:39:42:788 kernel/(30698:30699): entró a newAready
+[INFO] 20:39:42:788 kernel/(30698:30699): pasa multiprogramación
+[INFO] 20:39:49:901 kernel/(30698:30698): se conecto cliente
+[INFO] 20:39:49:901 kernel/(30698:30698): se liberó el paquete
+[INFO] 20:39:49:901 kernel/(30698:30698): se agrega proceso id:0 a cola new
+[INFO] 20:39:49:902 kernel/(30698:30699): pasó sem_new
+[INFO] 20:39:49:902 kernel/(30698:30699): se eliminó el proceso 0 de la cola de new
+[INFO] 20:39:49:902 kernel/(30698:30699): se agregó el proceso 0 a la lista de ready
+[INFO] 20:39:49:902 kernel/(30698:30699): entró a newAready
+[INFO] 20:39:49:909 kernel/(30698:30700): MENSAJE: finalizó el proceso con ID: 0
+[INFO] 20:39:49:909 kernel/(30698:30700): pcb ejecutó y devolvió el pcb
+[INFO] 20:40:07:218 kernel/(30698:30698): se conecto cliente
+[INFO] 20:40:07:218 kernel/(30698:30698): se liberó el paquete
+[INFO] 20:40:07:219 kernel/(30698:30698): se agrega proceso id:1 a cola new
+[INFO] 20:40:21:946 kernel/(30698:30698): se conecto cliente
+[INFO] 20:40:21:946 kernel/(30698:30698): se liberó el paquete
+[INFO] 20:40:21:946 kernel/(30698:30698): se agrega proceso id:2 a cola new
+[INFO] 20:41:34:018 kernel/(32043:32044): entró a newAready
+[INFO] 20:41:34:018 kernel/(32043:32044): pasa multiprogramación
+[INFO] 20:41:43:638 kernel/(32043:32043): se conecto cliente
+[INFO] 20:41:43:638 kernel/(32043:32043): se liberó el paquete
+[INFO] 20:41:43:638 kernel/(32043:32043): se agrega proceso id:0 a cola new
+[INFO] 20:41:43:638 kernel/(32043:32044): pasó sem_new
+[INFO] 20:41:43:638 kernel/(32043:32044): se eliminó el proceso 0 de la cola de new
+[INFO] 20:41:43:638 kernel/(32043:32044): se agregó el proceso 0 a la lista de ready
+[INFO] 20:41:43:638 kernel/(32043:32044): entró a newAready
+[INFO] 20:41:43:638 kernel/(32043:32044): entró a newAready
+[INFO] 20:42:17:805 kernel/(418:419): entró a newAready
+[INFO] 20:42:17:805 kernel/(418:419): pasa multiprogramación
+[INFO] 20:44:22:021 kernel/(1569:1570): entró a newAready
+[INFO] 20:44:22:021 kernel/(1569:1570): pasa multiprogramación
+[INFO] 20:44:27:401 kernel/(1569:1569): se conecto cliente
+[INFO] 20:44:27:401 kernel/(1569:1569): se liberó el paquete
+[INFO] 20:44:27:401 kernel/(1569:1569): se agrega proceso id:0 a cola new
+[INFO] 20:44:27:401 kernel/(1569:1570): pasó sem_new
+[INFO] 20:44:27:401 kernel/(1569:1570): se eliminó el proceso 0 de la cola de new
+[INFO] 20:44:27:401 kernel/(1569:1570): se agregó el proceso 0 a la lista de ready
+[INFO] 20:44:27:401 kernel/(1569:1570): entró a newAready
+[INFO] 20:44:27:408 kernel/(1569:1571): MENSAJE: finalizó el proceso con ID: 0
+[INFO] 20:44:27:408 kernel/(1569:1571): MENSAJE2: finalizó el proceso con ID: 0
+[INFO] 20:44:27:408 kernel/(1569:1571): pcb ejecutó y devolvió el pcb
+[INFO] 20:59:36:009 kernel/(4369:4370): entró a newAready
+[INFO] 20:59:36:009 kernel/(4369:4370): pasa multiprogramación
+[INFO] 20:59:39:622 kernel/(4369:4369): se conecto cliente
+[INFO] 20:59:39:622 kernel/(4369:4369): se liberó el paquete
+[INFO] 20:59:39:622 kernel/(4369:4369): se agrega proceso id:0 a cola new
+[INFO] 20:59:39:622 kernel/(4369:4370): pasó sem_new
+[INFO] 20:59:39:622 kernel/(4369:4370): se eliminó el proceso 0 de la cola de new
+[INFO] 20:59:39:622 kernel/(4369:4370): se agregó el proceso 0 a la lista de ready
+[INFO] 20:59:39:622 kernel/(4369:4370): entró a newAready
+[INFO] 20:59:39:629 kernel/(4369:4371): pcb ejecutó y devolvió el pcb
+[INFO] 20:59:59:514 kernel/(4369:4369): se conecto cliente
+[INFO] 20:59:59:514 kernel/(4369:4369): se liberó el paquete
+[INFO] 20:59:59:514 kernel/(4369:4369): se agrega proceso id:1 a cola new
+[INFO] 21:00:09:097 kernel/(4369:4369): se conecto cliente
+[INFO] 21:00:09:097 kernel/(4369:4369): se liberó el paquete
+[INFO] 21:00:09:098 kernel/(4369:4369): se agrega proceso id:2 a cola new
+[INFO] 21:02:12:690 kernel/(5611:5612): entró a newAready
+[INFO] 21:02:12:690 kernel/(5611:5612): pasa multiprogramación
+[INFO] 21:02:17:467 kernel/(5611:5611): se conecto cliente
+[INFO] 21:02:17:467 kernel/(5611:5611): se liberó el paquete
+[INFO] 21:02:17:467 kernel/(5611:5611): se agrega proceso id:0 a cola new
+[INFO] 21:02:17:467 kernel/(5611:5612): pasó sem_new
+[INFO] 21:02:17:467 kernel/(5611:5612): se eliminó el proceso 0 de la cola de new
+[INFO] 21:02:17:467 kernel/(5611:5612): se agregó el proceso 0 a la lista de ready
+[INFO] 21:02:17:467 kernel/(5611:5612): entró a newAready
+[INFO] 21:02:17:474 kernel/(5611:5613): id proceso: 0
+[INFO] 21:02:17:474 kernel/(5611:5613): pcb ejecutó y devolvió el pcb
+[INFO] 21:02:25:345 kernel/(5611:5611): se conecto cliente
+[INFO] 21:02:25:345 kernel/(5611:5611): se liberó el paquete
+[INFO] 21:02:25:345 kernel/(5611:5611): se agrega proceso id:1 a cola new
+[INFO] 21:03:25:212 kernel/(5611:5611): se conecto cliente
+[INFO] 21:03:25:212 kernel/(5611:5611): se liberó el paquete
+[INFO] 21:03:25:212 kernel/(5611:5611): se agrega proceso id:2 a cola new

@@ -52,9 +52,7 @@ int main(int argc, char* argv[]) {
     sem_init(&sem_multiprogramacion, 0, GRADO_MULTIPROGRAMACION);
     sem_init(&sem_new, 0, 0);
     sem_init(&sem_ready, 0, 0);
-    sem_init(&sem_fin_proceso, 0, 0);
-    
-    //t_dictionary * proceso_sockets = dictionary_create();
+    sem_init(&sem_fin_proceso, 0, 0);   
 
     //int socket_cliente = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     int * socket = malloc(sizeof(int));

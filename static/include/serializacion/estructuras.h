@@ -25,6 +25,7 @@
 		REQ_ESCRIBIR_DIRECCION_LOGICA_CPU_MEMORIA,
 		RES_ESCRIBIR_DIRECCION_LOGICA_MEMORIA_CPU,
 		RES_FIN_PROCESO_KERNEL_CONSOLA,
+		REQ_FIN_PROCESO_KERNEL_MEMORIA,
 		ALGO
 	}t_cod_op;
 
@@ -113,5 +114,8 @@
 	
 	void *  serializarIO(void* stream, void* estructura);
 	t_mensaje *  deserializarIO(void* stream);
-	
+
+	void * serializarUINT32_T(void* stream, void* estructura);
+	uint32_t * deserializarUINT32_T(void* stream);
+
 #endif

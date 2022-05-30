@@ -31,8 +31,8 @@ int main(int argc, char* argv[]) {
 
 
     t_paquete * paqueteRespuesta = recibirPaquete(socket_cliente);
-    t_mensaje * mensaje = deserializarMensaje(paqueteRespuesta->buffer->stream);
-    log_info(logger, "respuesta kernel: %s", mensaje->texto);
+    uint32_t * mensaje = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
+    log_info(logger, "respuesta kernel: %d", *mensaje);
 
     close(socket_cliente);
     return 0;

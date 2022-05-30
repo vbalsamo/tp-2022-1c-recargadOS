@@ -43,6 +43,10 @@ void deserializarSegun(t_paquete* paquete, int socket){
             log_info(logger, "se escribio dato en direccion de memoria");
 			break;
         }
+        case REQ_FIN_PROCESO_KERNEL_MEMORIA:{
+            uint32_t * id = deserializarUINT32_T(paquete->buffer->stream);
+            log_info(logger, "se solicita borrar memora y swap del proceso: %d", *id);
+        }
 		default:{
             break;
         }

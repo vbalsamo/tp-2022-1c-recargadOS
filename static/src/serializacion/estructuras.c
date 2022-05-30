@@ -56,8 +56,7 @@ t_paquete* crearPaquete(t_cod_op cod_op)
 	return paquete;
 }
 
-
-t_paquete* armarPaqueteCon(void* estructura,t_cod_op cod_op){
+t_paquete* armarPaqueteCon(void* estructura,t_cod_op cod_op){ 
 
 	t_paquete* paquete = crearPaquete(cod_op);
 	paquete->buffer->size = tamanioEstructura(estructura,cod_op);
@@ -242,7 +241,7 @@ t_mensaje * deserializarIO(void* stream){
 }
 
 void * serializarTraduccionDirecciones(void* stream, void* estructura){
-	t_traduccion_direcciones* traduccion_direcciones = (t_traduccion_direcciones*) stream;
+	t_traduccion_direcciones* traduccion_direcciones = (t_traduccion_direcciones*) estructura;
     int offset = 0;
     memcpy(stream + offset, &(traduccion_direcciones->tamanio_pagina),sizeof(uint32_t));
 	offset = sizeof(uint32_t);
@@ -258,7 +257,16 @@ t_traduccion_direcciones * deserializarTraduccionDirecciones(void* stream){
 	memcpy(&(traduccion_direcciones->paginas_por_tabla), stream + offset,sizeof(uint32_t));
 	return traduccion_direcciones;
 }
-
+void * serializarUINT32_T(void* stream, void* estructura) {
+	uint32_t* number = (uint32_t*) estructura;
+    memcpy(stream, number,sizeof(uint32_t));
+	return stream;
+}
+uint32_t * deserializarUINT32_T(void* stream) {
+	uint32_t* number = malloc(sizeof(uint32_t*));
+    memcpy(number, stream, sizeof(uint32_t));
+	return number;
+}
 void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 
 	void* stream = malloc(tamanio);
@@ -304,7 +312,11 @@ void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 			return NULL;
 		}
 		case RES_FIN_PROCESO_KERNEL_CONSOLA:{
-			return serializarPCB(stream,estructura,0);
+			return serializarUINT32_T(stream,estructura);
+			break;
+		}
+		case REQ_FIN_PROCESO_KERNEL_MEMORIA:{
+			return serializarUINT32_T(stream,estructura);
 			break;
 		}
 		default:
@@ -366,11 +378,13 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 			break;
 		}
 		case RES_FIN_PROCESO_KERNEL_CONSOLA:{
-			t_mensaje * msg = (t_mensaje*) estructura;
-			return msg->longitud + sizeof(uint32_t);
+			return sizeof(uint32_t);
 			break;
 		}
-		
+		case REQ_FIN_PROCESO_KERNEL_MEMORIA:{
+			return sizeof(uint32_t);
+			break;
+		}
 		default:
 			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
 			exit(EXIT_FAILURE);

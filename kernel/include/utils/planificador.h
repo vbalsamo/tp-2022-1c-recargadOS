@@ -22,8 +22,6 @@
     sem_t sem_ready;
     sem_t sem_fin_proceso;
     
-    
-
     t_pcb * iniciarPcb(t_proceso * proceso);//void * inicializarPcb(t_proceso * proceso);
     void inicializarPlanificacion();
     void addEstadoExit(t_pcb * pcb);
@@ -37,5 +35,5 @@
     void readyAexec();
     void ingresarANew(t_pcb * pcb);
     t_pcb * algoritmoPlanificacion();
-
+    void comunicacionMemoria(t_pcb *);
 #endif

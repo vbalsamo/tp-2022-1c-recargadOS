@@ -41,9 +41,11 @@ void newAready(){
         log_info(logger, "pasa multiprogramación");
         sem_wait(&sem_new);
         log_info(logger, "pasó sem_new");
+
         pthread_mutex_lock(&mutex_estado_new);
         t_pcb * pcb = (t_pcb *) queue_pop(estado_new); //tomo y elimino el primero de la queue_pop
         pthread_mutex_unlock(&mutex_estado_new);
+
         log_info(logger, "se eliminó el proceso %d de la cola de new", pcb->id);
         
         addEstadoReady(pcb);
@@ -68,40 +70,44 @@ t_pcb * obtenerSiguientePCB(){
 }
 */
 void execAexit(t_pcb * pcb){
-    
     bool filtro(void* consola){
         return ((t_consola*) consola)->id == pcb->id;
-    }
+    };
     t_consola * consolaAnotificar;
+    
+    comunicacionMemoria(pcb);
 
     pthread_mutex_lock(&mutex_consolas_conectadas);
     consolaAnotificar = list_remove_by_condition(consolas_conectadas, filtro);
     pthread_mutex_unlock(&mutex_consolas_conectadas);
     
-    t_mensaje * mensaje = malloc(sizeof(t_mensaje));
-    mensaje->texto=string_new();
-    string_append_with_format(&mensaje->texto,"finalizó el proceso con ID: %d", pcb->id);
-    mensaje->longitud=strlen(mensaje->texto)+1;
-    log_info(logger, "%s", mensaje->texto);
+    t_paquete * paqueteAconsola = armarPaqueteCon(&(pcb->id), RES_FIN_PROCESO_KERNEL_CONSOLA);
+    enviarPaquete(paqueteAconsola, *consolaAnotificar->socket); 
+    eliminarPaquete(paqueteAconsola);
 
-    int* socket_finalizado = consolaAnotificar->socket;
-    t_paquete * paquete = armarPaqueteCon(mensaje, RES_FIN_PROCESO_KERNEL_CONSOLA);
-    enviarPaquete(paquete, *socket_finalizado); 
-    close(*socket_finalizado);
-    free(socket_finalizado);
-    free(mensaje->texto);
-    free(mensaje);
+    close(*consolaAnotificar->socket);
+    free(consolaAnotificar->socket);
     free(consolaAnotificar);
     sem_post(&sem_multiprogramacion);
 }
 
+void comunicacionMemoria(t_pcb * pcb) {
+    int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
+    t_paquete * paqueteAmemoria = armarPaqueteCon(&(pcb->id), REQ_FIN_PROCESO_KERNEL_MEMORIA);
+    enviarPaquete(paqueteAmemoria, socketMemoria);
+    //CONSULTAR: Esperar confirmacion de Memoria?
+}
 t_pcb * algoritmoPlanificacion(){
     if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"FIFO")){
+        log_info(logger, "se planifica fifo");
         t_pcb * pcb = planificacionFIFO();
+        log_info(logger, "se obtiene pcb->id:%d",pcb->id);
         return pcb;
     }
     else if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"SRT")){
+        log_info(logger, "se planifica srt");
         t_pcb * pcb = planificacionSRT();
+        log_info(logger, "se obtiene pcb->id:%d",pcb->id);
         return pcb;
     }
     else{
@@ -118,9 +124,11 @@ void inicializarPlanificacion(){
     pthread_t hilo_newAready;
     pthread_create(&hilo_newAready, NULL, (void*) newAready, NULL);
     pthread_detach(hilo_newAready);
+
     pthread_t hilo_readyAexec;
     pthread_create(&hilo_readyAexec, NULL, (void*) readyAexec, NULL);
     pthread_detach(hilo_readyAexec);
+
 }
 
 t_pcb * planificacionFIFO(){
@@ -157,7 +165,7 @@ void comunicacionCPU(t_pcb * pcb){
         }
         case PCB_EJECUTADO_EXIT_CPU_KERNEL:{
             t_pcb * pcb = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
-            
+
             execAexit(pcb);
             
             break;
