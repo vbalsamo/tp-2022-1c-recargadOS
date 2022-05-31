@@ -205,9 +205,9 @@ void inicializarPlanificacion(){
     pthread_create(&hilo_readyAexec, NULL, (void*) readyAexec, NULL);
     pthread_detach(hilo_readyAexec);
 
-    pthread_t hilo_block;
-    pthread_create(&hilo_block, NULL, (void*) hilo_block, NULL);
-    pthread_detach(hilo_block);
+    pthread_t hiloblock;
+    pthread_create(&hiloblock, NULL, (void*) hilo_block, NULL);
+    pthread_detach(hiloblock);
     
 }
 
@@ -255,7 +255,7 @@ void comunicacionCPU(t_pcb * pcb){
         case PCB_EJECUTADO_IO_CPU_KERNEL:{
             
             t_IO * io = deserializarIO(paqueteRespuesta->buffer->stream);
-            io->pcb->estimacionRafaga = ALFA*io->pcb->lengthUltimaRafaga + (1-ALFA)*io->pcb->estimacionRafaga;
+            //io->pcb->estimacionRafaga = ALFA*(io->pcb->lengthUltimaRafaga) + (1-ALFA)*(io->pcb->estimacionRafaga);
             addEstadoBlocked(io);
             sem_post(&sem_block);
             

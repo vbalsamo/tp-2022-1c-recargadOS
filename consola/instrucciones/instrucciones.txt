@@ -1,2 +1,3 @@
 NO_OP 20
+I/O 3000
 EXIT

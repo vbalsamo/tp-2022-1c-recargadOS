@@ -38,7 +38,9 @@
 			"inicializacion.h": "c",
 			"instruccion.h": "c",
 			"log.h": "c",
-			"config.h": "c"
+			"config.h": "c",
+			"unistd.h": "c",
+			"stdlib.h": "c"
 		}
     }
 }

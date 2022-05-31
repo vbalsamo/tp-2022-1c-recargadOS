@@ -239,7 +239,20 @@ t_IO * deserializarIO(void* stream){
 	int offset = 0;
 	memcpy(&(IO->tiempoBloqueo), stream + offset, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	IO->pcb = deserializarPCB(stream, offset);
+	IO->pcb = malloc(sizeof(t_pcb));
+	memcpy(&(IO->pcb->id),stream + offset,sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+	memcpy(&(IO->pcb->tamanioProceso),stream + offset,sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+	memcpy(&(IO->pcb->tablaDePaginas), stream + offset, sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+	memcpy(&(IO->pcb->estimacionRafaga), stream + offset, sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+	memcpy(&(IO->pcb->lengthUltimaRafaga), stream + offset, sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+	memcpy(&(IO->pcb->sizeInstrucciones), stream + offset, sizeof(uint32_t));
+	IO->pcb->instrucciones = malloc(IO->pcb->sizeInstrucciones*sizeof(t_instruccion));
+	
 	return IO;
 }
 
@@ -247,7 +260,7 @@ void * serializarTraduccionDirecciones(void* stream, void* estructura){
 	t_traduccion_direcciones* traduccion_direcciones = (t_traduccion_direcciones*) estructura;
     int offset = 0;
     memcpy(stream + offset, &(traduccion_direcciones->tamanio_pagina),sizeof(uint32_t));
-	offset = sizeof(uint32_t);
+	offset += sizeof(uint32_t);
     memcpy(stream + offset, &(traduccion_direcciones->paginas_por_tabla),sizeof(uint32_t));
 	return stream;
 }
@@ -256,7 +269,7 @@ t_traduccion_direcciones * deserializarTraduccionDirecciones(void* stream){
 	t_traduccion_direcciones* traduccion_direcciones = malloc(sizeof(t_traduccion_direcciones));
     int offset = 0;
     memcpy(&(traduccion_direcciones->tamanio_pagina), stream + offset,sizeof(uint32_t));
-	offset = sizeof(uint32_t);
+	offset += sizeof(uint32_t);
 	memcpy(&(traduccion_direcciones->paginas_por_tabla), stream + offset,sizeof(uint32_t));
 	return traduccion_direcciones;
 }
@@ -362,8 +375,8 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 			return sizeof(uint32_t)*6 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
 		}
 		case PCB_EJECUTADO_IO_CPU_KERNEL:{
-			t_pcb * pcb = (t_pcb *) estructura; 
-			return sizeof(uint32_t)*6 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
+			t_IO * io = (t_IO *) estructura; 
+			return sizeof(uint32_t) + sizeof(uint32_t)*6 + io->pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
 			break;
 		}
 		case PCB_EJECUTADO_EXIT_CPU_KERNEL:{
