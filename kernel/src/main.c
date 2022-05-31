@@ -45,14 +45,18 @@ int main(int argc, char* argv[]) {
     pthread_mutex_init(&mutex_pcb_ejecutando, (void *)NULL);
     pthread_mutex_init(&mutex_estado_exit, (void *)NULL);
     pthread_mutex_init(&mutex_estado_blocked, (void *)NULL);
-    pthread_mutex_init(&mutex_consolas_conectadas, (void *)NULL);
+    pthread_mutex_init(&mutex_estado_susp_ready, (void*)NULL);
+    pthread_mutex_init(&mutex_consolas_conectadas, (void*)NULL);
 
     consolas_conectadas = list_create();
 
     sem_init(&sem_multiprogramacion, 0, GRADO_MULTIPROGRAMACION);
-    sem_init(&sem_new, 0, 0);
+    sem_init(&sem_hay_pcb_en_new, 0, 0);
     sem_init(&sem_ready, 0, 0);
     sem_init(&sem_fin_proceso, 0, 0);   
+    sem_init(&sem_block, 0, 0);
+    
+    
 
     //int socket_cliente = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     int * socket = malloc(sizeof(int));

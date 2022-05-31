@@ -1,2 +1,2 @@
-NO_OP 5
+NO_OP 20
 EXIT

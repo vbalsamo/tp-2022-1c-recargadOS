@@ -1,6 +1,6 @@
 #include <utils/planificador.h>
 
-id_nuevo_proceso = 0;
+int id_nuevo_proceso = 0;
 
 /*
 t_proceso * crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones, t_instruccion * instrucciones){
@@ -31,18 +31,24 @@ void ingresarANew(t_pcb * pcb){
     queue_push(estado_new, (void*) pcb);
     pthread_mutex_unlock(&mutex_estado_new);
     log_info(logger, "se agrega proceso id:%d a cola new", pcb->id);
-    sem_post(&sem_new);
+    sem_post(&sem_hay_pcb_en_new);
 }
 
 void newAready(){
     while(1){
         log_info(logger, "entró a newAready");
+       
+        //tiene prioridad susp-ready->ready
+
+        
         //tener en cuenta la prioridad suspended
+        sem_wait(&sem_hay_pcb_en_new);
+        log_info(logger, "pasó sem_hay_pcb_en_new");
+
         sem_wait(&sem_multiprogramacion);
         log_info(logger, "pasa multiprogramación");
-        sem_wait(&sem_new);
-        log_info(logger, "pasó sem_new");
-
+        
+        
         pthread_mutex_lock(&mutex_estado_new);
         t_pcb * pcb = (t_pcb *) queue_pop(estado_new); //tomo y elimino el primero de la queue_pop
         pthread_mutex_unlock(&mutex_estado_new);
@@ -52,7 +58,7 @@ void newAready(){
         addEstadoReady(pcb);
         log_info(logger, "se agregó el proceso %d a la lista de ready", pcb->id);
         sem_post(&sem_ready);
-
+        
         
     }
 }
@@ -67,9 +73,11 @@ void readyAexec(){
         bool filtro(void* pcbAux){
         return ((t_pcb*) pcbAux)->id == pcb->id;
         };
-        
+        pthread_mutex_lock(&mutex_estado_ready);
         list_remove_by_condition(estado_ready, filtro);
+        pthread_mutex_unlock(&mutex_estado_ready);
         comunicacionCPU(pcb);
+        //hacer free al pcb
 
     }
 }
@@ -135,6 +143,30 @@ void execAexit(t_pcb * pcb){
     sem_post(&sem_multiprogramacion);
 }
 
+void hilo_block(){
+    while(1){
+        sem_wait(&sem_block);
+        pthread_mutex_lock(&mutex_estado_blocked);
+               t_IO * ultimoIO = queue_pop(estado_blocked);
+        pthread_mutex_unlock(&mutex_estado_blocked);        
+        
+        if(ultimoIO->tiempoBloqueo > TIEMPO_MAXIMO_BLOQUEADO){
+            usleep(TIEMPO_MAXIMO_BLOQUEADO);
+            // Hablar memoria, lo swapeamos
+            //addEstadoSuspBlocked(ultimoIO->pcb);
+            sem_post(&sem_multiprogramacion);
+            usleep(ultimoIO->tiempoBloqueo - TIEMPO_MAXIMO_BLOQUEADO);
+            addEstadoSuspReady(ultimoIO->pcb);
+        } else{
+            usleep(ultimoIO->tiempoBloqueo);
+            addEstadoReady(ultimoIO->pcb);
+            sem_post(&sem_ready);
+        }
+        free(ultimoIO);
+      }
+
+}
+
 void comunicacionMemoria(t_pcb * pcb) {
     int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
     t_paquete * paqueteAmemoria = armarPaqueteCon(&(pcb->id), REQ_FIN_PROCESO_KERNEL_MEMORIA);
@@ -173,6 +205,10 @@ void inicializarPlanificacion(){
     pthread_create(&hilo_readyAexec, NULL, (void*) readyAexec, NULL);
     pthread_detach(hilo_readyAexec);
 
+    pthread_t hilo_block;
+    pthread_create(&hilo_block, NULL, (void*) hilo_block, NULL);
+    pthread_detach(hilo_block);
+    
 }
 
 t_pcb * planificacionFIFO(){
@@ -209,7 +245,6 @@ t_pcb * planificacionSRT(){
 
 void comunicacionCPU(t_pcb * pcb){
     int socketDispatch = crear_conexion(IP_CPU, PUERTO_CPU_DISPATCH);
-    
     t_paquete * paquete = armarPaqueteCon(pcb, REQ_PCB_A_EJECUTAR_KERNEL_CPU);
     enviarPaquete(paquete, socketDispatch);
     eliminarPaquete(paquete);
@@ -219,10 +254,10 @@ void comunicacionCPU(t_pcb * pcb){
     switch (paqueteRespuesta->codigo_operacion){
         case PCB_EJECUTADO_IO_CPU_KERNEL:{
             
-            //DESCOMENTAR
-            // t_IO * io = deserializarIO(paqueteRespuesta->buffer->stream);
-            //io->pcb->estimacionRafaga = ALFA*io->pcb->lengthUltimaRafaga + (1-ALFA)*io->pcb->estimacionRafaga;
-            //addEstadoBlocked(io);
+            t_IO * io = deserializarIO(paqueteRespuesta->buffer->stream);
+            io->pcb->estimacionRafaga = ALFA*io->pcb->lengthUltimaRafaga + (1-ALFA)*io->pcb->estimacionRafaga;
+            addEstadoBlocked(io);
+            sem_post(&sem_block);
             
             //el hilo de bloqueados es el que se bloquea con usleep(io->tiempoBloqueo)
             break;
@@ -231,7 +266,7 @@ void comunicacionCPU(t_pcb * pcb){
             log_info(logger, "entró un pcb a exit");
             t_pcb * pcbActualizado = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
             execAexit(pcbActualizado);
-            
+          
             break;
         }
         case PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL:{
@@ -241,7 +276,8 @@ void comunicacionCPU(t_pcb * pcb){
             sem_post(&sem_ready);
             // pthread_mutex_lock(&mutex_pcb_ejecutando);
             // pcbEjecutando = pcbActualizado;
-            // pthread_mutex_unlock(&mutex_pcb_ejecutando);
+            // pthread_mutex_unlock(&mutex_pcb_ejecutando)            
+            //sem_post(&sem_no_suspended_ready);;
 
             break; 
         }   
@@ -263,6 +299,19 @@ void addEstadoReady(t_pcb * pcb){
     list_add(estado_ready, (void *) pcb);
     pthread_mutex_unlock(&mutex_estado_ready); 
 }
+
+void addEstadoBlocked(t_IO * io){
+    pthread_mutex_lock(&mutex_estado_blocked);
+    queue_push(estado_blocked, (void *) io);
+    pthread_mutex_unlock(&mutex_estado_blocked);
+}
+
+void addEstadoSuspReady(t_pcb * pcb){
+    pthread_mutex_lock(&mutex_estado_susp_ready);
+    list_add(estado_susp_ready, (void *) pcb);
+    pthread_mutex_unlock(&mutex_estado_susp_ready); 
+}/*
+
 // void addEstadoExec(t_pcb * pcb){
 //     pthread_mutex_lock(&mutex_estado_exec);
 //     list_add(estado_exec, (void *) pcb);
@@ -273,13 +322,7 @@ void addEstadoReady(t_pcb * pcb){
 //     list_add(estado_exit, (void *) pcb);
 //     pthread_mutex_unlock(&mutex_estado_exit); 
 // }
-void addEstadoBlocked(t_IO * io){
-    pthread_mutex_lock(&mutex_estado_blocked);
-    queue_push(estado_blocked, (void *) io->pcb);
-    pthread_mutex_unlock(&mutex_estado_blocked); 
-}
 
-/*
 void * inicializarPcb(t_proceso * proceso){
     t_pcb * nuevo_pcb = malloc(sizeof(t_pcb));
     nuevo_pcb = crearPcb(proceso);

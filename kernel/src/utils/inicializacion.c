@@ -11,11 +11,9 @@ void validarParametros(int argc, char* argv[]){
 void inicializarEstados(){
     estado_ready = list_create();
     estado_new = queue_create();
-    //estado_exec = list_create();
-    //estado_exit = list_create();
     estado_susp_ready = list_create();
     estado_blocked = queue_create();
-    estado_susp_bloq = queue_create();
+    estado_susp_blocked = list_create();
     
 }
 
@@ -33,6 +31,7 @@ void inicializarVariablesGlobales(){
     GRADO_MULTIPROGRAMACION = config_get_int_value(config, "GRADO_MULTIPROGRAMACION");
     ALGORITMO_PLANIFICACION = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
     ALFA = config_get_double_value(config, "ALFA");
+    TIEMPO_MAXIMO_BLOQUEADO = config_get_int_value(config, "TIEMPO_MAXIMO_BLOQUEADO");
 }
 
 //TO DO: 

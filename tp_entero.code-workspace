@@ -37,7 +37,8 @@
 			"variables_globales.h": "c",
 			"inicializacion.h": "c",
 			"instruccion.h": "c",
-			"log.h": "c"
+			"log.h": "c",
+			"config.h": "c"
 		}
     }
 }

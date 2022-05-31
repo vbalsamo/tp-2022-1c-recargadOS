@@ -234,14 +234,13 @@ void *  serializarIO(void* stream, void* estructura){
 	return stream;
 }
 
-t_mensaje * deserializarIO(void* stream){
-	t_mensaje* mensaje = malloc(sizeof(t_mensaje));
-    int offset = 0;
-	memcpy(&(mensaje->longitud), stream + offset, sizeof(uint32_t));
+t_IO * deserializarIO(void* stream){
+	t_IO* IO = malloc(sizeof(t_IO));
+	int offset = 0;
+	memcpy(&(IO->tiempoBloqueo), stream + offset, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	mensaje->texto = malloc(sizeof(char)*(mensaje->longitud));
-    memcpy(mensaje->texto, stream + offset, mensaje->longitud);
-	return mensaje;
+	IO->pcb = deserializarPCB(stream, offset);
+	return IO;
 }
 
 void * serializarTraduccionDirecciones(void* stream, void* estructura){

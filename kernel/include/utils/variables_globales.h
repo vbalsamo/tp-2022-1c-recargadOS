@@ -14,6 +14,8 @@
     int GRADO_MULTIPROGRAMACION;
     char * ALGORITMO_PLANIFICACION;
     double ALFA;
+    int TIEMPO_MAXIMO_BLOQUEADO;
+    
 
     typedef struct {
         int * socket;

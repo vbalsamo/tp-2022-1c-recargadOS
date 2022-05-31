@@ -30,16 +30,6 @@
 	}t_cod_op;
 
 	
-
-	t_queue * estado_new;
-	t_list * estado_ready;
-	t_list * estado_exec;
-	t_list * estado_exit;
-	t_list * estado_susp_ready;
-	t_queue * estado_blocked;
-	t_queue * estado_susp_bloq;
-	
-	
 	typedef struct{
         uint32_t size;
         void* stream;
@@ -114,7 +104,7 @@
 	t_pcb * deserializarPCB(void* stream, int offset);
 	
 	void *  serializarIO(void* stream, void* estructura);
-	t_mensaje *  deserializarIO(void* stream);
+	t_IO * deserializarIO(void* stream);
 
 	void * serializarUINT32_T(void* stream, void* estructura);
 	uint32_t * deserializarUINT32_T(void* stream);
