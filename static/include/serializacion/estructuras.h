@@ -86,7 +86,7 @@
     void eliminarPaquete(t_paquete* paquete);
 	
 	void * serializarInstrucciones(void* stream, void* estructura, int offset);
-	t_instruccion * deserializarInstrucciones(void * stream);
+	t_instruccion * deserializarInstrucciones(void * stream, int offset);
 
 	t_proceso * crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones,t_instruccion* instrucciones);
 	void * serializarProceso(void* stream, void* estructura);

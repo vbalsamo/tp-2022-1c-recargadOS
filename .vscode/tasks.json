@@ -5,7 +5,7 @@
     "tasks": [
         {
             "label": "make-all-modules",
-            "command": "make clean;make all",
+            "command": "cd consola;make clean;make all; cd ..;cd cpu;make clean;make all; cd ..;cd kernel;make clean;make all; cd ..;cd memoria;make clean;make all; cd ..;",
             "type": "shell",
             "group": {
                 "kind": "build",

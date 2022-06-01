@@ -38,6 +38,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
             t_IO * io = malloc(sizeof(t_IO));
             io->pcb = pcb;
             io->tiempoBloqueo = instruccion.parametro1;
+            log_info(logger, "tiempo bloqueo:%d", instruccion.parametro1);
             paquete = armarPaqueteCon(io, PCB_EJECUTADO_IO_CPU_KERNEL);
             log_info(logger, "Ejecuto IO, devuelve el pcb");
             break;

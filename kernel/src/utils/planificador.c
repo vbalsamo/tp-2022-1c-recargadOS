@@ -255,9 +255,20 @@ void comunicacionCPU(t_pcb * pcb){
         case PCB_EJECUTADO_IO_CPU_KERNEL:{
             
             t_IO * io = deserializarIO(paqueteRespuesta->buffer->stream);
-            //io->pcb->estimacionRafaga = ALFA*(io->pcb->lengthUltimaRafaga) + (1-ALFA)*(io->pcb->estimacionRafaga);
-            addEstadoBlocked(io);
-            sem_post(&sem_block);
+            io->pcb->estimacionRafaga = ALFA*(io->pcb->lengthUltimaRafaga) + (1-ALFA)*(io->pcb->estimacionRafaga);
+            
+            log_info(logger, "tiempo bloqueo:%d", io->tiempoBloqueo);
+            log_info(logger, "estimacionRafaga: %d, id: %d, lengthUltimaRafaga: %d,PC: %d, sizeInstrucciones: %d, tablaDePaginas: %d, tamanioProceso: %d", 
+                    io->pcb->estimacionRafaga, io->pcb->id, io->pcb->lengthUltimaRafaga, io->pcb->PC, io->pcb->sizeInstrucciones, io->pcb->tablaDePaginas, io->pcb->tamanioProceso);
+            addEstadoBlocked(io);  
+            sem_post(&sem_block);  
+            //t_pcb * pcbActualizado = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
+            //pcbActualizado->estimacionRafaga = ALFA*(io->pcb->lengthUltimaRafaga) + (1-ALFA)*(io->pcb->estimacionRafaga);
+            //log_info(logger, "estimacionRafaga: %d, id: %d, lengthUltimaRafaga: %d,PC: %d, sizeInstrucciones: %d, tablaDePaginas: %d, tamanioProceso: %d", 
+            //        pcbActualizado->estimacionRafaga, pcbActualizado->id, pcbActualizado->lengthUltimaRafaga, pcbActualizado->PC, pcbActualizado->sizeInstrucciones, pcbActualizado->tablaDePaginas, pcbActualizado->tamanioProceso);
+            //addEstadoBlocked(pcbActualizado);
+            
+            
             
             //el hilo de bloqueados es el que se bloquea con usleep(io->tiempoBloqueo)
             break;
