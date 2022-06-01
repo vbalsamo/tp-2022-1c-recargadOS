@@ -230,7 +230,7 @@ void *  serializarIO(void* stream, void* estructura){
 	int offset = 0;
 	memcpy(stream + offset, &(IO->tiempoBloqueo),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	serializarPCB(stream, estructura, offset);
+	serializarPCB(stream, IO->pcb, offset);
 	return stream;
 }
 
@@ -239,20 +239,7 @@ t_IO * deserializarIO(void* stream){
 	int offset = 0;
 	memcpy(&(IO->tiempoBloqueo), stream + offset, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	IO->pcb = malloc(sizeof(t_pcb));
-	memcpy(&(IO->pcb->id),stream + offset,sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(&(IO->pcb->tamanioProceso),stream + offset,sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(&(IO->pcb->tablaDePaginas), stream + offset, sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(&(IO->pcb->estimacionRafaga), stream + offset, sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(&(IO->pcb->lengthUltimaRafaga), stream + offset, sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(&(IO->pcb->sizeInstrucciones), stream + offset, sizeof(uint32_t));
-	IO->pcb->instrucciones = malloc(IO->pcb->sizeInstrucciones*sizeof(t_instruccion));
-	
+	IO->pcb = deserializarPCB(stream, offset);
 	return IO;
 }
 

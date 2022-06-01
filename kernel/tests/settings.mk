@@ -5,7 +5,7 @@ PROJ_PATH=..
 EXCLUDE=main.c
 
 # Libraries
-LIBS=cspecs static commons
+LIBS=cspecs static commons pthread
 
 # Custom libraries' paths
 SHARED_LIBPATHS=

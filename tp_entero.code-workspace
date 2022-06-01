@@ -40,7 +40,9 @@
 			"log.h": "c",
 			"config.h": "c",
 			"unistd.h": "c",
-			"stdlib.h": "c"
+			"stdlib.h": "c",
+			"stdbool.h": "c",
+			"cspec.h": "c"
 		}
     }
 }
