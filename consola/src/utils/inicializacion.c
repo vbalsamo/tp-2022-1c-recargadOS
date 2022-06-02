@@ -29,22 +29,27 @@ t_instruccion* obtenerInstrucciones(char* stringInstrucciones, uint32_t* sizeIns
     
     char** instruccionesSeparadas = string_split(stringInstrucciones,"\n");
     int sizeInstruccionesSeparadas = string_array_size(instruccionesSeparadas) - 1;
-    *sizeInstrucciones = sizeInstruccionesSeparadas;
-    t_instruccion* instrucciones = malloc(sizeof(t_instruccion)*(*sizeInstrucciones));
-    
-    int k = 0;
+    t_list * lista = list_create();
     for(int i=0; i<sizeInstruccionesSeparadas;i++){
-        instrucciones[k] = obtenerInstruccion(instruccionesSeparadas[i]);
-        if(instrucciones[k].identificador==NO_OP){
-            *sizeInstrucciones = *sizeInstrucciones + instrucciones[i].parametro1 - 1;
-            t_instruccion* nuevasInstrucciones = realloc(instrucciones,sizeof(t_instruccion)*(*sizeInstrucciones));
-            instrucciones =nuevasInstrucciones;
-            for(int j=i+1; j<i+instrucciones[i].parametro1;j++){
-                instrucciones[j] = obtenerInstruccion(instruccionesSeparadas[i]);
+        t_instruccion * instruccion = obtenerInstruccion(instruccionesSeparadas[i]);
+        list_add(lista, instruccion);
+        if(instruccion->identificador==NO_OP){
+            instruccion->parametro2 = 1;
+            for(int j = 1; j< instruccion->parametro1; j++){
+                t_instruccion * no_op =  obtenerInstruccion(instruccionesSeparadas[i]);
+                no_op->parametro2 = j + 1;
+                list_add(lista, no_op);
             }
-            k = i + instrucciones[i].parametro1 - 1;
         }
-        k++;
     }
+
+    *sizeInstrucciones = list_size(lista);
+    t_instruccion* instrucciones = malloc(sizeof(t_instruccion)*(*sizeInstrucciones));
+    for(int i=0; i<*sizeInstrucciones;i++){
+        t_instruccion * removed = list_remove(lista,0);
+        instrucciones[i] = *removed;
+        free(removed);
+    }
+    list_destroy(lista);
     return instrucciones;
 } 
