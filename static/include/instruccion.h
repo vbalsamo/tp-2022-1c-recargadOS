@@ -22,7 +22,7 @@
         uint32_t parametro2;
     }t_instruccion;
 
-    t_instruccion obtenerInstruccion(char* instruccionTexto);
+    t_instruccion * obtenerInstruccion(char* instruccionTexto);
 
     const char* instruccion_idAString(instruccion_id instruccion);
 

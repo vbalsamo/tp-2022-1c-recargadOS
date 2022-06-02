@@ -9,11 +9,11 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/cpu.out",
-            "args": ["~/tp-2022-1c-recargadOS/cpu/config/cpu.cfg"],
+            "args": ["${workspaceFolder}/config/cpu.cfg"],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}",
             "environment": [],
-            "externalConsole": true,
+            "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
                 {

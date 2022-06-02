@@ -64,10 +64,10 @@ int main(int argc, char* argv[]) {
     char * pathConfig = argv[1];
 
     t_config * config = config_create(pathConfig);
-    char * IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA");
+    char * IP_MEMORIA = string_duplicate("127.0.0.1");
     char * PUERTO_ESCUCHA = config_get_string_value(config, "PUERTO_ESCUCHA");
     TAM_PAGINA = config_get_int_value(config, "TAM_PAGINA");
-    PAGINAS_POR_TABLA = config_get_int_value(config, "PAGINAS_POR_TABLA");
+    PAGINAS_POR_TABLA = config_get_int_value(config, "ENTRADAS_POR_TABLA");
     log_info(logger, "Variables de configuracion Leidas");
 
     int socket = iniciar_servidor(IP_MEMORIA, PUERTO_ESCUCHA);

@@ -42,7 +42,9 @@
 			"unistd.h": "c",
 			"stdlib.h": "c",
 			"stdbool.h": "c",
-			"cspec.h": "c"
+			"cspec.h": "c",
+			"liberarpuerto.h": "c",
+			"signal.h": "c"
 		}
     }
 }

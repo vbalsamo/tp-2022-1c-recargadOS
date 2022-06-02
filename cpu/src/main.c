@@ -19,7 +19,7 @@ void iniciarHilos(){
 }
 void inicializarVariablesGlobales(char * pathConfig){
     t_config * config = config_create(pathConfig);
-    IP_CPU = config_get_string_value(config, "IP_CPU");
+    IP_CPU = "127.0.0.1";
     PUERTO_ESCUCHA_DISPATCH = config_get_string_value(config, "PUERTO_ESCUCHA_DISPATCH");
     PUERTO_ESCUCHA_INTERRUPT = config_get_string_value(config, "PUERTO_ESCUCHA_INTERRUPT");
     IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA");
