@@ -17,8 +17,8 @@ void iniciarHilos(){
     
     //servidor(servidor_dispatch);
 }
-void obtenerVariablesGlobales(){
-    t_config * config = config_create("/home/utnso/tp-2022-1c-recargadOS/cpu/config/cpu.cfg");
+void inicializarVariablesGlobales(char * pathConfig){
+    t_config * config = config_create(pathConfig);
     IP_CPU = config_get_string_value(config, "IP_CPU");
     PUERTO_ESCUCHA_DISPATCH = config_get_string_value(config, "PUERTO_ESCUCHA_DISPATCH");
     PUERTO_ESCUCHA_INTERRUPT = config_get_string_value(config, "PUERTO_ESCUCHA_INTERRUPT");
@@ -33,7 +33,8 @@ int main(int argc, char* argv[]) {
     logger = log_create("cpu.log", "cpu", true, LOG_LEVEL_INFO);
     validarParametros(argc, argv);
     log_info(logger, "parametros validados");
-    obtenerVariablesGlobales();
+    char * pathConfig = argv[1];
+    inicializarVariablesGlobales(pathConfig);
     //handshake con memoria
     uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     t_traduccion_direcciones* traduccion_direcciones = obtenerTraduccionDeDirecciones(socket_memoria);

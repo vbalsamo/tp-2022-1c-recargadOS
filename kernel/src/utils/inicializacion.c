@@ -17,8 +17,8 @@ void inicializarEstados(){
     
 }
 
-void inicializarVariablesGlobales(){
-    config = config_create("/home/utnso/tp-2022-1c-recargadOS/kernel/config/kernel.cfg");
+void inicializarVariablesGlobales(char * pathConfig){
+    config = config_create(pathConfig);
     logger = log_create("kernel.log", "kernel", 1, LOG_LEVEL_INFO);
     IP_KERNEL = config_get_string_value(config, "IP_KERNEL");
     PUERTO_ESCUCHA = config_get_string_value(config, "PUERTO_ESCUCHA");

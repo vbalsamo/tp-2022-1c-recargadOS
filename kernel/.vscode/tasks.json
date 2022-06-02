@@ -17,7 +17,7 @@
         },
         {
             "label": "run",
-            "command": "${workspaceFolder}/bin/kernel.out \"${workspaceFolder}/kernel/config/kernel.cfg\"",
+            "command": "${workspaceFolder}/bin/kernel.out ${workspaceFolder}/config/kernel.cfg",
             "type": "shell",
             "group": {
                 "kind": "none",

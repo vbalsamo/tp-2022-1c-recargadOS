@@ -21,5 +21,5 @@
     t_servidor * servidor_dispatch;
     t_servidor * servidor_interrupt;
     void iniciar_hilos(void);
-    void obtenerVariablesGlobales(void);
+    void inicializarVariablesGlobales(char * pathConfig);
 #endif

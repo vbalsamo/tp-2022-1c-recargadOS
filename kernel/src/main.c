@@ -39,7 +39,8 @@ void manejarProceso(int * socket_consola){
 int main(int argc, char* argv[]) {
 
     validarParametros(argc, argv);
-    inicializarVariablesGlobales();
+    char * pathConfig = argv[1];
+    inicializarVariablesGlobales(pathConfig);
     pthread_mutex_init(&mutex_estado_new, (void *)NULL);
     pthread_mutex_init(&mutex_estado_ready, (void *)NULL);
     pthread_mutex_init(&mutex_pcb_ejecutando, (void *)NULL);

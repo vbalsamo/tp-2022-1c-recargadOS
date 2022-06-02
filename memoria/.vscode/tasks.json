@@ -17,7 +17,7 @@
         },
         {
             "label": "run",
-            "command": "${workspaceFolder}/bin/memoria.out \"/home/utnso/tp-2022-1c-recargadOS/memoria/config/memoria.cfg\"",
+            "command": "${workspaceFolder}/bin/memoria.out ${workspaceFolder}/config/memoria.cfg",
             "type": "shell",
             "group": {
                 "kind": "none",

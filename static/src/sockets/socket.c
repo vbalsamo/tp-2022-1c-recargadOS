@@ -14,9 +14,26 @@ uint32_t iniciar_servidor(char* IP, char* PORT)
 	getaddrinfo(IP, PORT, &hints, &server_info);
 
 	socket_servidor = socket(server_info->ai_family,  server_info->ai_socktype,server_info->ai_flags);
-	bind(socket_servidor, server_info->ai_addr, server_info->ai_addrlen);
-	listen(socket_servidor, SOMAXCONN);
 	
+	if(socket_servidor == -1){
+		perror("error de creacion de socket");
+		exit(EXIT_FAILURE);
+	}
+	
+	int binded = bind(socket_servidor, server_info->ai_addr, server_info->ai_addrlen);
+	
+	if(binded == -1){
+		perror("error al bindear al socket servidor");
+		exit(EXIT_FAILURE);
+	}
+	
+	int listening = listen(socket_servidor, SOMAXCONN);
+	
+	if(listening == -1){
+		perror("error al escuchar en socket servidor");
+		exit(EXIT_FAILURE);
+	}
+
 	freeaddrinfo(server_info);
 	
 	//log_trace(logger, "Listo para escuchar a mi cliente");
@@ -28,8 +45,10 @@ uint32_t esperar_cliente(uint32_t socket_servidor)
 {
 	// Aceptamos un nuevo cliente
 	uint32_t socket_cliente = accept(socket_servidor, NULL, NULL);
-	t_log * logger = log_create("log.log", "Servidor", 1, LOG_LEVEL_DEBUG);
-	log_info(logger, "Se conecto un cliente!");
+	if(socket_cliente == -1){
+		perror("error al aceptar socket_cliente");
+		exit(EXIT_FAILURE);
+	}
 	return socket_cliente;
 }
 
@@ -64,14 +83,14 @@ uint32_t crear_conexion(char *ip, char* puerto)
 	
 	if(socket_cliente == -1){
 		perror("error de creacion de socket");
-		exit(2);
+		exit(EXIT_FAILURE);
 	}
 
 	int resultado_conexion = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);
 	
 	if(resultado_conexion != 0){
 		perror("error de conexión");
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 
 	freeaddrinfo(server_info);

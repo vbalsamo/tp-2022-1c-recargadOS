@@ -17,7 +17,7 @@
         },
         {
             "label": "run",
-            "command": "${workspaceFolder}/bin/cpu.out {workspaceFolder}/config/cpu.cfg",
+            "command": "${workspaceFolder}/bin/cpu.out ${workspaceFolder}/config/cpu.cfg",
             "type": "shell",
             "group": {
                 "kind": "none",

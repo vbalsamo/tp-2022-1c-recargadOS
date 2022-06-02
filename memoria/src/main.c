@@ -57,18 +57,21 @@ void deserializarSegun(t_paquete* paquete, int socket){
 }
 
 int main(int argc, char* argv[]) {
-    validarParametros(argc, argv);
-    t_config * config = config_create(argv[1]);
     logger = log_create("./memoria.log","memoria", true, LOG_LEVEL_TRACE);
-    
+    validarParametros(argc, argv);
+    log_info(logger, "parametros validados");
+   
+    char * pathConfig = argv[1];
+
+    t_config * config = config_create(pathConfig);
     char * IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA");
     char * PUERTO_ESCUCHA = config_get_string_value(config, "PUERTO_ESCUCHA");
     TAM_PAGINA = config_get_int_value(config, "TAM_PAGINA");
     PAGINAS_POR_TABLA = config_get_int_value(config, "PAGINAS_POR_TABLA");
-    int socket = iniciar_servidor(IP_MEMORIA, PUERTO_ESCUCHA);
-    log_info(logger, "variables configuracion obtenidas");
+    log_info(logger, "Variables de configuracion Leidas");
 
-    
+    int socket = iniciar_servidor(IP_MEMORIA, PUERTO_ESCUCHA);
+
     //hilo
     while(1){
         uint32_t socket_cliente = esperar_cliente(socket);
