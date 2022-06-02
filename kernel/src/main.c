@@ -56,6 +56,8 @@ int main(int argc, char* argv[]) {
     sem_init(&sem_ready, 0, 0);
     sem_init(&sem_fin_proceso, 0, 0);   
     sem_init(&sem_block, 0, 0);
+    sem_init(&sem_susp_ready, 0, 0);
+    sem_init(&sem_hay_pcb_esperando_ready, 0, 0);
     
     
 

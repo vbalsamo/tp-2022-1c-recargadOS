@@ -24,7 +24,7 @@ void inicializarVariablesGlobales(char * pathConfig){
     PUERTO_ESCUCHA_INTERRUPT = config_get_string_value(config, "PUERTO_ESCUCHA_INTERRUPT");
     IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA");
     PUERTO_MEMORIA = config_get_string_value(config, "PUERTO_MEMORIA");
-    RETARDO_NOOP = config_get_int_value(config, "RETARDO_NOOP");
+    RETARDO_NOOP = config_get_int_value(config, "RETARDO_NOOP") * 100;
     mutex_interrupcion = malloc(sizeof(pthread_mutex_t));
     pthread_mutex_init(mutex_interrupcion, NULL); 
     log_info(logger, "Variables de configuracion Leidas");

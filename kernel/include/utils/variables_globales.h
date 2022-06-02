@@ -21,6 +21,7 @@
         int * socket;
         int id;
     }t_consola;
+    
     t_list * consolas_conectadas;
     pthread_mutex_t mutex_consolas_conectadas;
 #endif

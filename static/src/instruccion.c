@@ -52,4 +52,5 @@ const char* instruccion_idAString(instruccion_id instruccion){
         case EXIT: return "EXIT";
 
     }
+    return "no se pudo traducir la instrucción a string";
 }

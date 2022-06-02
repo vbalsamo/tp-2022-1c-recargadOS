@@ -18,21 +18,23 @@
     pthread_mutex_t mutex_estado_blocked;
     pthread_mutex_t mutex_pcb_ejecutando;
     pthread_mutex_t mutex_estado_susp_ready;
+
     sem_t sem_multiprogramacion;
     sem_t sem_hay_pcb_en_new;
     sem_t sem_ready;
     sem_t sem_fin_proceso;
     sem_t sem_block;
+    sem_t sem_susp_ready;
+    sem_t sem_hay_pcb_esperando_ready;
    
     t_pcb * pcbEjecutando;
 	t_queue * estado_new;
 	t_list * estado_ready;
 	t_list * estado_exec;
 	t_list * estado_exit;
-	t_list * estado_susp_ready;
+	t_queue * estado_susp_ready;
 	t_queue * estado_blocked;
-	t_list * estado_susp_blocked;
-	
+
     t_pcb * iniciarPcb(t_proceso * proceso);
     void inicializarPlanificacion();
     void addEstadoExit(t_pcb * pcb);
@@ -46,8 +48,10 @@
     t_pcb * planificacionSRT();
     void newAready();
     void readyAexec();
+    void suspReadyAready();
     void ingresarANew(t_pcb * pcb);
     t_pcb * algoritmoPlanificacion();
     void comunicacionMemoria(t_pcb *);
+    t_pcb * obtenerSiguienteAready();
     
 #endif

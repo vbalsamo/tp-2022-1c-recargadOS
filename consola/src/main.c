@@ -13,9 +13,9 @@ int main(int argc, char* argv[]) {
     //t_list* instrucciones = obtenerInstrucciones(stringInstrucciones);
     uint32_t * sizeInstrucciones=malloc(sizeof(uint32_t));
     t_instruccion* instrucciones = obtenerInstrucciones(stringInstrucciones,sizeInstrucciones);
-    for(int i = 0; i<*sizeInstrucciones; i++){
-        log_info(logger, "instruccion_id:%d, instruccion_string:%s, parametro1:%d, parametro2:%d",(instrucciones + i)->identificador, instruccion_idAString((instrucciones + i)->identificador), (instrucciones + i)->parametro1, (instrucciones + i)->parametro2);
-    }
+    // for(int i = 0; i<*sizeInstrucciones; i++){
+    //     log_info(logger, "instruccion_id:%d, instruccion_string:%s, parametro1:%d, parametro2:%d",(instrucciones + i)->identificador, instruccion_idAString((instrucciones + i)->identificador), (instrucciones + i)->parametro1, (instrucciones + i)->parametro2);
+    // }
     t_config* config = config_create(pathConfig);
     char * IP_KERNEL = config_get_string_value(config,"IP_KERNEL");
     char * PUERTO_KERNEL = config_get_string_value(config,"PUERTO_KERNEL");

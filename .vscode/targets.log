@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue May 31 14:21:44 2022
+# Make data base, printed on Thu Jun  2 14:54:11 2022
 
 # Variables
 
@@ -17,7 +15,7 @@ make: *** No rule to make target 'all'.  Stop.
 # automatic
 ?F = $(notdir $?)
 # environment
-WSLENV = VSCODE_WSL_EXT_LOCATION/up
+WSLENV = ELECTRON_RUN_AS_NODE/w:WT_SESSION::WT_PROFILE_ID
 # default
 .SHELLFLAGS := -c
 # environment
@@ -35,7 +33,7 @@ SHELL = /bin/sh
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en","availableLanguages":{}}
 # environment
-_ = /home/utnso/.vscode-server/bin/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5/node
+_ = /mnt/g/Users/Valentino/Appdata/Local/Programs/Microsoft VS Code/bin/code
 # makefile
 MAKEFILE_LIST := 
 # 'override' directive
@@ -55,7 +53,7 @@ XDG_RUNTIME_DIR = /mnt/wslg/runtime-dir
 # environment
 VSCODE_LOG_STACK = false
 # environment
-VSCODE_IPC_HOOK_CLI = /mnt/wslg/runtime-dir/vscode-ipc-66c4179a-eec3-41a7-a65f-92425afd0af5.sock
+VSCODE_IPC_HOOK_CLI = /mnt/wslg/runtime-dir/vscode-ipc-fd41038c-c315-47ef-97a2-68bbf895ccf0.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -71,9 +69,11 @@ PWD = /home/utnso/tp-2022-1c-recargadOS
 # default
 .LOADED := 
 # environment
-WSL_INTEROP = /run/WSL/11_interop
+WSL_INTEROP = /run/WSL/8_interop
 # environment
 PULSE_SERVER = /mnt/wslg/PulseServer
+# environment
+WT_SESSION = eec9d7db-46cf-4d62-9658-c617a66113bb
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
@@ -93,7 +93,7 @@ MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
 # environment
-SHLVL = 0
+SHLVL = 1
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -101,7 +101,7 @@ USER = utnso
 # makefile
 .DEFAULT_GOAL := 
 # environment
-NAME = DESKTOP-EMD2NJD
+NAME = Code
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
@@ -126,6 +126,8 @@ MFLAGS = -pqrR
 +F = $(notdir $+)
 # environment
 VSCODE_HANDLES_SIGPIPE = true
+# environment
+WT_PROFILE_ID = {2c4de342-38b7-51cf-b940-2309a097f518}
 # default
 MAKEFILES := 
 # automatic
@@ -136,6 +138,8 @@ LC_ALL = C
 _JAVA_AWT_WM_NONREPARENTING = 1
 # environment
 HOSTTYPE = x86_64
+# environment
+P9K_TTY = old
 # automatic
 ^F = $(notdir $^)
 # default
@@ -151,11 +155,13 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
+_P9K_TTY = /dev/pts/0
+# environment
 VSCODE_EXTHOST_WILL_SEND_SOCKET = true
 # environment
 WSL_DISTRO_NAME = Ubuntu
 # variable set hash-table stats:
-# Load=71/1024=7%, Rehash=0, Collisions=4/93=4%
+# Load=75/1024=7%, Rehash=0, Collisions=4/97=4%
 
 # Pattern-specific Variable Values
 
@@ -163,9 +169,9 @@ WSL_DISTRO_NAME = Ubuntu
 
 # Directories
 
-# . (device 2080, inode 90446): 14 files, no impossibilities.
+# . (device 2080, inode 90446): 15 files, no impossibilities.
 
-# 14 files, no impossibilities in 1 directories.
+# 15 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -215,12 +221,14 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 22 / storage = 196 B / avg = 8 B
-# current buf: size = 8162 B / used = 196 B / count = 22 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 23 / storage = 206 B / avg = 8 B
+# current buf: size = 8162 B / used = 206 B / count = 23 / avg = 8 B
 
-# strcache performance: lookups = 25 / hit rate = 12%
+# strcache performance: lookups = 26 / hit rate = 11%
 # hash-table stats:
-# Load=22/8192=0%, Rehash=0, Collisions=1/25=4%
-# Finished Make data base on Tue May 31 14:21:44 2022
+# Load=23/8192=0%, Rehash=0, Collisions=1/26=4%
+# Finished Make data base on Thu Jun  2 14:54:11 2022
 
  
+make: *** No rule to make target 'all'.  Stop.
+
