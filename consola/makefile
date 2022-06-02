@@ -92,3 +92,37 @@ helgrind: all
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
 	valgrind --tool=helgrind $(HELGRIND_FLAGS) ./$(BIN) $(ARGS)
 
+.PHONY: base1
+base1: all
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(BASE1)
+
+.PHONY: base2
+base2: all
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(BASE2)
+
+.PHONY: plani1
+plani1: all
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(PLANI1)
+
+.PHONY: plani2
+plani2: all
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(PLANI2)
+
+.PHONY: suspe1
+suspe1: all
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(SUSPE1)
+
+.PHONY: suspe2
+suspe2: all
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(SUSPE2)
+
+.PHONY: suspe3
+suspe3: all
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(SUSPE3)

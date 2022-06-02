@@ -14,8 +14,11 @@ char* leerInstrucciones(char* path){
     while(!feof(fileInstrucciones)){
         string_append(&stringInstrucciones,instruccionActual);
         instruccionActual=fgets(instruccionActual,BUFFSIZE,fileInstrucciones);
-        printf("\n%s",instruccionActual);
     }
+    if(strcmp(instruccionActual,"EXIT")==0){
+        string_append(&stringInstrucciones,"EXIT\n");
+    }
+    
     free(instruccionActual);
     free(fileInstrucciones);
     return stringInstrucciones;
@@ -25,7 +28,7 @@ char* leerInstrucciones(char* path){
 t_instruccion* obtenerInstrucciones(char* stringInstrucciones, uint32_t* sizeInstrucciones){
     
     char** instruccionesSeparadas = string_split(stringInstrucciones,"\n");
-    int sizeInstruccionesSeparadas = string_array_size(instruccionesSeparadas)-1;
+    int sizeInstruccionesSeparadas = string_array_size(instruccionesSeparadas) - 1;
     *sizeInstrucciones = sizeInstruccionesSeparadas;
     t_instruccion* instrucciones = malloc(sizeof(t_instruccion)*(*sizeInstrucciones));
     
