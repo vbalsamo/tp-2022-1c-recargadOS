@@ -73,7 +73,7 @@ uint32_t crear_conexion(char *ip, char* puerto)
 	struct addrinfo *server_info;
 
 	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = PF_INET;
+	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_flags = IPPROTO_TCP;
 

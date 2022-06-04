@@ -266,7 +266,7 @@ void * serializarUINT32_T(void* stream, void* estructura) {
 	return stream;
 }
 uint32_t * deserializarUINT32_T(void* stream) {
-	uint32_t* number = malloc(sizeof(uint32_t*));
+	uint32_t* number = malloc(sizeof(uint32_t));
     memcpy(number, stream, sizeof(uint32_t));
 	return number;
 }

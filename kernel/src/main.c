@@ -6,7 +6,7 @@ t_proceso * deserializarSegunProceso(t_paquete * paquete, int socket){
     t_proceso * proceso = deserializarProceso(paquete->buffer->stream);
     eliminarPaquete(paquete);
     log_info(logger, "se liberó el paquete");
-    close(socket);
+    //close(socket);
     return proceso;
 }
 
