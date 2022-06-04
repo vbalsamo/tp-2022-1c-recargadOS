@@ -4,7 +4,9 @@
 int main(int argc, char* argv[]) {
 
     validarParametros(argc, argv);
-    logger = log_create("consola.log", "consola", true, LOG_LEVEL_INFO);
+    char * logPath = obtenerPathLog();
+
+    logger = log_create(logPath, "consola", true, LOG_LEVEL_INFO);
     char * stringInstrucciones = leerInstrucciones(argv[1]);
     log_info(logger, "%s",stringInstrucciones);
     uint32_t tamanioProceso = atoi(argv[2]);

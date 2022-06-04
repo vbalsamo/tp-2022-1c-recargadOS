@@ -9,5 +9,6 @@
     #include <sockets/socket.h>
     #include <serializacion/estructuras.h>
     #include <utils/variables_globales.h>
+    #include <log/log.h>
 
 #endif

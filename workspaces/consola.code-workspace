@@ -33,7 +33,8 @@
 			"array": "c",
 			"cmath": "c",
 			"variables_globales.h": "c",
-			"log.h": "c"
+			"log.h": "c",
+			"temporal.h": "c"
 		}
 	}
 }

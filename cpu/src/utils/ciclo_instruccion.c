@@ -11,7 +11,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
     bool seguirEjecutando = true;
     t_instruccion instruccion;
     uint32_t PC_inicial = pcb->PC;
-    log_info(logger, "Inicia ciclo instruccion");
+    log_info(logger, "Inicia ciclo instruccion para pcb id:%d", pcb->id);
     while(seguirEjecutando ){
         instruccion = fetch(pcb);
         seguirEjecutando = execute(instruccion);
@@ -40,21 +40,22 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
             io->tiempoBloqueo = instruccion.parametro1;
             log_info(logger, "tiempo bloqueo:%d", instruccion.parametro1);
             paquete = armarPaqueteCon(io, PCB_EJECUTADO_IO_CPU_KERNEL);
-            log_info(logger, "Ejecuto IO, devuelve el pcb");
+            log_info(logger, "Ejecuto IO, devuelve el pcb id:%d", pcb->id);
             break;
         }
         case EXIT:{
             paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL);
-            log_info(logger, "Ejecuto EXIT, devuelve el pcb");
+            log_info(logger, "Ejecuto EXIT, devuelve el pcb id:%d", pcb->id);
             break;
         }
         default:{
            log_error(logger, "No ejecuto EXIT o IO, no debe pasar por aca");
+           exit(EXIT_FAILURE);
            break;
         }
     }
 
-    log_info(logger, "finaliza ciclo instruccion");
+    log_info(logger, "finaliza ciclo instruccion para pcb id:%d", pcb->id);
     return paquete;
 }
 
