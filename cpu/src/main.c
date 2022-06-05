@@ -1,9 +1,9 @@
 #include <main.h>
 void iniciarHilos(){
     log_info(logger, "iniciando hilos..");
-    socket_dispatch = malloc(sizeof(uint32_t));
+    socket_dispatch = malloc(sizeof(int));
     *socket_dispatch = iniciar_servidor(IP, PUERTO_ESCUCHA_DISPATCH);
-    socket_interrupt = malloc(sizeof(uint32_t));
+    socket_interrupt = malloc(sizeof(int));
     *socket_interrupt = iniciar_servidor(IP, PUERTO_ESCUCHA_INTERRUPT); 
     pthread_t thread_dispatch, thread_interrupt;
     servidor_dispatch = obtenerServidor(socket_dispatch, deserializarDispatch, "dispatch");
@@ -12,14 +12,14 @@ void iniciarHilos(){
     pthread_create(&thread_dispatch, NULL, (void*)servidor, (void*)servidor_dispatch);
     pthread_create(&thread_interrupt, NULL, (void*)servidor, (void*)servidor_interrupt);
     
-    pthread_join(thread_dispatch, NULL);
-    pthread_join(thread_interrupt, NULL);
     
+    pthread_join(thread_interrupt, NULL);
+    pthread_join(thread_dispatch, NULL);
     //servidor(servidor_dispatch);
 }
 void inicializarVariablesGlobales(char * pathConfig){
-    t_config * config = config_create(pathConfig);
-    IP = config_get_string_value(config, "IP");;
+    config = config_create(pathConfig);
+    IP = config_get_string_value(config, "IP");
     PUERTO_ESCUCHA_DISPATCH = config_get_string_value(config, "PUERTO_ESCUCHA_DISPATCH");
     PUERTO_ESCUCHA_INTERRUPT = config_get_string_value(config, "PUERTO_ESCUCHA_INTERRUPT");
     IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA");
@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
     char * pathConfig = argv[1];
     inicializarVariablesGlobales(pathConfig);
     //handshake con memoria
-    uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
+    int socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     t_traduccion_direcciones* traduccion_direcciones = obtenerTraduccionDeDirecciones(socket_memoria);
     close(socket_memoria);
     log_info(logger, "traduccion de direcciones obtenida de memoria");
@@ -44,17 +44,8 @@ int main(int argc, char* argv[]) {
     iniciarHilos();
     
     //liberar heap
-    free(IP);
-    free(PUERTO_ESCUCHA_DISPATCH);
-    free(PUERTO_ESCUCHA_INTERRUPT);
-    free(IP_MEMORIA);
-    free(PUERTO_MEMORIA);
+    config_destroy(config);
     free(traduccion_direcciones);
-    free(socket_dispatch);
-    free(socket_interrupt);
-    free(servidor_dispatch);
-    free(servidor_interrupt);
-    
     return 0;
 }
 

@@ -1,5 +1,5 @@
 #include <servidor/dispatch.h>
-void deserializarDispatch(t_paquete * paquete, uint32_t socket_cliente){
+void deserializarDispatch(t_paquete * paquete, int socket_cliente){
     switch(paquete->codigo_operacion){
 		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:{
             t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
@@ -8,6 +8,8 @@ void deserializarDispatch(t_paquete * paquete, uint32_t socket_cliente){
             t_paquete* resPaquete = cicloInstruccion(pcb);
             
             enviarPaquete(resPaquete, socket_cliente);
+            eliminarPaquete(resPaquete);
+            freePCB(pcb);
             break;
         }
         default:{

@@ -6,5 +6,5 @@
     #include <servidor/abstract_servidor.h>
     #include <utils/ciclo_instruccion.h>
     #include <utils/variables_globales.h>
-    void deserializarDispatch(t_paquete * paquete, uint32_t socket_cliente);
+    void deserializarDispatch(t_paquete * paquete, int socket_cliente);
 #endif

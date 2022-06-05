@@ -103,6 +103,7 @@
 
 	void * serializarPCB(void* stream, void* estructura, int offset);
 	t_pcb * deserializarPCB(void* stream, int offset);
+	void freePCB(t_pcb * pcb);
 	
 	void *  serializarIO(void* stream, void* estructura);
 	t_IO * deserializarIO(void* stream);

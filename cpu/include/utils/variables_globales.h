@@ -1,5 +1,7 @@
 #ifndef CPU_VARIABLES_ESTRUCTURAS_H_
 #define CPU_VARIABLES_ESTRUCTURAS_H_
+#include <commons/config.h>
+t_config * config;
 char * IP;
 char * PUERTO_ESCUCHA_DISPATCH;
 char * PUERTO_ESCUCHA_INTERRUPT;

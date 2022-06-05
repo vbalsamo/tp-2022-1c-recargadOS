@@ -6,10 +6,10 @@
     #include <sockets/socket.h>
     #include <utils/variables_globales.h>
     typedef struct{
-        uint32_t * socket;
+        int * socket;
         char nombre[10];
-        void  (*deserializarSegun)(t_paquete*, uint32_t);
+        void  (*deserializarSegun)(t_paquete*, int);
     }t_servidor;
     void servidor(void * params);
-    t_servidor * obtenerServidor(uint32_t* socket, void(*deserializarSegun)(t_paquete*,uint32_t), char nombre[10]);
+    t_servidor * obtenerServidor(int* socket, void(*deserializarSegun)(t_paquete*,int), char nombre[10]);
 #endif

@@ -229,6 +229,10 @@ t_pcb * deserializarPCB(void* stream, int offset){
 	
 	return pcb;
 }
+void freePCB(t_pcb * pcb) {
+	free(pcb->instrucciones);
+	free(pcb);
+}
 void *  serializarIO(void* stream, void* estructura){
 	t_IO* IO = (t_IO*) estructura;
 	int offset = 0;
@@ -358,7 +362,7 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 			break;
 		}
 		case RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU:{
-			return sizeof(uint32_t);
+			return sizeof(uint32_t)*2;
 			break;
 		}
 		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:{

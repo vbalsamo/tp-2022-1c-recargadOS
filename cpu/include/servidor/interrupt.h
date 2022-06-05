@@ -5,5 +5,5 @@
     #include <stdio.h>
     #include <servidor/abstract_servidor.h>
     #include <pthread.h>
-    void deserializarInterrupt(t_paquete * paquete, uint32_t socket_cliente);
+    void deserializarInterrupt(t_paquete * paquete, int socket_cliente);
 #endif

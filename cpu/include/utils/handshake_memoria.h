@@ -6,6 +6,6 @@
     #include <serializacion/estructuras.h>
     #include <sockets/socket.h>
     
-    t_traduccion_direcciones* obtenerTraduccionDeDirecciones(uint32_t socket);
+    t_traduccion_direcciones* obtenerTraduccionDeDirecciones(int socket);
 
 #endif
