@@ -10,9 +10,9 @@
     #include<serializacion/estructuras.h>
     #include<commons/log.h>
     
-    uint32_t iniciar_servidor(char* IP, char* PORT);
-    uint32_t esperar_cliente(uint32_t socket_servidor);
+    int iniciar_servidor(char* IP, char* PORT);
+    int esperar_cliente(int socket_servidor);
 
-    uint32_t crear_conexion(char *ip, char* puerto);
-    t_paquete* recibirPaquete(uint32_t server_socket);
+    int crear_conexion(char *ip, char* puerto);
+    t_paquete* recibirPaquete(int server_socket);
 #endif

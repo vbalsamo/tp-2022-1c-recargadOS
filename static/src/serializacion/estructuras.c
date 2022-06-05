@@ -115,6 +115,10 @@ t_proceso * crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones, t_
 	proceso->instrucciones = instrucciones;
 	return proceso;
 }
+void freeProceso(t_proceso * proceso) {
+	free(proceso->instrucciones);
+	free(proceso);
+}
 void * serializarProceso(void* stream, void* estructura){
  	t_proceso* proceso = (t_proceso*) estructura;
 	int offset = 0;

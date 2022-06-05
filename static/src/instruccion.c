@@ -38,6 +38,7 @@ t_instruccion * obtenerInstruccion(char* instruccionTexto){
         fprintf(stderr, "La instruccion: %s no está contemplada\n", instruccionSeparada[0]);
         exit(EXIT_FAILURE);
     }
+    string_array_destroy(instruccionSeparada);
     return instruccion;
 }
 

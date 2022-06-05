@@ -10,17 +10,18 @@ char* leerInstrucciones(char* path){
     FILE* fileInstrucciones = fopen(path,"r");
     char* stringInstrucciones = string_new();
     char* instruccionActual = malloc(sizeof(char)*BUFFSIZE);
-    fgets(instruccionActual,BUFFSIZE,fileInstrucciones);
+    instruccionActual = fgets(instruccionActual,BUFFSIZE,fileInstrucciones);
+    rewind(fileInstrucciones);
     while(!feof(fileInstrucciones)){
         string_append(&stringInstrucciones,instruccionActual);
-        instruccionActual=fgets(instruccionActual,BUFFSIZE,fileInstrucciones);
+        instruccionActual = fgets(instruccionActual,BUFFSIZE,fileInstrucciones);
     }
     if(strcmp(instruccionActual,"EXIT")==0){
         string_append(&stringInstrucciones,"EXIT\n");
     }
     
     free(instruccionActual);
-    free(fileInstrucciones);
+    fclose(fileInstrucciones);
     return stringInstrucciones;
 
 }
@@ -50,6 +51,7 @@ t_instruccion* obtenerInstrucciones(char* stringInstrucciones, uint32_t* sizeIns
         instrucciones[i] = *removed;
         free(removed);
     }
+    string_array_destroy(instruccionesSeparadas);
     list_destroy(lista);
     return instrucciones;
 } 

@@ -1,9 +1,9 @@
 #include <sockets/socket.h>
 
 
-uint32_t iniciar_servidor(char* IP, char* PORT)
+int iniciar_servidor(char* IP, char* PORT)
 {
-	uint32_t socket_servidor;
+	int socket_servidor;
 	struct addrinfo hints, *server_info;
 
 	memset(&hints, 0, sizeof(hints));
@@ -41,10 +41,10 @@ uint32_t iniciar_servidor(char* IP, char* PORT)
 	return socket_servidor;
 }
 
-uint32_t esperar_cliente(uint32_t socket_servidor)
+int esperar_cliente(int socket_servidor)
 {
 	// Aceptamos un nuevo cliente
-	uint32_t socket_cliente = accept(socket_servidor, NULL, NULL);
+	int socket_cliente = accept(socket_servidor, NULL, NULL);
 	if(socket_cliente == -1){
 		perror("error al aceptar socket_cliente");
 		exit(EXIT_FAILURE);
@@ -52,7 +52,7 @@ uint32_t esperar_cliente(uint32_t socket_servidor)
 	return socket_cliente;
 }
 
-t_paquete* recibirPaquete(uint32_t server_socket){
+t_paquete* recibirPaquete(int server_socket){
 
 	t_paquete* paquete = malloc(sizeof(t_paquete));
 	paquete->buffer = malloc(sizeof(t_buffer));
@@ -67,7 +67,7 @@ t_paquete* recibirPaquete(uint32_t server_socket){
 
 	return paquete;
 }
-uint32_t crear_conexion(char *ip, char* puerto)
+int crear_conexion(char *ip, char* puerto)
 {
 	struct addrinfo hints;
 	struct addrinfo *server_info;
@@ -79,7 +79,7 @@ uint32_t crear_conexion(char *ip, char* puerto)
 
 	getaddrinfo(ip, puerto, &hints, &server_info);
 
-	uint32_t socket_cliente = socket(server_info->ai_family,  server_info->ai_socktype,server_info->ai_flags);
+	int socket_cliente = socket(server_info->ai_family,  server_info->ai_socktype,server_info->ai_flags);
 	
 	if(socket_cliente == -1){
 		perror("error de creacion de socket");

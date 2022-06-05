@@ -89,6 +89,7 @@
 	t_instruccion * deserializarInstrucciones(void * stream, int offset);
 
 	t_proceso * crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones,t_instruccion* instrucciones);
+	void freeProceso(t_proceso * proceso);
 	void * serializarProceso(void* stream, void* estructura);
 	t_proceso * deserializarProceso(void* stream);
 	

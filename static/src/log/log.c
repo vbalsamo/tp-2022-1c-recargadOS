@@ -22,5 +22,6 @@ char * obtenerPathLog() {
     free(time);
     
     mkdir(directoryPath,S_IRWXU);
+    free(directoryPath);
     return finalPath;
 }
