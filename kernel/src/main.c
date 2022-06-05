@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
 
     //int socket_cliente = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     int * socket = malloc(sizeof(int));
-    *socket = iniciar_servidor(IP_KERNEL, PUERTO_ESCUCHA);
+    *socket = iniciar_servidor(IP, PUERTO_ESCUCHA);
     
     // int socketInterrupt = crear_conexion(IP_CPU, PUERTO_CPU_INTERRUPT);
     // t_paquete * paquete = armarPaqueteCon(NULL, REQ_INTERRUPCION_KERNEL_CPU);

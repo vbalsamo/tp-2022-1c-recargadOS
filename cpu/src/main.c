@@ -2,9 +2,9 @@
 void iniciarHilos(){
     log_info(logger, "iniciando hilos..");
     socket_dispatch = malloc(sizeof(uint32_t));
-    *socket_dispatch = iniciar_servidor(IP_CPU, PUERTO_ESCUCHA_DISPATCH);
+    *socket_dispatch = iniciar_servidor(IP, PUERTO_ESCUCHA_DISPATCH);
     socket_interrupt = malloc(sizeof(uint32_t));
-    *socket_interrupt = iniciar_servidor(IP_CPU, PUERTO_ESCUCHA_INTERRUPT); 
+    *socket_interrupt = iniciar_servidor(IP, PUERTO_ESCUCHA_INTERRUPT); 
     pthread_t thread_dispatch, thread_interrupt;
     servidor_dispatch = obtenerServidor(socket_dispatch, deserializarDispatch, "dispatch");
     servidor_interrupt = obtenerServidor(socket_interrupt, deserializarInterrupt, "interrupt");
@@ -19,7 +19,7 @@ void iniciarHilos(){
 }
 void inicializarVariablesGlobales(char * pathConfig){
     t_config * config = config_create(pathConfig);
-    IP_CPU = "127.0.0.1";
+    IP = config_get_string_value(config, "IP");;
     PUERTO_ESCUCHA_DISPATCH = config_get_string_value(config, "PUERTO_ESCUCHA_DISPATCH");
     PUERTO_ESCUCHA_INTERRUPT = config_get_string_value(config, "PUERTO_ESCUCHA_INTERRUPT");
     IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA");
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
     iniciarHilos();
     
     //liberar heap
-    free(IP_CPU);
+    free(IP);
     free(PUERTO_ESCUCHA_DISPATCH);
     free(PUERTO_ESCUCHA_INTERRUPT);
     free(IP_MEMORIA);

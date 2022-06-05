@@ -4,7 +4,7 @@
     #include<commons/config.h>
     t_log * logger;
     t_config * config;
-    char * IP_KERNEL;
+    char * IP;
     char * PUERTO_ESCUCHA;
     char * IP_CPU;
     char * PUERTO_CPU_DISPATCH;
