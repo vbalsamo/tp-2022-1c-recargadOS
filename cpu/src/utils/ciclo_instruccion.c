@@ -108,6 +108,7 @@ void * execute_read(uint32_t direccion_logica){
     return dato;
 }
 
+
 void execute_write(uint32_t direccion_logica, void * dato){
     uint32_t direccionFisica = consultarDireccionFisica(tablaPaginasPrimerNivelPCB, direccion_logica);
     memoria_write(direccionFisica, dato);
