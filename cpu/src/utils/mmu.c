@@ -5,47 +5,124 @@ void iniciarEstructurasMMU() {
     listaTLB = list_create();
 }
 
-t_TLB * new_TLB(uint32_t pagina, uint32_t marco, uint32_t tiempoAcceso) {
-    t_TLB * nuevaEntrada = malloc(sizeof(t_TLB));
+t_EntradaTLB * newEntradaTLB(uint32_t pagina, uint32_t marco) {
+    t_EntradaTLB * nuevaEntrada = malloc(sizeof(t_EntradaTLB));
     nuevaEntrada->pagina = pagina;
     nuevaEntrada->marco = marco;
-    nuevaEntrada->tiempoAcceso = tiempoAcceso;
+    nuevaEntrada->tiempoAcceso = tiempoAccesoGlobal;
+    tiempoAccesoGlobal++;
     return nuevaEntrada;
 }
 
 //falta agregar a tlb cuando hay espacio vacio
+void agregarTLB(uint32_t pagina, uint32_t marco) {
+    if(list_size(listaTLB)<ENTRADAS_TLB){
+        t_EntradaTLB * entrada = newEntradaTLB(pagina, marco);
+        list_add(listaTLB, entrada);
+    }
+    else {
+        if(string_equals_ignore_case(REEMPLAZO_TLB, "FIFO")){
+            reemplazarTLB_FIFO(pagina, marco);
+        }
+        else if(string_equals_ignore_case(REEMPLAZO_TLB, "LRU")){
+            reemplazarTLB_LRU(pagina, marco);
+        }
+        else {
+            log_error(logger, "REMPLAZO_TLB: %s no contemplado", REEMPLAZO_TLB);
+            exit(-1);
+        }
+    }
+    
+}
+
+void actualizarTLB(t_EntradaTLB * entrada) {
+    entrada->tiempoAcceso = tiempoAccesoGlobal;
+    tiempoAccesoGlobal++;
+}
 
 void reemplazarTLB_FIFO(uint32_t pagina, uint32_t marco) {
-    t_TLB * nuevaEntrada = new_TLB(pagina, marco,0);
-    t_TLB * viejaEntrada = list_replace(listaTLB, indiceFIFO, nuevaEntrada);
+    t_EntradaTLB * nuevaEntrada = newEntradaTLB(pagina, marco);
+    t_EntradaTLB * viejaEntrada = list_replace(listaTLB, indiceFIFO, nuevaEntrada);
     free(viejaEntrada);
     incrementarIndiceFIFO();
 }
 
 void reemplazarTLB_LRU(uint32_t pagina, uint32_t marco) {
     //last recently used
-    t_TLB * nuevaEntrada = new_TLB(pagina, marco,tiempoAccesoGlobal);
-    tiempoAccesoGlobal++;
+    t_EntradaTLB * nuevaEntrada = newEntradaTLB(pagina, marco);
     bool comparator(void * tlb1, void * tlb2) {
-        return ((t_TLB *) tlb1)->tiempoAcceso < ((t_TLB *) tlb2)->tiempoAcceso;
+        return ((t_EntradaTLB *) tlb1)->tiempoAcceso < ((t_EntradaTLB *) tlb2)->tiempoAcceso;
     }
     list_sort(listaTLB, comparator);
-    t_TLB * viejaEntrada = list_remove(listaTLB,0);
+    t_EntradaTLB * viejaEntrada = list_remove(listaTLB,0);
     list_add(listaTLB, nuevaEntrada);
     free(viejaEntrada);
 }
 
 
-t_TLB * obtenerEntradaTLB(uint32_t pagina) {
+t_EntradaTLB * obtenerEntradaTLB(uint32_t pagina) {
     bool condicion(void * tlb) {
-        return ((t_TLB *) tlb)->pagina == pagina;
+        return ((t_EntradaTLB *) tlb)->pagina == pagina;
     }
-    t_TLB * entrada = list_find(listaTLB, condicion);
+    t_EntradaTLB * entrada = list_find(listaTLB, condicion);
     return entrada;
 }
 
 void incrementarIndiceFIFO() {
     indiceFIFO = (indiceFIFO + 1) % ENTRADAS_TLB;
+}
+
+uint32_t * consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t pagina) {
+    uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
+    uint32_t entradaPrimerNivel = obtenerEntradaTabla1erNivel(pagina);
+    t_consultaTablaPagina * consulta = malloc(sizeof(t_consultaTablaPagina));
+    
+    consulta->tablaDePaginas = tablaDePaginasPrimerNivel;
+    consulta->entradaPagina = entradaPrimerNivel;
+    
+    t_paquete * paquete = armarPaqueteCon(consulta, REQ_TABLA_SEGUNDO_NIVEL_CPU_MEMORIA);
+    enviarPaquete(paquete,socket_memoria);
+    t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
+    
+    uint32_t * tablaSegundoNivel = deserializarUINT32_T(paqueteRespuesta);
+}
+
+uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina) {
+    uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
+    uint32_t entradaSegundoNivel = obtenerEntradaTabla2doNivel(pagina);
+    t_consultaTablaPagina * consulta = malloc(sizeof(t_consultaTablaPagina));
+    
+    consulta->tablaDePaginas = tablaDePaginasSegundoNivel;
+    consulta->entradaPagina = entradaSegundoNivel;
+    
+    t_paquete * paquete = armarPaqueteCon(consulta, REQ_MARCO_CPU_MEMORIA);
+    enviarPaquete(paquete,socket_memoria);
+    t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
+    
+    uint32_t * marco = deserializarUINT32_T(paqueteRespuesta);
+    uint32_t marcoo = * marco;
+    free(marco);
+    return marcoo;
+}
+
+uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t direccion_logica) {
+    uint32_t pagina = obtenerNumeroPagina(direccion_logica);
+    t_EntradaTLB * entrada = obtenerEntradaTLB(pagina);
+    uint32_t marco;
+
+    if(entrada==NULL) {
+        uint32_t * tablaDePaginasSegundoNivel = consultarTablaSegundoNivel(tablaPaginasPrimerNivelPCB, pagina);
+        marco = consultarMarco(*tablaDePaginasSegundoNivel, pagina);
+        agregarTLB(pagina, marco);
+    }
+    else {
+        marco =  entrada->marco;
+        actualizarTLB(entrada);
+    }
+
+    uint32_t desplazamiento = obtenerDesplazamiento(direccion_logica, pagina);
+    uint32_t direccionFisica = obtenerDireccionFisica(desplazamiento, marco);
+    return direccionFisica;
 }
 
 uint32_t obtenerNumeroPagina(uint32_t direccion_logica) {
@@ -62,4 +139,8 @@ uint32_t obtenerEntradaTabla2doNivel(uint32_t numero_pagina) {
 
 uint32_t obtenerDesplazamiento(uint32_t direccion_logica, uint32_t numero_pagina) {
     return direccion_logica - numero_pagina * traduccion_direcciones->tamanio_pagina;
+}
+
+uint32_t obtenerDireccionFisica(uint32_t desplazamiento, uint32_t numero_marco) {
+    return desplazamiento + numero_marco * traduccion_direcciones->tamanio_pagina;
 }
