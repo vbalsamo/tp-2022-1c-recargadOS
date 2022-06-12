@@ -9,6 +9,7 @@ void servidor(void * params){
         servidor->deserializarSegun(paquete, socket_cliente);
     }
 }
+
 t_servidor * obtenerServidor(int * socket, void(*deserializarSegun)(t_paquete*,int), char nombre[10]){
     t_servidor * servidor = malloc(sizeof(t_servidor));
     servidor->socket = socket;

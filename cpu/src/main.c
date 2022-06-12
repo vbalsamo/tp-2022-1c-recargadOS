@@ -7,13 +7,13 @@ void iniciarHilos(){
     *socket_interrupt = iniciar_servidor(IP, PUERTO_ESCUCHA_INTERRUPT); 
     pthread_t thread_dispatch, thread_interrupt;
     servidor_dispatch = obtenerServidor(socket_dispatch, deserializarDispatch, "dispatch");
-    servidor_interrupt = obtenerServidor(socket_interrupt, deserializarInterrupt, "interrupt");
+    //servidor_interrupt = obtenerServidor(socket_interrupt, deserializarInterrupt, "interrupt");
     
     pthread_create(&thread_dispatch, NULL, (void*)servidor, (void*)servidor_dispatch);
-    pthread_create(&thread_interrupt, NULL, (void*)servidor, (void*)servidor_interrupt);
+    pthread_create(&thread_interrupt, NULL, (void*)servidorInterrupt, (void*)socket_interrupt);
     
     
-    pthread_join(thread_interrupt, NULL);
+    pthread_detach(thread_interrupt);
     pthread_join(thread_dispatch, NULL);
     //servidor(servidor_dispatch);
 }
@@ -24,9 +24,9 @@ void inicializarVariablesGlobales(char * pathConfig){
     PUERTO_ESCUCHA_INTERRUPT = config_get_string_value(config, "PUERTO_ESCUCHA_INTERRUPT");
     IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA");
     PUERTO_MEMORIA = config_get_string_value(config, "PUERTO_MEMORIA");
-    RETARDO_NOOP = config_get_int_value(config, "RETARDO_NOOP") * 100;
-    mutex_interrupcion = malloc(sizeof(pthread_mutex_t));
-    pthread_mutex_init(mutex_interrupcion, NULL); 
+    RETARDO_NOOP = config_get_int_value(config, "RETARDO_NOOP")/1000;
+    hayInterrupcion = 0;
+    pthread_mutex_init(&mutex_interrupcion, NULL); 
     log_info(logger, "Variables de configuracion Leidas");
 }
 int main(int argc, char* argv[]) {

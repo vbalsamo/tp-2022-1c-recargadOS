@@ -11,5 +11,6 @@
         void  (*deserializarSegun)(t_paquete*, int);
     }t_servidor;
     void servidor(void * params);
+    
     t_servidor * obtenerServidor(int* socket, void(*deserializarSegun)(t_paquete*,int), char nombre[10]);
 #endif

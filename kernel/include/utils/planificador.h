@@ -53,5 +53,7 @@
     t_pcb * algoritmoPlanificacion();
     void comunicacionMemoria(t_pcb *);
     t_pcb * obtenerSiguienteAready();
+    void interrumpirPCB();
+    void ejecutarPCB(t_pcb * pcb);
     
 #endif

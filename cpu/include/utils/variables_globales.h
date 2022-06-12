@@ -10,5 +10,5 @@ char * PUERTO_MEMORIA;
 int RETARDO_NOOP;
 t_log * logger;
 bool hayInterrupcion;
-pthread_mutex_t * mutex_interrupcion;
+pthread_mutex_t mutex_interrupcion;
 #endif

@@ -17,16 +17,16 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
         seguirEjecutando = execute(instruccion);
         pcb->PC++;
 
-        pthread_mutex_lock(mutex_interrupcion);
+        pthread_mutex_lock(&mutex_interrupcion);
         if (hayInterrupcion){
             hayInterrupcion=false;
-            pthread_mutex_unlock(mutex_interrupcion);
+            pthread_mutex_unlock(&mutex_interrupcion);
             log_info(logger, "Hay interrupcion, devulve el pcb");
             paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL);
             return paquete;
         }
         else{
-            pthread_mutex_unlock(mutex_interrupcion);
+            pthread_mutex_unlock(&mutex_interrupcion);
         }   
         
     }
@@ -65,7 +65,7 @@ bool execute(t_instruccion instruccion){
     switch (instruccion.identificador){
         case NO_OP:
             log_info(logger, "Ejecutado NO_OP");
-            usleep(RETARDO_NOOP);
+            sleep(RETARDO_NOOP);
             return true;
         case IO:
             log_info(logger, "Ejecutado IO");
