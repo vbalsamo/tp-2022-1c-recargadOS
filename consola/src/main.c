@@ -33,6 +33,7 @@ int main(int argc, char* argv[]) {
     log_info(logger, "proceso enviado a kernel");
     eliminarPaquete(paquete);
     freeProceso(proceso);
+    
     t_paquete * paqueteRespuesta = recibirPaquete(socket_cliente);
     uint32_t * mensaje = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
     eliminarPaquete(paqueteRespuesta);

@@ -25,6 +25,9 @@ void inicializarVariablesGlobales(char * pathConfig){
     IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA");
     PUERTO_MEMORIA = config_get_string_value(config, "PUERTO_MEMORIA");
     RETARDO_NOOP = config_get_int_value(config, "RETARDO_NOOP") * 100;
+    ENTRADAS_TLB = config_get_int_value(config, "ENTRADAS_TLB");
+    
+    REEMPLAZO_TLB = config_get_string_value(config, "REEMPLAZO_TLB");
     mutex_interrupcion = malloc(sizeof(pthread_mutex_t));
     pthread_mutex_init(mutex_interrupcion, NULL); 
     log_info(logger, "Variables de configuracion Leidas");
@@ -37,7 +40,7 @@ int main(int argc, char* argv[]) {
     inicializarVariablesGlobales(pathConfig);
     //handshake con memoria
     int socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
-    t_traduccion_direcciones* traduccion_direcciones = obtenerTraduccionDeDirecciones(socket_memoria);
+    traduccion_direcciones = obtenerTraduccionDeDirecciones(socket_memoria);
     close(socket_memoria);
     log_info(logger, "traduccion de direcciones obtenida de memoria");
     

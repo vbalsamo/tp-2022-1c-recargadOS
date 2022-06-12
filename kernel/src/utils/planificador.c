@@ -74,6 +74,15 @@ t_pcb * obtenerSiguienteAready(){
         else{
             pthread_mutex_lock(&mutex_estado_new);
             pcb = queue_pop(estado_new);
+            if(pcb->PC == 1) {
+                //TODO
+                //comunicar_memoria_
+                //creacion de espacio de memoria
+                //obtencion tabla pagina 1 nivel
+                
+                //pcb->tablaDePaginas = respuestaMemoria;
+            }
+
             pthread_mutex_unlock(&mutex_estado_new);
             return pcb;
         }
