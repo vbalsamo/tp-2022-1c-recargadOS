@@ -320,7 +320,7 @@ void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 			return serializarPCB(stream,estructura,0);
 		}
 		case REQ_INTERRUPCION_KERNEL_CPU:{
-			return NULL;
+			return serializarUINT32_T(stream,estructura);
 		}
 		case RES_FIN_PROCESO_KERNEL_CONSOLA:{
 			return serializarUINT32_T(stream,estructura);
@@ -387,7 +387,7 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 			break;
 		}
 		case REQ_INTERRUPCION_KERNEL_CPU:{
-			return 0;
+			return sizeof(uint32_t);
 			break;
 		}
 		case RES_FIN_PROCESO_KERNEL_CONSOLA:{

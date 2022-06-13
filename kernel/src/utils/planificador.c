@@ -51,6 +51,14 @@ void Aready(){
         
         addEstadoReady(pcb);
         log_info(logger, "se agregó el proceso %d a la lista de ready", pcb->id);
+
+        log_info(logger, "solicitando interrumpir proceso");
+        
+        if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"SRT")){
+            interrumpirPCB();
+        }
+        
+        
         sem_post(&sem_ready);
         
         
@@ -103,14 +111,14 @@ void readyAexec(){
         pthread_mutex_lock(&mutex_estado_ready);
         list_remove_by_condition(estado_ready, filtro);
         pthread_mutex_unlock(&mutex_estado_ready);
-        comunicacionCPU(pcb);
+        ejecutarPCB(pcb);
         
 
     }
 }
 //pcb->estimacionRafaga = alfa*pcb->lengthUltimaRafaga + (1-alfa)*pcb->estimacionRafaga
 
-t_pcb* obtenerSiguienteSRT(){
+t_pcb* planificacionSRT(){
 
 	t_pcb* pcbPlanificado = NULL;
 	t_pcb* pcbAux = NULL;
@@ -169,8 +177,8 @@ void execAexit(t_pcb * pcb){
     free(consolaAnotificar);
     free(pcb);
     sem_post(&sem_multiprogramacion);
-
 }
+
 void hilo_block(){
     while(1){
         sem_wait(&sem_block);
@@ -272,13 +280,6 @@ t_pcb * planificacionFIFO(){
     return pcb;
 }
 
-t_pcb * planificacionSRT(){
-
-    t_pcb* pcb = obtenerSiguienteSRT();
-    //REVISAR TODOS LOS CASO DE NEW A READY, de supended-ready a ready, el que este ejecutando en ese momento en cpu
-
-    return pcb;
-}
 
 // t_pcb * desalojarYEjecutar(t_pcb * pcb){
 //     int socket_interrupt = crear_conexion(IP_CPU, PUERTO_CPU_INTERRUPT);
@@ -294,8 +295,18 @@ t_pcb * planificacionSRT(){
 //     pthread_mutex_unlock(&mutex_estado_ready);
 //     return pcb;
 // }
+void interrumpirPCB(){
+    log_info(logger, "interrumpiendo proceso");
+    int socketInterrupt = crear_conexion(IP_CPU, PUERTO_CPU_INTERRUPT);
+    int numero = 1;
+    t_paquete * paquete = armarPaqueteCon(&numero, REQ_INTERRUPCION_KERNEL_CPU);
+    enviarPaquete(paquete, socketInterrupt);
+    eliminarPaquete(paquete);
+    //close(socketInterrupt);
+}
 
-void comunicacionCPU(t_pcb * pcb){
+
+void ejecutarPCB(t_pcb * pcb){
     int socketDispatch = crear_conexion(IP_CPU, PUERTO_CPU_DISPATCH);
     t_paquete * paquete = armarPaqueteCon(pcb, REQ_PCB_A_EJECUTAR_KERNEL_CPU);
     enviarPaquete(paquete, socketDispatch);
