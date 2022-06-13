@@ -12,6 +12,8 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
     t_instruccion instruccion;
     uint32_t PC_inicial = pcb->PC;
     log_info(logger, "Inicia ciclo instruccion para pcb id:%d", pcb->id);
+    tablaPaginasPrimerNivelPCB = pcb->tablaDePaginas;
+
     while(seguirEjecutando ){
         instruccion = fetch(pcb);
         seguirEjecutando = execute(instruccion);
@@ -75,25 +77,17 @@ bool execute(t_instruccion instruccion){
             log_info(logger, "Ejecutado READ");
             return true;
         case COPY:{
-            //DECODE
-            char* dato = execute_read(instruccion.parametro2);//fetch opera
-            //solo hace falta buscar operandos cuando la instruccion es COPY
-            //instruccion.parametro2 representa la direccion logica del valor a escribir
-            //interactuar con memoria para obtener  el dato en esa direccion logica
+            char* dato = execute_read(instruccion.parametro2);
+            
             log_info(logger, "Ejecutado COPY, Lectura dato en memoria");
             execute_write(instruccion.parametro1, dato);
-            //Se deberá escribir en memoria el valor del segundo parámetro
-            //en la dirección lógica del primer parámetro.
+            
             log_info(logger, "Ejecutado COPY, Escritura dato");
             return true;
         }
         case WRITE:
-            // Se deberá escribir en memoria el valor ubicado en la dirección
-            //lógica pasada como segundo parámetro, en la dirección lógica
-            //pasada como primer parámetro. A efectos de esta etapa, el
-            //accionar es similar a la instrucción WRITE ya que el valor a
-            //escribir ya se debería haber obtenido en la etapa anterior.
-            execute_write(instruccion.parametro1, &instruccion.parametro2);
+            
+            execute_write( instruccion.parametro1, &instruccion.parametro2);
             log_info(logger, "Ejecutado Write");
             return true;
         case EXIT:
@@ -106,45 +100,35 @@ bool execute(t_instruccion instruccion){
         }
     }
 }
-void * execute_read(u_int32_t direccion_logica){
-    uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
-    t_mensaje * mensaje = malloc(sizeof(t_mensaje));
-    mensaje->texto=string_new();
-    string_append(&mensaje->texto,"Busqueda operando");
-    mensaje->longitud=strlen(mensaje->texto)+1;
-    t_paquete * paquete = armarPaqueteCon(mensaje,REQ_DATO_DIRECCION_LOGICA_CPU_MEMORIA);
-    enviarPaquete(paquete,socket_memoria);
-    eliminarPaquete(paquete);
+void * execute_read(uint32_t direccion_logica){
 
-    //respuesta
-    paquete = recibirPaquete(socket_memoria);
-    if(paquete->codigo_operacion!=RES_DATO_DIRECCION_LOGICA_MEMORIA_CPU){
-        perror("No se recibio el codigo de operacion esperado para traduccion de direcciones");
-        exit(EXIT_FAILURE);
-    }
-    t_mensaje* respuesta = deserializarMensaje(paquete->buffer->stream);
-    printf("respuesta memoria: %s", respuesta->texto);
-    eliminarPaquete(paquete);
-    return NULL;
+    uint32_t direccionFisica = consultarDireccionFisica(tablaPaginasPrimerNivelPCB, direccion_logica);
+    void * dato = memoria_read(direccionFisica);
+    //leer direccion fisica en memoria y loggear dato
+    return dato;
 }
 
-void execute_write(u_int32_t direccion_logica, void * dato){
-    uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
-    t_mensaje * mensaje = malloc(sizeof(t_mensaje));
-    mensaje->texto=string_new();
-    string_append(&mensaje->texto,"Escribir dato");
-    mensaje->longitud=strlen(mensaje->texto)+1;
-    t_paquete * paquete = armarPaqueteCon(mensaje,REQ_ESCRIBIR_DIRECCION_LOGICA_CPU_MEMORIA);
-    enviarPaquete(paquete,socket_memoria);
-    eliminarPaquete(paquete);
+void execute_write(uint32_t direccion_logica, void * dato){
+    uint32_t direccionFisica = consultarDireccionFisica(tablaPaginasPrimerNivelPCB, direccion_logica);
+    memoria_write(direccionFisica, dato);
+}
 
-    //respuesta
-    paquete = recibirPaquete(socket_memoria);
-    if(paquete->codigo_operacion!=RES_ESCRIBIR_DIRECCION_LOGICA_MEMORIA_CPU){
-        perror("No se recibio el codigo de operacion esperado para traduccion de direcciones");
-        exit(EXIT_FAILURE);
-    }
-    t_mensaje* respuesta = deserializarMensaje(paquete->buffer->stream);
-    printf("respuesta memoria: %s", respuesta->texto);
-    eliminarPaquete(paquete);
+void * memoria_read(uint32_t direccion_fisica) {
+
+    uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
+
+    t_paquete * paquete = armarPaqueteCon(&direccion_fisica, REQ_READ_CPU_MEMORIA);
+    enviarPaquete(paquete,socket_memoria);
+    t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
+    void * dato;
+    //dato = deserializar(paqueteRespuesta);
+    return dato;
+}
+
+void memoria_write(uint32_t direccion_fisica, void * dato) {
+
+    uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
+    t_paquete * paquete = armarPaqueteCon(&direccion_fisica, REQ_WRITE_CPU_MEMORIA);
+    enviarPaquete(paquete,socket_memoria);
+    t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
 }

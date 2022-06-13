@@ -1,10 +1,6 @@
 {
     "folders": [
 		{
-			"name": "tp-2022-1c-recargadOS",
-			"path": "."
-		},
-		{
 			"name": "consola",
 			"path": "consola"
 		},
@@ -23,6 +19,12 @@
 		{
 			"name": "static",
 			"path": "static"
+		},
+		{
+			"path": "pruebas"
+		},
+		{
+			"path": "."
 		}
 	],
     "settings": {
@@ -44,7 +46,14 @@
 			"stdbool.h": "c",
 			"cspec.h": "c",
 			"liberarpuerto.h": "c",
-			"signal.h": "c"
+			"signal.h": "c",
+			"array": "c",
+			"string_view": "c",
+			"initializer_list": "c",
+			"utility": "c",
+			"math.h": "c",
+			"cmath": "c",
+			"string": "c"
 		}
     }
 }

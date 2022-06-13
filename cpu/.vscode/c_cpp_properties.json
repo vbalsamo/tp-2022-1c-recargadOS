@@ -5,6 +5,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/../static/include",
+                "${workspaceFolder}/include",
                 "${workspaceFolder}/include"
             ],
             "intelliSenseMode": "linux-gcc-x64",
