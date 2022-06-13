@@ -82,10 +82,11 @@ t_pcb * obtenerSiguienteAready(){
         else{
             pthread_mutex_lock(&mutex_estado_new);
             pcb = queue_pop(estado_new);
-            if(pcb->PC == 1) {
+            if(pcb->PC == 0) {
                 //TODO
                 //comunicar_memoria_
                 //creacion de espacio de memoria
+                //asignarEspacioDeMemoria(t_pcb * pcb)
                 //obtencion tabla pagina 1 nivel
                 
                 //pcb->tablaDePaginas = respuestaMemoria;
@@ -208,20 +209,17 @@ void hilo_block(){
         free(ultimoIO);
       }
 
-}
+}//REQ_CREAR_PROCESO_KERNEL_MEMORIA
 
-// void susp_Aready(){
-//     while(1){
-//         sem_wait(&sem_susp_ready);
-//         sem_wait(&sem_multiprogramacion);
-        
-//         t_pcb * pcb  = obtenerSiguienteAready();
-       
-//         //logica de prioridad
-//         addEstadoReady(pcb);
-//         //post new a ready
-//      }
-// }
+void crearProcesoMemoria(t_pcb * pcb){
+    int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
+    t_paquete * paqueteAmemoria = armarPaqueteCon(&(pcb->id), REQ_CREAR_PROCESO_KERNEL_MEMORIA);
+    enviarPaquete(paqueteAmemoria, socketMemoria);
+    t_paquete * paqueteRespuesta = recibirPaquete(socketMemoria);
+    uint32_t * tablaPaginas1erNivel = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
+    pcb->tablaDePaginas = *tablaPaginas1erNivel;
+    free(tablaPaginas1erNivel);
+}
 
 void comunicacionMemoria(t_pcb * pcb) {
     int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
@@ -229,6 +227,7 @@ void comunicacionMemoria(t_pcb * pcb) {
     enviarPaquete(paqueteAmemoria, socketMemoria);
     //CONSULTAR: Esperar confirmacion de Memoria?
 }
+
 t_pcb * algoritmoPlanificacion(){
     if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"FIFO")){
         log_info(logger, "se planifica fifo");
@@ -246,7 +245,7 @@ t_pcb * algoritmoPlanificacion(){
         char * error = string_new();
         string_append_with_format(&error,"Algoritmo de planificacion %s no soportado", ALGORITMO_PLANIFICACION);
         perror(error);
-        exit(1);
+        exit(-1);
     }
 
 }

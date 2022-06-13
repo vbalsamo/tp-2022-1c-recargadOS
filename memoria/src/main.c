@@ -15,7 +15,6 @@ void deserializarSegun(t_paquete* paquete, int socket){
             log_info(logger, "se solicita traducciones de direciones");
             t_traduccion_direcciones * traduccionDirecciones = malloc(sizeof(t_traduccion_direcciones));
             
-
             traduccionDirecciones->tamanio_pagina = TAM_PAGINA;
             traduccionDirecciones->paginas_por_tabla = PAGINAS_POR_TABLA;
             t_paquete* paquete = armarPaqueteCon(traduccionDirecciones, RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU);
@@ -23,24 +22,16 @@ void deserializarSegun(t_paquete* paquete, int socket){
             log_info(logger, "se envia traducciones de direciones");
 			break;
         }
-        case REQ_DATO_DIRECCION_LOGICA_CPU_MEMORIA:{
-            log_info(logger, "se solicita dato en direccion de memoria");
-            t_mensaje * mensaje = malloc(sizeof(t_mensaje));
-            mensaje->longitud = 12;
-            mensaje->texto = "IMPLEMENTAR";
-            t_paquete* paquete = armarPaqueteCon(mensaje, RES_DATO_DIRECCION_LOGICA_MEMORIA_CPU);
-            enviarPaquete(paquete,socket);
-            log_info(logger, "se envia dato en direccion de memoria");
-			break;
-        }
-        case REQ_ESCRIBIR_DIRECCION_LOGICA_CPU_MEMORIA:{
-            log_info(logger, "se solicita escribir dato en direccion de memoria");
-            t_mensaje * mensaje = malloc(sizeof(t_mensaje));
-            mensaje->longitud = 12;
-            mensaje->texto = "IMPLEMENTAR";
-            t_paquete* paquete = armarPaqueteCon(mensaje, RES_ESCRIBIR_DIRECCION_LOGICA_MEMORIA_CPU);
-            enviarPaquete(paquete,socket);
-            log_info(logger, "se escribio dato en direccion de memoria");
+        case REQ_CREAR_PROCESO_KERNEL_MEMORIA:{
+            log_info(logger, "se solicita crear proceso");
+            uint32_t tablaPaginas1erNivel;
+
+            //posta magic??
+            
+            t_paquete* paqueteRespuesta = armarPaqueteCon(tablaPaginas1erNivel, RES_CREAR_PROCESO_KERNEL_MEMORIA);
+            enviarPaquete(paqueteRespuesta,socket);
+            eliminarPaquete(paqueteRespuesta);
+            log_info(logger, "se envia tabla Paginas 1er Nivel");
 			break;
         }
         case REQ_FIN_PROCESO_KERNEL_MEMORIA:{
@@ -67,8 +58,10 @@ int main(int argc, char* argv[]) {
     char * IP = config_get_string_value(config, "IP");
     char * PUERTO_ESCUCHA = config_get_string_value(config, "PUERTO_ESCUCHA");
     TAM_PAGINA = config_get_int_value(config, "TAM_PAGINA");
+    TAM_PAGINA = config_get_int_value(config, "TAM_PAGINA");
     PAGINAS_POR_TABLA = config_get_int_value(config, "ENTRADAS_POR_TABLA");
     log_info(logger, "Variables de configuracion Leidas");
+
 
     int socket = iniciar_servidor(IP, PUERTO_ESCUCHA);
 
