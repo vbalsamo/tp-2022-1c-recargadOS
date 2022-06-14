@@ -53,7 +53,12 @@
 			"utility": "c",
 			"math.h": "c",
 			"cmath": "c",
-			"string": "c"
+			"string": "c",
+			"servidor.h": "c",
+			"string.h": "c",
+			"stdio.h": "c",
+			"server.h": "c",
+			"memoria.h": "c"
 		}
     }
 }

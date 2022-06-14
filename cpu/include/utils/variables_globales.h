@@ -14,6 +14,6 @@ int RETARDO_NOOP;
 int ENTRADAS_TLB;
 t_log * logger;
 bool hayInterrupcion;
-pthread_mutex_t * mutex_interrupcion;
+pthread_mutex_t mutex_interrupcion;
 t_traduccion_direcciones* traduccion_direcciones;
 #endif

@@ -7,6 +7,9 @@
     #include <commons/config.h>
     #include <commons/log.h>
     #include <utils/inicializacion.h>
-    #include <serializacion/estructuras.h>    
-    void deserializarSegun(t_paquete* paquete, int socket);
+    #include <serializacion/estructuras.h> 
+    #include <utils/variables_globales.h>
+    #include <utils/server.h>
+    #include <utils/memoria.h>
+    
 #endif
