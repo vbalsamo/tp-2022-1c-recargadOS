@@ -1,5 +1,5 @@
 # Libraries
-LIBS=pthread static commons
+LIBS=pthread static m commons
 
 # Custom libraries' paths
 SHARED_LIBPATHS=

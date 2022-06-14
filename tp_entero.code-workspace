@@ -58,7 +58,8 @@
 			"string.h": "c",
 			"stdio.h": "c",
 			"server.h": "c",
-			"memoria.h": "c"
+			"memoria.h": "c",
+			"bitarray.h": "c"
 		}
     }
 }

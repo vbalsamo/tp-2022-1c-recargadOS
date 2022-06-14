@@ -6,7 +6,10 @@
     #include <utils/variables_globales.h>
     #include <commons/string.h>
     #include <commons/collections/list.h>
-    
+    #include <commons/bitarray.h>
+    #include <math.h>
+    #include <string.h>
+    t_bitarray * bitarray;
     void * memoria;
     
     typedef struct{
@@ -15,7 +18,7 @@
     }t_tablas;
 
     t_tablas * tablas;
-
+    
     typedef struct{
         uint32_t tablaSegundoNivel;
     }t_entradaPrimerNivel;
@@ -27,5 +30,7 @@
         bool modificado;
     }t_entradaSegundoNivel;
     
+    char* asignar_bytes(int cant_frames);
     void iniciarEstructurasMemoria(void);
+    
 #endif
