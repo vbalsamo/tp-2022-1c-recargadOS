@@ -1,7 +1,5 @@
 #include <main.h>
 
-
-
 int main(int argc, char* argv[]) {
     logger = log_create("./memoria.log","memoria", true, LOG_LEVEL_TRACE);
     validarParametros(argc, argv);
@@ -14,6 +12,7 @@ int main(int argc, char* argv[]) {
     iniciarEstructurasMemoria();
     
     int socket = iniciar_servidor(IP, PUERTO_ESCUCHA);
+    inicializarEstructurasProceso(15);
     while(1){
         int socket_cliente = esperar_cliente(socket);
         log_info(logger, "se conecto cliente");
@@ -22,5 +21,6 @@ int main(int argc, char* argv[]) {
     }
     return 0;
 }
+
 
 

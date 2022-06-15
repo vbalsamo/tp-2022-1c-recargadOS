@@ -11,17 +11,20 @@
     #include <string.h>
     t_bitarray * bitarray;
     void * memoria;
-    
-    typedef struct{
-        t_list * tablasPrimerNivel;
-        t_list * tablasSegundoNivel;
-    }t_tablas;
+    t_list * tablasPrimerNivel;
+    t_list * tablasSegundoNivel;
 
-    t_tablas * tablas;
-    
+    typedef struct{
+        t_list * tabla;//(t_entradaPrimerNivel)
+    }t_tablaPrimerNivel;
+
     typedef struct{
         uint32_t tablaSegundoNivel;
     }t_entradaPrimerNivel;
+    
+    typedef struct{
+        t_list * tabla;//(t_entradaSegundoNivel)
+    }t_tablaSegundoNivel;
 
     typedef struct{
         uint32_t marco;
@@ -32,5 +35,6 @@
     
     char* asignar_bytes(int cant_frames);
     void iniciarEstructurasMemoria(void);
+    void inicializarEstructurasProceso(uint32_t tamanioProceso);
     
 #endif

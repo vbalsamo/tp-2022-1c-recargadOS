@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/memoria.out",
-            "args": ["/home/utnso/kiss-pruebas/BASE_MEMORIA.cfg"],
+            "args": ["${workspaceFolder}/config/memoria.cfg"],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}",
             "environment": [],
