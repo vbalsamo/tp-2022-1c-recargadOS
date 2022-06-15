@@ -31,7 +31,8 @@
 			"estructuras.h": "c",
 			"stdint.h": "c",
 			"array": "c",
-			"log.h": "c"
+			"log.h": "c",
+			"memoria.h": "c"
 		}
 	}
 }

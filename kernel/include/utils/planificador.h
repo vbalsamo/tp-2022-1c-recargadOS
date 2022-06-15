@@ -44,6 +44,8 @@
     void addEstadoSuspBlocked(t_IO * ultimoIO);
     void addEstadoSuspReady(t_pcb * pcb);
     void comunicacionCPU(t_pcb * pcb);
+    void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb);
+    void comunicacionMemoriaFinalizar(t_pcb *);
     t_pcb * planificacionFIFO();
     t_pcb * planificacionSRT();
     void newAready();
@@ -51,7 +53,7 @@
     void suspReadyAready();
     void ingresarANew(t_pcb * pcb);
     t_pcb * algoritmoPlanificacion();
-    void comunicacionMemoria(t_pcb *);
+    
     t_pcb * obtenerSiguienteAready();
     void interrumpirPCB();
     void ejecutarPCB(t_pcb * pcb);

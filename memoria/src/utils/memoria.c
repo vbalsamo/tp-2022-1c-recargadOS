@@ -25,52 +25,54 @@ void iniciarEstructurasMemoria(void) {
     tablasSegundoNivel = list_create();
 }
 //ENTRADAS_POR_TABLA
-void inicializarEstructurasProceso(uint32_t tamanioProceso){
+uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso){
     uint32_t paginasQueOcupa = (uint32_t) ceil((double)tamanioProceso / (double)TAM_PAGINA);
     //CANTIDAD DE ENTRADAS DE SEGUNDO NIVEL QUE NECESITA
-    
     uint32_t paginasDeSegundoNivelCompletas = (uint32_t) floor((double)paginasQueOcupa / (double)ENTRADAS_POR_TABLA);
-    //
     uint32_t entradasUltimaPaginaSegundoNivel = paginasQueOcupa % ENTRADAS_POR_TABLA;
-    t_tablaPrimerNivel * tablaPrimerNivel = malloc(sizeof(t_tablaPrimerNivel));
-    tablaPrimerNivel->tabla = list_create();
+
+    t_list * tablaPrimerNivel = list_create();
     if(paginasDeSegundoNivelCompletas > 0) {
         for(int i=0; i<paginasDeSegundoNivelCompletas;i++){
-            t_tablaSegundoNivel * tablaSegundoNivel = malloc(sizeof(t_tablaSegundoNivel ));
-            tablaSegundoNivel->tabla = list_create();
-
-            for(int j=0; j<ENTRADAS_POR_TABLA;j++){
-                t_entradaSegundoNivel * entrada = malloc(sizeof(t_entradaSegundoNivel));
-                list_add(tablaSegundoNivel->tabla, entrada);
-            }
-            
-            int indexTablaSegundoNivel = list_add(tablasSegundoNivel, tablaSegundoNivel);
-            t_entradaPrimerNivel * entrada = malloc(sizeof(t_entradaPrimerNivel)); 
-            entrada->tablaSegundoNivel = indexTablaSegundoNivel;
-            
-            list_add(tablaPrimerNivel->tabla, entrada);
+            t_entradaPrimerNivel * entrada = crearEntradaPrimerNivel(ENTRADAS_POR_TABLA);
+            list_add(tablaPrimerNivel, entrada);
         }
     }
-    int indexTablaPrimerNivel;
-    if((paginasQueOcupa % ENTRADAS_POR_TABLA)>0){
-        t_tablaSegundoNivel * tablaSegundoNivel = malloc(sizeof(t_tablaSegundoNivel ));
-        tablaSegundoNivel->tabla = list_create();
-
-        for(int j=0; j<entradasUltimaPaginaSegundoNivel;j++){
-            t_entradaSegundoNivel * entrada = malloc(sizeof(t_entradaSegundoNivel));
-            list_add(tablaSegundoNivel->tabla, entrada);
-        }
-        
-        int indexTablaSegundoNivel = list_add(tablasSegundoNivel, tablaSegundoNivel);
-        t_entradaPrimerNivel * entrada = malloc(sizeof(t_entradaPrimerNivel)); 
-        entrada->tablaSegundoNivel = indexTablaSegundoNivel;
-        
-        list_add(tablaPrimerNivel->tabla, entrada);
-            
+    if(paginasQueOcupa % ENTRADAS_POR_TABLA){
+        t_entradaPrimerNivel * entrada = crearEntradaPrimerNivel(entradasUltimaPaginaSegundoNivel);
+        list_add(tablaPrimerNivel, entrada)  ;
     }
-    indexTablaPrimerNivel = list_add(tablasPrimerNivel, tablaPrimerNivel);
+    uint32_t indexTablaPrimerNivel = list_add(tablasPrimerNivel, tablaPrimerNivel);
     
     log_info(logger, "index: %d",indexTablaPrimerNivel);
-    
+    return indexTablaPrimerNivel;
+}
 
+t_entradaSegundoNivel * crearEntradaSegundoNivel() {
+    t_entradaSegundoNivel * entrada = malloc(sizeof(t_entradaSegundoNivel));
+    entrada->marco = 0;
+    entrada->modificado = false;
+    entrada->presencia = false;
+    entrada->uso = false;
+
+    return entrada;
+
+}
+
+t_list * crearTablaSegundoNivel(int entradas) {
+    t_list * tabla = list_create();
+    for(int j=0; j<entradas;j++){
+        t_entradaSegundoNivel * entrada = crearEntradaSegundoNivel();
+        list_add(tabla, entrada);
+    }
+
+    return tabla;
+}
+
+t_entradaPrimerNivel * crearEntradaPrimerNivel(int entradasSegundoNivel) {
+    t_list * tablaSegundoNivel = crearTablaSegundoNivel(entradasSegundoNivel);
+    t_entradaPrimerNivel * entrada = malloc(sizeof(t_entradaPrimerNivel)); 
+    entrada->tablaSegundoNivel = list_add(tablasSegundoNivel, tablaSegundoNivel);
+
+    return entrada;
 }

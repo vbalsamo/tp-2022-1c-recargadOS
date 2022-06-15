@@ -83,13 +83,7 @@ t_pcb * obtenerSiguienteAready(){
             pthread_mutex_lock(&mutex_estado_new);
             pcb = queue_pop(estado_new);
             if(pcb->PC == 0) {
-                //TODO
-                //comunicar_memoria_
-                //creacion de espacio de memoria
-                //asignarEspacioDeMemoria(t_pcb * pcb)
-                //obtencion tabla pagina 1 nivel
-                
-                //pcb->tablaDePaginas = respuestaMemoria;
+                comunicacionMemoriaCreacionEstructuras(pcb);
             }
 
             pthread_mutex_unlock(&mutex_estado_new);
@@ -163,7 +157,7 @@ void execAexit(t_pcb * pcb){
     };
     t_consola * consolaAnotificar;
     
-    comunicacionMemoria(pcb);
+    comunicacionMemoriaFinalizar(pcb);
 
     pthread_mutex_lock(&mutex_consolas_conectadas);
     consolaAnotificar = list_remove_by_condition(consolas_conectadas, filtro);
@@ -211,17 +205,19 @@ void hilo_block(){
 
 }//REQ_CREAR_PROCESO_KERNEL_MEMORIA
 
-void crearProcesoMemoria(t_pcb * pcb){
+void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
     int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
     t_paquete * paqueteAmemoria = armarPaqueteCon(&(pcb->id), REQ_CREAR_PROCESO_KERNEL_MEMORIA);
     enviarPaquete(paqueteAmemoria, socketMemoria);
     t_paquete * paqueteRespuesta = recibirPaquete(socketMemoria);
     uint32_t * tablaPaginas1erNivel = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
     pcb->tablaDePaginas = *tablaPaginas1erNivel;
+    log_info(logger, "pcbid: %d se le asigna tabla de paginas primer nivel: %d", pcb->id, *tablaPaginas1erNivel);
     free(tablaPaginas1erNivel);
+
 }
 
-void comunicacionMemoria(t_pcb * pcb) {
+void comunicacionMemoriaFinalizar(t_pcb * pcb) {
     int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
     t_paquete * paqueteAmemoria = armarPaqueteCon(&(pcb->id), REQ_FIN_PROCESO_KERNEL_MEMORIA);
     enviarPaquete(paqueteAmemoria, socketMemoria);

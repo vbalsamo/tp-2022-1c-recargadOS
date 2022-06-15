@@ -314,6 +314,12 @@ void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 			return serializarUINT32_T(stream,estructura);
 			break;
 		}
+		case REQ_CREAR_PROCESO_KERNEL_MEMORIA:{
+			return serializarPCB(stream,estructura,0);
+		}
+		case RES_CREAR_PROCESO_KERNEL_MEMORIA:{
+			return serializarUINT32_T(stream,estructura);
+		}
 		default:
 			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
 			exit(EXIT_FAILURE);
@@ -371,6 +377,13 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 		case REQ_FIN_PROCESO_KERNEL_MEMORIA:{
 			return sizeof(uint32_t);
 			break;
+		}
+		case REQ_CREAR_PROCESO_KERNEL_MEMORIA:{
+			t_pcb * pcb = (t_pcb *) estructura; 
+			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
+		}
+		case RES_CREAR_PROCESO_KERNEL_MEMORIA:{
+			return sizeof(uint32_t);
 		}
 		default:
 			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);

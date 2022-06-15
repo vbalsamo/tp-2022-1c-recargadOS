@@ -16,10 +16,10 @@ void deserializarSegun(t_paquete* paquete, int socket){
         }
         case REQ_CREAR_PROCESO_KERNEL_MEMORIA:{
             log_info(logger, "se solicita crear proceso");
-            uint32_t tablaPaginas1erNivel;
+            
             t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
-            inicializarEstructurasProceso(pcb->tamanioProceso);
-            t_paquete* paqueteRespuesta = armarPaqueteCon(tablaPaginas1erNivel, RES_CREAR_PROCESO_KERNEL_MEMORIA);
+            uint32_t tablaPaginas1erNivel = inicializarEstructurasProceso(pcb->tamanioProceso);
+            t_paquete* paqueteRespuesta = armarPaqueteCon(&tablaPaginas1erNivel, RES_CREAR_PROCESO_KERNEL_MEMORIA);
             enviarPaquete(paqueteRespuesta,socket);
             eliminarPaquete(paqueteRespuesta);
             log_info(logger, "se envia tabla Paginas 1er Nivel");

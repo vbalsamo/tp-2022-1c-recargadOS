@@ -35,6 +35,9 @@
     
     char* asignar_bytes(int cant_frames);
     void iniciarEstructurasMemoria(void);
-    void inicializarEstructurasProceso(uint32_t tamanioProceso);
+    t_entradaSegundoNivel * crearEntradaSegundoNivel();
+    t_entradaPrimerNivel * crearEntradaPrimerNivel(int entradasSegundoNivel);
+    t_list * crearTablaSegundoNivel(int entradas);
+    uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso);
     
 #endif
