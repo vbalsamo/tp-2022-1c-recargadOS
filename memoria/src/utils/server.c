@@ -26,8 +26,10 @@ void deserializarSegun(t_paquete* paquete, int socket){
 			break;
         }
         case REQ_FIN_PROCESO_KERNEL_MEMORIA:{
-            uint32_t * id = deserializarUINT32_T(paquete->buffer->stream);
-            log_info(logger, "se solicita borrar memora y swap del proceso: %d", *id);
+            t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
+            //eliminar pcb->id.swap
+            eliminarMarcos(pcb->tablaDePaginas);
+            log_info(logger, "se solicita borrar memoria y swap del proceso: %d", *id);
         }
 		default:{
             break;

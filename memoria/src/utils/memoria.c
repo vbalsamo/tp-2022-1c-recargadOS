@@ -50,13 +50,13 @@ uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso){
 
 t_entradaSegundoNivel * crearEntradaSegundoNivel() {
     t_entradaSegundoNivel * entrada = malloc(sizeof(t_entradaSegundoNivel));
-    entrada->marco = 0;
+    entrada->marco = marco++;
+    //entrada->marco = 0;
     entrada->modificado = false;
     entrada->presencia = false;
     entrada->uso = false;
 
     return entrada;
-
 }
 
 t_list * crearTablaSegundoNivel(int entradas) {
@@ -65,7 +65,6 @@ t_list * crearTablaSegundoNivel(int entradas) {
         t_entradaSegundoNivel * entrada = crearEntradaSegundoNivel();
         list_add(tabla, entrada);
     }
-
     return tabla;
 }
 
@@ -75,4 +74,10 @@ t_entradaPrimerNivel * crearEntradaPrimerNivel(int entradasSegundoNivel) {
     entrada->tablaSegundoNivel = list_add(tablasSegundoNivel, tablaSegundoNivel);
 
     return entrada;
+}
+
+void eliminarMarcos(int tablaPrimerNivel) {
+    t_list * tablaPrimerNivel = list_get(tablasPrimerNivel, tablaPrimerNivel);
+
+    list_iterate();
 }

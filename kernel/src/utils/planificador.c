@@ -57,8 +57,6 @@ void Aready(){
         if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"SRT")){
             interrumpirPCB();
         }
-        
-        
         sem_post(&sem_ready);
         
         
@@ -82,10 +80,7 @@ t_pcb * obtenerSiguienteAready(){
         else{
             pthread_mutex_lock(&mutex_estado_new);
             pcb = queue_pop(estado_new);
-            if(pcb->PC == 0) {
-                comunicacionMemoriaCreacionEstructuras(pcb);
-            }
-
+            comunicacionMemoriaCreacionEstructuras(pcb);
             pthread_mutex_unlock(&mutex_estado_new);
             return pcb;
         }
@@ -219,7 +214,7 @@ void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
 
 void comunicacionMemoriaFinalizar(t_pcb * pcb) {
     int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
-    t_paquete * paqueteAmemoria = armarPaqueteCon(&(pcb->id), REQ_FIN_PROCESO_KERNEL_MEMORIA);
+    t_paquete * paqueteAmemoria = armarPaqueteCon(pcb, REQ_FIN_PROCESO_KERNEL_MEMORIA);
     enviarPaquete(paqueteAmemoria, socketMemoria);
     //CONSULTAR: Esperar confirmacion de Memoria?
 }
@@ -259,11 +254,7 @@ void inicializarPlanificacion(){
     pthread_t hiloblock;
     pthread_create(&hiloblock, NULL, (void*) hilo_block, NULL);
     pthread_detach(hiloblock);
-
-    // pthread_t hilo_Susp_Aready;
-    // pthread_create(&hilo_Susp_Aready, NULL, (void*) susp_Aready, NULL);
-    // pthread_detach(hilo_Susp_Aready);
-    
+   
 }
 
 t_pcb * planificacionFIFO(){
