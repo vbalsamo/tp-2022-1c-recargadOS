@@ -10,7 +10,7 @@
     #include <math.h>
     #include <string.h>
     t_bitarray * bitarray;
-    int marco=0;
+    int marco;
     void * memoria;
     t_list * tablasPrimerNivel;
     t_list * tablasSegundoNivel;
@@ -40,5 +40,8 @@
     t_entradaPrimerNivel * crearEntradaPrimerNivel(int entradasSegundoNivel);
     t_list * crearTablaSegundoNivel(int entradas);
     uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso);
-    void eliminarMarcos(int tablaPrimerNivel);
+    void eliminarMarcos(int indexTablaPrimerNivel);
+    void eliminarEntradaSegundoNivel(void * entrada);
+    void eliminarEntradaPrimerNivel(void * entrada);
+    
 #endif

@@ -16,15 +16,21 @@ char* asignar_bytes(int cant_frames) {
 }
 
 void iniciarEstructurasMemoria(void) {
+    marco=0;
     memoria = malloc(TAM_MEMORIA);
     uint32_t CANTIDAD_FRAMES = TAM_MEMORIA/TAM_PAGINA;
     char * bitarrayy = asignar_bytes(CANTIDAD_FRAMES);
-    bitarray = bitarray_create(bitarrayy,1);
+    bitarray = bitarray_create(bitarrayy,CANTIDAD_FRAMES/8);
+    for(int i=0; i<CANTIDAD_FRAMES; i++) {
+        bitarray_set_bit(bitarray,i);
+        //bool test = bitarray_test_bit(bitarray,i);
+    }
+
 
     tablasPrimerNivel = list_create();
     tablasSegundoNivel = list_create();
 }
-//ENTRADAS_POR_TABLA
+
 uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso){
     uint32_t paginasQueOcupa = (uint32_t) ceil((double)tamanioProceso / (double)TAM_PAGINA);
     //CANTIDAD DE ENTRADAS DE SEGUNDO NIVEL QUE NECESITA
@@ -36,11 +42,13 @@ uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso){
         for(int i=0; i<paginasDeSegundoNivelCompletas;i++){
             t_entradaPrimerNivel * entrada = crearEntradaPrimerNivel(ENTRADAS_POR_TABLA);
             list_add(tablaPrimerNivel, entrada);
+            log_info(logger, "creada tabla de primer nivel");
         }
     }
     if(paginasQueOcupa % ENTRADAS_POR_TABLA){
         t_entradaPrimerNivel * entrada = crearEntradaPrimerNivel(entradasUltimaPaginaSegundoNivel);
-        list_add(tablaPrimerNivel, entrada)  ;
+        list_add(tablaPrimerNivel, entrada);
+        log_info(logger, "creada tabla de primer nivel incompleta");
     }
     uint32_t indexTablaPrimerNivel = list_add(tablasPrimerNivel, tablaPrimerNivel);
     
@@ -53,7 +61,8 @@ t_entradaSegundoNivel * crearEntradaSegundoNivel() {
     entrada->marco = marco++;
     //entrada->marco = 0;
     entrada->modificado = false;
-    entrada->presencia = false;
+    //entrada->presencia = false;
+    entrada->presencia = true;
     entrada->uso = false;
 
     return entrada;
@@ -65,6 +74,7 @@ t_list * crearTablaSegundoNivel(int entradas) {
         t_entradaSegundoNivel * entrada = crearEntradaSegundoNivel();
         list_add(tabla, entrada);
     }
+    log_info(logger, "creada tabla de 2do nivel");
     return tabla;
 }
 
@@ -75,9 +85,29 @@ t_entradaPrimerNivel * crearEntradaPrimerNivel(int entradasSegundoNivel) {
 
     return entrada;
 }
+//  typedef struct{
+//         uint32_t marco;
+//         bool presencia;
+//         bool uso;
+//         bool modificado;
+//     }t_entradaSegundoNivel;
 
-void eliminarMarcos(int tablaPrimerNivel) {
-    t_list * tablaPrimerNivel = list_get(tablasPrimerNivel, tablaPrimerNivel);
+void eliminarEntradaSegundoNivel(void * entrada) { 
+    if (((t_entradaSegundoNivel *)entrada)->presencia) {
+        log_info(logger, "bit:%d valor:%d",((t_entradaSegundoNivel *)entrada)->marco, bitarray_test_bit(bitarray, ((t_entradaSegundoNivel *)entrada)->marco));
+        bitarray_clean_bit(bitarray, ((t_entradaSegundoNivel *)entrada)->marco);
+        log_info(logger, "bit:%d valor:%d",((t_entradaSegundoNivel *)entrada)->marco, bitarray_test_bit(bitarray, ((t_entradaSegundoNivel *)entrada)->marco));
+    }
+}
 
-    list_iterate();
+void eliminarEntradaPrimerNivel(void * entrada) {
+    log_info(logger, "eliminado tabla de segundo nivel index:%d", ((t_entradaPrimerNivel*)entrada)->tablaSegundoNivel);
+    t_list * tablaSegundoNivel = list_get(tablasSegundoNivel, ((t_entradaPrimerNivel*)entrada)->tablaSegundoNivel);
+    list_iterate(tablaSegundoNivel, eliminarEntradaSegundoNivel);
+}
+
+void eliminarMarcos(int indexTablaPrimerNivel) {
+    log_info(logger, "eliminando tablas de primer nivel index: %d",indexTablaPrimerNivel);
+    t_list * tablaPrimerNivel = list_get(tablasPrimerNivel, indexTablaPrimerNivel);
+    list_iterate(tablaPrimerNivel, eliminarEntradaPrimerNivel);
 }

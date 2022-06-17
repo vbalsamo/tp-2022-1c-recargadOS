@@ -18,8 +18,9 @@ void deserializarSegun(t_paquete* paquete, int socket){
             log_info(logger, "se solicita crear proceso");
             
             t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
-            uint32_t tablaPaginas1erNivel = inicializarEstructurasProceso(pcb->tamanioProceso);
-            t_paquete* paqueteRespuesta = armarPaqueteCon(&tablaPaginas1erNivel, RES_CREAR_PROCESO_KERNEL_MEMORIA);
+            uint32_t * tablaPaginas1erNivel = malloc(sizeof(uint32_t));
+            * tablaPaginas1erNivel = inicializarEstructurasProceso(pcb->tamanioProceso);
+            t_paquete* paqueteRespuesta = armarPaqueteCon(tablaPaginas1erNivel, RES_CREAR_PROCESO_KERNEL_MEMORIA);
             enviarPaquete(paqueteRespuesta,socket);
             eliminarPaquete(paqueteRespuesta);
             log_info(logger, "se envia tabla Paginas 1er Nivel");
@@ -29,7 +30,7 @@ void deserializarSegun(t_paquete* paquete, int socket){
             t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
             //eliminar pcb->id.swap
             eliminarMarcos(pcb->tablaDePaginas);
-            log_info(logger, "se solicita borrar memoria y swap del proceso: %d", *id);
+            log_info(logger, "se solicita borrar memoria y swap del proceso: %d", pcb->id);
         }
 		default:{
             break;
