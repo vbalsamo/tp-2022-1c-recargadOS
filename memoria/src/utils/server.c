@@ -21,6 +21,7 @@ void deserializarSegun(t_paquete* paquete, int socket){
             uint32_t * tablaPaginas1erNivel = malloc(sizeof(uint32_t));
             * tablaPaginas1erNivel = inicializarEstructurasProceso(pcb->tamanioProceso);
             t_paquete* paqueteRespuesta = armarPaqueteCon(tablaPaginas1erNivel, RES_CREAR_PROCESO_KERNEL_MEMORIA);
+            crearArchivoSwap(pcb->id, pcb->tamanioProceso);
             enviarPaquete(paqueteRespuesta,socket);
             eliminarPaquete(paqueteRespuesta);
             log_info(logger, "se envia tabla Paginas 1er Nivel");
@@ -30,8 +31,23 @@ void deserializarSegun(t_paquete* paquete, int socket){
             t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
             //eliminar pcb->id.swap
             eliminarMarcos(pcb->tablaDePaginas);
+            eliminarArchivoSwap(pcb -> id);
+            freePCB(pcb);
             log_info(logger, "se solicita borrar memoria y swap del proceso: %d", pcb->id);
         }
+
+        case REQ_SUSP_PROCESO_KERNEL_MEMORIA:{
+            t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
+            suspenderProceso(pcb);
+            freePCB(pcb);
+        }
+        case REQ_DESUSP_PROCESO_KERNEL_MEMORIA:{
+            t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
+            desuspenderProceso(pcb);
+            //RESPUESTA A KERNEL
+            freePCB(pcb);
+        }
+        
 		default:{
             break;
         }

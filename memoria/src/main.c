@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
     log_info(logger, "Variables de configuracion Leidas");
 
     iniciarEstructurasMemoria();
-    
+
     int socket = iniciar_servidor(IP, PUERTO_ESCUCHA);
     
     while(1){

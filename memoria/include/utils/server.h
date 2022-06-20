@@ -10,6 +10,7 @@
     #include <serializacion/estructuras.h> 
     #include <utils/variables_globales.h>
     #include <utils/memoria.h>
+    #include <utils/swap.h>
     
     
     

@@ -72,6 +72,7 @@ t_pcb * obtenerSiguienteAready(){
     log_info(logger, "PCBS EN SUSP_READY: %d \n", queue_size(estado_susp_ready));
     
     	if(!queue_is_empty(estado_susp_ready)){
+            comunicacionMemoriaDesuspender(pcb);
             pthread_mutex_lock(&mutex_estado_susp_ready);
     		pcb = queue_pop(estado_susp_ready);
             pthread_mutex_unlock(&mutex_estado_susp_ready);
@@ -183,6 +184,7 @@ void hilo_block(){
             usleep(TIEMPO_MAXIMO_BLOQUEADO);
             // Hablar memoria, lo swapeamos
             //addEstadoSuspBlocked(ultimoIO->pcb);
+            comunicacionMemoriaSuspender(ultimoIO->pcb);
             sem_post(&sem_multiprogramacion);
             log_info(logger, "pcb: %d ejecutando IO restante de: %d milisegundos", ultimoIO->pcb->id, (ultimoIOenMicroseg - TIEMPO_MAXIMO_BLOQUEADO) / 1000);
             usleep(ultimoIOenMicroseg - TIEMPO_MAXIMO_BLOQUEADO);
@@ -200,10 +202,34 @@ void hilo_block(){
 
 }//REQ_CREAR_PROCESO_KERNEL_MEMORIA
 
+void comunicacionMemoriaSuspender(t_pcb * pcb){
+    int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
+    t_paquete * paqueteAmemoria = armarPaqueteCon(pcb, REQ_SUSP_PROCESO_KERNEL_MEMORIA);
+    enviarPaquete(paqueteAmemoria, socketMemoria);
+    eliminarPaquete(paqueteAmemoria);
+    //respuesta?
+  
+}
+
+void comunicacionMemoriaDesuspender(t_pcb * pcb){
+    int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
+    t_paquete * paqueteAmemoria = armarPaqueteCon(pcb, REQ_DESUSP_PROCESO_KERNEL_MEMORIA);
+    enviarPaquete(paqueteAmemoria, socketMemoria);
+    eliminarPaquete(paqueteAmemoria);
+
+    //esperamos respuesta??
+    t_paquete * paqueteRespuesta = recibirPaquete(socketMemoria);
+    uint32_t * tablaPaginas1erNivel = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
+    pcb->tablaDePaginas = *tablaPaginas1erNivel;
+    log_info(logger, "pcbid: %d se le asigna tabla de paginas primer nivel: %d", pcb->id, *tablaPaginas1erNivel);
+    free(tablaPaginas1erNivel);
+}
+
 void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
     int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
     t_paquete * paqueteAmemoria = armarPaqueteCon(pcb, REQ_CREAR_PROCESO_KERNEL_MEMORIA);
     enviarPaquete(paqueteAmemoria, socketMemoria);
+    eliminarPaquete(paqueteAmemoria);
     t_paquete * paqueteRespuesta = recibirPaquete(socketMemoria);
     uint32_t * tablaPaginas1erNivel = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
     pcb->tablaDePaginas = *tablaPaginas1erNivel;
@@ -216,6 +242,7 @@ void comunicacionMemoriaFinalizar(t_pcb * pcb) {
     int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
     t_paquete * paqueteAmemoria = armarPaqueteCon(pcb, REQ_FIN_PROCESO_KERNEL_MEMORIA);
     enviarPaquete(paqueteAmemoria, socketMemoria);
+    eliminarPaquete(paqueteAmemoria);
     //CONSULTAR: Esperar confirmacion de Memoria?
 }
 

@@ -18,6 +18,7 @@ void incializarVariablesGlobales(char * pathConfig) {
     MARCOS_POR_PROCESO = config_get_int_value(config, "MARCOS_POR_PROCESO");
     RETARDO_SWAP = config_get_int_value(config, "RETARDO_SWAP");
     PATH_SWAP = config_get_string_value(config, "PATH_SWAP");
+    CANTIDAD_FRAMES = TAM_MEMORIA/TAM_PAGINA;
 }
 
 void eliminarVariablesGlobales(char * pathConfig) {

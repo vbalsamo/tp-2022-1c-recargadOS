@@ -46,6 +46,8 @@
     void comunicacionCPU(t_pcb * pcb);
     void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb);
     void comunicacionMemoriaFinalizar(t_pcb *);
+    void comunicacionMemoriaDesuspender(t_pcb * pcb);
+    void comunicacionMemoriaSuspender(t_pcb * pcb);
     t_pcb * planificacionFIFO();
     t_pcb * planificacionSRT();
     void newAready();
@@ -57,5 +59,7 @@
     t_pcb * obtenerSiguienteAready();
     void interrumpirPCB();
     void ejecutarPCB(t_pcb * pcb);
-    
+    void comunicacionMemoriaDesuspender(t_pcb * pcb);
+    void comunicacionMemoriaSuspender(t_pcb * pcb);
+        
 #endif

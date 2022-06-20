@@ -18,7 +18,6 @@ char* asignar_bytes(int cant_frames) {
 void iniciarEstructurasMemoria(void) {
     marco=0;
     memoria = malloc(TAM_MEMORIA);
-    uint32_t CANTIDAD_FRAMES = TAM_MEMORIA/TAM_PAGINA;
     char * bitarrayy = asignar_bytes(CANTIDAD_FRAMES);
     bitarray = bitarray_create(bitarrayy,CANTIDAD_FRAMES/8);
     for(int i=0; i<CANTIDAD_FRAMES; i++) {
@@ -31,8 +30,12 @@ void iniciarEstructurasMemoria(void) {
     tablasSegundoNivel = list_create();
 }
 
+uint32_t marcosProceso(uint32_t tamanioProceso) {
+    return (uint32_t) ceil((double)tamanioProceso / (double)TAM_PAGINA);
+}
+
 uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso){
-    uint32_t marcosQueOcupa = (uint32_t) ceil((double)tamanioProceso / (double)TAM_PAGINA);
+    uint32_t marcosQueOcupa = marcosProceso(tamanioProceso);
     //CANTIDAD DE ENTRADAS DE SEGUNDO NIVEL QUE NECESITA
     uint32_t paginasDeSegundoNivelCompletas = (uint32_t) floor((double)marcosQueOcupa / (double)ENTRADAS_POR_TABLA);
     uint32_t entradasUltimaPaginaSegundoNivel = marcosQueOcupa % ENTRADAS_POR_TABLA;
@@ -53,6 +56,7 @@ uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso){
     uint32_t indexTablaPrimerNivel = list_add(tablasPrimerNivel, tablaPrimerNivel);
     
     log_info(logger, "index: %d",indexTablaPrimerNivel);
+
     return indexTablaPrimerNivel;
 }
 
@@ -94,9 +98,9 @@ t_entradaPrimerNivel * crearEntradaPrimerNivel(int entradasSegundoNivel) {
 
 void eliminarEntradaSegundoNivel(void * entrada) { 
     if (((t_entradaSegundoNivel *)entrada)->presencia) {
-        log_info(logger, "bit:%d valor:%d",((t_entradaSegundoNivel *)entrada)->marco, bitarray_test_bit(bitarray, ((t_entradaSegundoNivel *)entrada)->marco));
+        //log_info(logger, "bit:%d valor:%d",((t_entradaSegundoNivel *)entrada)->marco, bitarray_test_bit(bitarray, ((t_entradaSegundoNivel *)entrada)->marco));
         bitarray_clean_bit(bitarray, ((t_entradaSegundoNivel *)entrada)->marco);
-        log_info(logger, "bit:%d valor:%d",((t_entradaSegundoNivel *)entrada)->marco, bitarray_test_bit(bitarray, ((t_entradaSegundoNivel *)entrada)->marco));
+        //log_info(logger, "bit:%d valor:%d",((t_entradaSegundoNivel *)entrada)->marco, bitarray_test_bit(bitarray, ((t_entradaSegundoNivel *)entrada)->marco));
     }
 }
 

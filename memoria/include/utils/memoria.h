@@ -33,15 +33,16 @@
         bool uso;
         bool modificado;
     }t_entradaSegundoNivel;
-    
     char* asignar_bytes(int cant_frames);
     void iniciarEstructurasMemoria(void);
     t_entradaSegundoNivel * crearEntradaSegundoNivel();
     t_entradaPrimerNivel * crearEntradaPrimerNivel(int entradasSegundoNivel);
     t_list * crearTablaSegundoNivel(int entradas);
+    uint32_t marcosProceso(uint32_t tamanioProceso);
     uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso);
     void eliminarMarcos(int indexTablaPrimerNivel);
     void eliminarEntradaSegundoNivel(void * entrada);
     void eliminarEntradaPrimerNivel(void * entrada);
+    
     
 #endif

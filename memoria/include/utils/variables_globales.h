@@ -15,5 +15,5 @@
     uint32_t MARCOS_POR_PROCESO;
     uint32_t RETARDO_SWAP;
     char * PATH_SWAP;
-
+    uint32_t CANTIDAD_FRAMES;
 #endif
