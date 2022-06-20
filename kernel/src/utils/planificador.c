@@ -202,7 +202,7 @@ void hilo_block(){
 
 void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
     int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
-    t_paquete * paqueteAmemoria = armarPaqueteCon(&(pcb->id), REQ_CREAR_PROCESO_KERNEL_MEMORIA);
+    t_paquete * paqueteAmemoria = armarPaqueteCon(pcb, REQ_CREAR_PROCESO_KERNEL_MEMORIA);
     enviarPaquete(paqueteAmemoria, socketMemoria);
     t_paquete * paqueteRespuesta = recibirPaquete(socketMemoria);
     uint32_t * tablaPaginas1erNivel = deserializarUINT32_T(paqueteRespuesta->buffer->stream);

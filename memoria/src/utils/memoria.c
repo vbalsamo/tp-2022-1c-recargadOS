@@ -32,10 +32,10 @@ void iniciarEstructurasMemoria(void) {
 }
 
 uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso){
-    uint32_t paginasQueOcupa = (uint32_t) ceil((double)tamanioProceso / (double)TAM_PAGINA);
+    uint32_t marcosQueOcupa = (uint32_t) ceil((double)tamanioProceso / (double)TAM_PAGINA);
     //CANTIDAD DE ENTRADAS DE SEGUNDO NIVEL QUE NECESITA
-    uint32_t paginasDeSegundoNivelCompletas = (uint32_t) floor((double)paginasQueOcupa / (double)ENTRADAS_POR_TABLA);
-    uint32_t entradasUltimaPaginaSegundoNivel = paginasQueOcupa % ENTRADAS_POR_TABLA;
+    uint32_t paginasDeSegundoNivelCompletas = (uint32_t) floor((double)marcosQueOcupa / (double)ENTRADAS_POR_TABLA);
+    uint32_t entradasUltimaPaginaSegundoNivel = marcosQueOcupa % ENTRADAS_POR_TABLA;
 
     t_list * tablaPrimerNivel = list_create();
     if(paginasDeSegundoNivelCompletas > 0) {
@@ -45,7 +45,7 @@ uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso){
             log_info(logger, "creada tabla de primer nivel");
         }
     }
-    if(paginasQueOcupa % ENTRADAS_POR_TABLA){
+    if(entradasUltimaPaginaSegundoNivel>0){
         t_entradaPrimerNivel * entrada = crearEntradaPrimerNivel(entradasUltimaPaginaSegundoNivel);
         list_add(tablaPrimerNivel, entrada);
         log_info(logger, "creada tabla de primer nivel incompleta");
