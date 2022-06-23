@@ -16,8 +16,9 @@ char* asignar_bytes(int cant_frames) {
 }
 
 void iniciarEstructurasMemoria(void) {
-    marco=0;
-    memoria = malloc(TAM_MEMORIA);
+    numeroMarco=0;
+    memoria =string_repeat('X', TAM_MEMORIA);
+    //memoria =malloc(TAM_MEMORIA);
     char * bitarrayy = asignar_bytes(CANTIDAD_FRAMES);
     bitarray = bitarray_create(bitarrayy,CANTIDAD_FRAMES/8);
     for(int i=0; i<CANTIDAD_FRAMES; i++) {
@@ -69,11 +70,12 @@ uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso){
 
 t_entradaSegundoNivel * crearEntradaSegundoNivel() {
     t_entradaSegundoNivel * entrada = malloc(sizeof(t_entradaSegundoNivel));
-    entrada->marco = marco++;
+    bool random = numeroMarco%2;
+    entrada->marco = numeroMarco++;
     //entrada->marco = 0;
-    entrada->modificado = false;
+    entrada->modificado = random;
     //entrada->presencia = false;
-    entrada->presencia = true;
+    entrada->presencia = random;
     entrada->uso = false;
 
     return entrada;
@@ -128,7 +130,7 @@ void swapearEntradaSegundoNivel(void * entrada) {
     if (entradaSegundoNivel->presencia && entradaSegundoNivel->modificado) {
         void * marco = leerMarco(entradaSegundoNivel->marco);
         //chequear que el PCB_ID glonal en memoria funcione bien
-        escribirMarcoSwap(marco, entradaSegundoNivel->marco, PCB_ID);
+        escribirMarcoSwap(marco, entradaSegundoNivel->paginaSwap, PCB_ID);
         bitarray_clean_bit(bitarray, entradaSegundoNivel->marco);
     }
 }

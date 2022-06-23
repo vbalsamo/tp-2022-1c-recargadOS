@@ -33,7 +33,9 @@
 			"array": "c",
 			"log.h": "c",
 			"memoria.h": "c",
-			"cmath": "c"
+			"cmath": "c",
+			"string": "c",
+			"random": "c"
 		}
 	}
 }

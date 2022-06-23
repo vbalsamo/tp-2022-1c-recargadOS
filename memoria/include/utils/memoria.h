@@ -3,6 +3,7 @@
 
     #include <stdlib.h>
     #include <stdio.h>
+    #include <stdlib.h>
     #include <utils/variables_globales.h>
     #include <utils/swap.h>
     #include <serializacion/estructuras.h>
@@ -12,7 +13,7 @@
     #include <math.h>
     #include <string.h>
     t_bitarray * bitarray;
-    int marco;
+    int numeroMarco;
     void * memoria;
     uint32_t PCB_ID;
     t_list * tablasPrimerNivel;
@@ -35,6 +36,7 @@
         bool presencia;
         bool uso;
         bool modificado;
+        uint32_t paginaSwap;
     }t_entradaSegundoNivel;
     char* asignar_bytes(int cant_frames);
     void iniciarEstructurasMemoria(void);

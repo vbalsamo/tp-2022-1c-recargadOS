@@ -21,16 +21,15 @@ void eliminarArchivoSwap(uint32_t id){
     free(nombreArchivo);
 }
 
-void escribirMarcoSwap(void * contenidoMarco, uint32_t numeroMarco, uint32_t id) {
+void escribirMarcoSwap(void * contenidoMarco, uint32_t numeroPagina, uint32_t id) {
     sleep(RETARDO_SWAP);
     char * nombreArchivo =obtnerPathSwap(id);
-    int desplazamiento = numeroMarco * TAM_PAGINA;
+    int desplazamiento = numeroPagina * TAM_PAGINA;
     FILE * archivo = fopen(nombreArchivo, "w+");
     fseek(archivo, desplazamiento, SEEK_SET);
     fwrite(contenidoMarco, sizeof(char) , TAM_PAGINA, archivo);
     free(nombreArchivo);
     fclose(archivo);
-
 }
 
 void desuspenderProceso(t_pcb * pcb){

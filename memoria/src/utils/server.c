@@ -30,6 +30,7 @@ void deserializarSegun(t_paquete* paquete, int socket){
         case REQ_FIN_PROCESO_KERNEL_MEMORIA:{
             t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
             //eliminar pcb->id.swap
+            suspenderProceso(pcb);
             eliminarMarcos(pcb->tablaDePaginas);
             eliminarArchivoSwap(pcb -> id);
             freePCB(pcb);
