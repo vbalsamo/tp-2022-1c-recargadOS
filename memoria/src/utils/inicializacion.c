@@ -16,7 +16,7 @@ void incializarVariablesGlobales(char * pathConfig) {
     RETARDO_MEMORIA = config_get_int_value(config, "RETARDO_MEMORIA");
     ALGORITMO_REEMPLAZO = config_get_string_value(config, "ALGORITMO_REEMPLAZO");
     MARCOS_POR_PROCESO = config_get_int_value(config, "MARCOS_POR_PROCESO");
-    RETARDO_SWAP = config_get_int_value(config, "RETARDO_SWAP");
+    RETARDO_SWAP = config_get_int_value(config, "RETARDO_SWAP")/1000;
     PATH_SWAP = config_get_string_value(config, "PATH_SWAP");
     CANTIDAD_FRAMES = TAM_MEMORIA/TAM_PAGINA;
 }

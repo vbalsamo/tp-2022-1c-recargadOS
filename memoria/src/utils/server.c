@@ -34,18 +34,24 @@ void deserializarSegun(t_paquete* paquete, int socket){
             eliminarArchivoSwap(pcb -> id);
             freePCB(pcb);
             log_info(logger, "se solicita borrar memoria y swap del proceso: %d", pcb->id);
+            break;
         }
 
         case REQ_SUSP_PROCESO_KERNEL_MEMORIA:{
             t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
             suspenderProceso(pcb);
             freePCB(pcb);
+            break;
         }
         case REQ_DESUSP_PROCESO_KERNEL_MEMORIA:{
+            //por que hacemos esto? no sabemos que paginas necesitariamos
+            //levantar del swap para colocar en memoria
+            //al pasar de susp a ready no debemos mandar este mensaje
             t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
             desuspenderProceso(pcb);
             //RESPUESTA A KERNEL
             freePCB(pcb);
+            break;
         }
         
 		default:{

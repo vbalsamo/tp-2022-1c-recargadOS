@@ -32,7 +32,8 @@
 			"stdint.h": "c",
 			"array": "c",
 			"log.h": "c",
-			"memoria.h": "c"
+			"memoria.h": "c",
+			"cmath": "c"
 		}
 	}
 }

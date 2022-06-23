@@ -4,6 +4,8 @@
     #include <stdlib.h>
     #include <stdio.h>
     #include <utils/variables_globales.h>
+    #include <utils/swap.h>
+    #include <serializacion/estructuras.h>
     #include <commons/string.h>
     #include <commons/collections/list.h>
     #include <commons/bitarray.h>
@@ -12,6 +14,7 @@
     t_bitarray * bitarray;
     int marco;
     void * memoria;
+    uint32_t PCB_ID;
     t_list * tablasPrimerNivel;
     t_list * tablasSegundoNivel;
 
@@ -35,6 +38,7 @@
     }t_entradaSegundoNivel;
     char* asignar_bytes(int cant_frames);
     void iniciarEstructurasMemoria(void);
+    void * leerMarco(uint32_t numeroMarco);
     t_entradaSegundoNivel * crearEntradaSegundoNivel();
     t_entradaPrimerNivel * crearEntradaPrimerNivel(int entradasSegundoNivel);
     t_list * crearTablaSegundoNivel(int entradas);
@@ -43,6 +47,8 @@
     void eliminarMarcos(int indexTablaPrimerNivel);
     void eliminarEntradaSegundoNivel(void * entrada);
     void eliminarEntradaPrimerNivel(void * entrada);
-    
+    void swapearEntradaPrimerNivel(void * entrada);
+    void swapearEntradaSegundoNivel(void * entrada);
+    void suspenderProceso(t_pcb * pcb);
     
 #endif

@@ -30,6 +30,13 @@ void iniciarEstructurasMemoria(void) {
     tablasSegundoNivel = list_create();
 }
 
+void * leerMarco(uint32_t numeroMarco) {
+    void * marco = malloc(TAM_PAGINA);
+    int desplazamiento = numeroMarco * TAM_PAGINA;
+    memcpy(marco, memoria + desplazamiento, TAM_PAGINA);
+    return marco;
+}
+
 uint32_t marcosProceso(uint32_t tamanioProceso) {
     return (uint32_t) ceil((double)tamanioProceso / (double)TAM_PAGINA);
 }
@@ -114,4 +121,30 @@ void eliminarMarcos(int indexTablaPrimerNivel) {
     log_info(logger, "eliminando tablas de primer nivel index: %d",indexTablaPrimerNivel);
     t_list * tablaPrimerNivel = list_get(tablasPrimerNivel, indexTablaPrimerNivel);
     list_iterate(tablaPrimerNivel, eliminarEntradaPrimerNivel);
+}
+
+void swapearEntradaSegundoNivel(void * entrada) {
+    t_entradaSegundoNivel* entradaSegundoNivel = (t_entradaSegundoNivel*) entrada;
+    if (entradaSegundoNivel->presencia && entradaSegundoNivel->modificado) {
+        void * marco = leerMarco(entradaSegundoNivel->marco);
+        //chequear que el PCB_ID glonal en memoria funcione bien
+        escribirMarcoSwap(marco, entradaSegundoNivel->marco, PCB_ID);
+        bitarray_clean_bit(bitarray, entradaSegundoNivel->marco);
+    }
+}
+
+void swapearEntradaPrimerNivel(void * entrada) {
+    t_entradaPrimerNivel* entradaPrimerNivel = (t_entradaPrimerNivel*) entrada;
+    log_info(logger, "swapeando tabla de segundo nivel index:%d", entradaPrimerNivel->tablaSegundoNivel);
+    t_list * tablaSegundoNivel = list_get(tablasSegundoNivel, entradaPrimerNivel->tablaSegundoNivel);
+    list_iterate(tablaSegundoNivel, swapearEntradaSegundoNivel);
+}
+
+void suspenderProceso(t_pcb * pcb){
+    PCB_ID = pcb->id;
+    t_list * tablaPrimerNivel = list_get(tablasPrimerNivel, pcb->tablaDePaginas);
+    log_info(logger, "swapeando tabla de primerNivel nivel index:%d", pcb->tablaDePaginas);
+    list_iterate(tablaPrimerNivel, swapearEntradaPrimerNivel);
+    //desplazamiento = tam pag * num pag
+    //fwrite(tabladepaginas)
 }

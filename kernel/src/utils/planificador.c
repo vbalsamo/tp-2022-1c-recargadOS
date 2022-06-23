@@ -72,10 +72,14 @@ t_pcb * obtenerSiguienteAready(){
     log_info(logger, "PCBS EN SUSP_READY: %d \n", queue_size(estado_susp_ready));
     
     	if(!queue_is_empty(estado_susp_ready)){
-            comunicacionMemoriaDesuspender(pcb);
+            
             pthread_mutex_lock(&mutex_estado_susp_ready);
     		pcb = queue_pop(estado_susp_ready);
             pthread_mutex_unlock(&mutex_estado_susp_ready);
+            //comunicacionMemoriaDesuspender(pcb);
+            //por que hacemos esto? no sabemos que paginas necesitariamos
+            //levantar del swap para colocar en memoria
+            //al pasar de susp a ready no debemos mandar este mensaje
             return pcb;
     	}
         else{
