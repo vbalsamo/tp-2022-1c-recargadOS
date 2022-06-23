@@ -56,7 +56,12 @@ void deserializarSegun(t_paquete* paquete, int socket){
         }
         case REQ_READ_CPU_MEMORIA:{
             uint32_t direccionFisica = deserializarUINT32_T(paquete->buffer->stream);
-            
+            void * dato;
+
+            //memcpy(dato, memoria[direccionFisica], sizeof(uint32_t));
+
+            //log_info(logger, "dato: %d", (uint32_t) dato);
+            // devolver el dato
         }
 //         uint32_t obtenerNumeroPagina(uint32_t direccion_logica) {
 //     return floor(direccion_logica/traduccion_direcciones->tamanio_pagina);
