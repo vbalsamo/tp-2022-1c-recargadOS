@@ -43,6 +43,7 @@ uint32_t marcosProceso(uint32_t tamanioProceso) {
 }
 
 uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso){
+    ID_EN_SWAP = 0;
     uint32_t marcosQueOcupa = marcosProceso(tamanioProceso);
     //CANTIDAD DE ENTRADAS DE SEGUNDO NIVEL QUE NECESITA
     uint32_t paginasDeSegundoNivelCompletas = (uint32_t) floor((double)marcosQueOcupa / (double)ENTRADAS_POR_TABLA);
@@ -77,7 +78,9 @@ t_entradaSegundoNivel * crearEntradaSegundoNivel() {
     //entrada->presencia = false;
     entrada->presencia = random;
     entrada->uso = false;
-
+    entrada->paginaSwap = ID_EN_SWAP;
+    log_info(logger, "id_en_swap: %d", ID_EN_SWAP);
+    ID_EN_SWAP++;
     return entrada;
 }
 

@@ -12,6 +12,9 @@
     #include <commons/bitarray.h>
     #include <math.h>
     #include <string.h>
+
+    uint32_t ID_EN_SWAP;
+
     t_bitarray * bitarray;
     int numeroMarco;
     void * memoria;

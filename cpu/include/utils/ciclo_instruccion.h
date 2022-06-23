@@ -13,8 +13,8 @@
     t_paquete * cicloInstruccion(t_pcb * pcb);
     t_instruccion fetch(t_pcb *  pcb);
     bool execute(t_instruccion instruccion);
-    void * execute_read(uint32_t direccion_logica);
+    uint32_t execute_read(uint32_t direccion_logica);
     void execute_write(uint32_t direccion_logica, void * dato);
-    void * memoria_read(uint32_t direccion_fisica);
-    void memoria_write(uint32_t direccion_fisica, void * dato);
+    uint32_t memoria_read(uint32_t direccion_fisica);
+    void memoria_write(uint32_t direccion_fisica, uint32_t dato);
 #endif

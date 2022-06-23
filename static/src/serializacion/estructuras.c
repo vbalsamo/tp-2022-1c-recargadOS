@@ -393,6 +393,10 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 			t_pcb * pcb = (t_pcb *) estructura; 
 			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
 		}
+		case REQ_READ_CPU_MEMORIA:{
+			return sizeof(uint32_t);
+			break;
+		}
 		default:
 			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
 			exit(EXIT_FAILURE);

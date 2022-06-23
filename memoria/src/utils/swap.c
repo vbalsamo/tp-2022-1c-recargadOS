@@ -24,8 +24,9 @@ void eliminarArchivoSwap(uint32_t id){
 void escribirMarcoSwap(void * contenidoMarco, uint32_t numeroPagina, uint32_t id) {
     sleep(RETARDO_SWAP);
     char * nombreArchivo =obtnerPathSwap(id);
+    
     int desplazamiento = numeroPagina * TAM_PAGINA;
-    FILE * archivo = fopen(nombreArchivo, "w+");
+    FILE * archivo = fopen(nombreArchivo, "r+");
     fseek(archivo, desplazamiento, SEEK_SET);
     fwrite(contenidoMarco, sizeof(char) , TAM_PAGINA, archivo);
     free(nombreArchivo);

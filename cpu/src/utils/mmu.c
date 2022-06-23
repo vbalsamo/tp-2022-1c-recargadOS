@@ -68,6 +68,7 @@ t_EntradaTLB * obtenerEntradaTLB(uint32_t pagina) {
     return entrada;
 }
 
+
 void incrementarIndiceFIFO() {
     indiceFIFO = (indiceFIFO + 1) % ENTRADAS_TLB;
 }
@@ -110,7 +111,7 @@ uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t 
     t_EntradaTLB * entrada = obtenerEntradaTLB(pagina);
     uint32_t marco;
 
-    if(entrada==NULL) {
+    if(entrada==NULL) { //Si no esta en TLB
         uint32_t * tablaDePaginasSegundoNivel = consultarTablaSegundoNivel(tablaPaginasPrimerNivelPCB, pagina);
         marco = consultarMarco(*tablaDePaginasSegundoNivel, pagina);
         agregarTLB(pagina, marco);

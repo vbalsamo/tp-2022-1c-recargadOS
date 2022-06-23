@@ -33,8 +33,8 @@ void deserializarSegun(t_paquete* paquete, int socket){
             suspenderProceso(pcb);
             eliminarMarcos(pcb->tablaDePaginas);
             eliminarArchivoSwap(pcb -> id);
-            freePCB(pcb);
             log_info(logger, "se solicita borrar memoria y swap del proceso: %d", pcb->id);
+            freePCB(pcb);
             break;
         }
 
@@ -54,7 +54,35 @@ void deserializarSegun(t_paquete* paquete, int socket){
             freePCB(pcb);
             break;
         }
-        
+        case REQ_READ_CPU_MEMORIA:{
+            uint32_t direccionFisica = deserializarUINT32_T(paquete->buffer->stream);
+            
+        }
+//         uint32_t obtenerNumeroPagina(uint32_t direccion_logica) {
+//     return floor(direccion_logica/traduccion_direcciones->tamanio_pagina);
+// }
+
+// uint32_t obtenerEntradaTabla1erNivel(uint32_t numero_pagina) {
+//     return floor(numero_pagina/traduccion_direcciones->paginas_por_tabla);
+// }
+
+// uint32_t obtenerEntradaTabla2doNivel(uint32_t numero_pagina) {
+//     return numero_pagina % traduccion_direcciones->paginas_por_tabla;
+// }
+
+// uint32_t obtenerDesplazamiento(uint32_t direccion_logica, uint32_t numero_pagina) {
+//     return direccion_logica - numero_pagina * traduccion_direcciones->tamanio_pagina;
+// }
+
+// uint32_t obtenerDireccionFisica(uint32_t desplazamiento, uint32_t numero_marco) {
+//     return desplazamiento + numero_marco * traduccion_direcciones->tamanio_pagina;
+//}
+
+
+/*
+direccionFisica = desplazamiento + numero_marco * tamanio_pagina
+
+*/
 		default:{
             break;
         }

@@ -77,7 +77,7 @@ bool execute(t_instruccion instruccion){
             log_info(logger, "Ejecutado READ");
             return true;
         case COPY:{
-            char* dato = execute_read(instruccion.parametro2);
+            uint32_t dato = execute_read(instruccion.parametro2);
             
             log_info(logger, "Ejecutado COPY, Lectura dato en memoria");
             execute_write(instruccion.parametro1, dato);
@@ -100,10 +100,11 @@ bool execute(t_instruccion instruccion){
         }
     }
 }
-void * execute_read(uint32_t direccion_logica){
+uint32_t execute_read(uint32_t direccion_logica){
 
     uint32_t direccionFisica = consultarDireccionFisica(tablaPaginasPrimerNivelPCB, direccion_logica);
-    void * dato = memoria_read(direccionFisica);
+    uint32_t dato = memoria_read(direccionFisica);
+    log_info(logger, "READ: %d", dato);
     //leer direccion fisica en memoria y loggear dato
     return dato;
 }
@@ -113,19 +114,18 @@ void execute_write(uint32_t direccion_logica, void * dato){
     memoria_write(direccionFisica, dato);
 }
 
-void * memoria_read(uint32_t direccion_fisica) {
+uint32_t memoria_read(uint32_t direccion_fisica) {
 
     uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
 
     t_paquete * paquete = armarPaqueteCon(&direccion_fisica, REQ_READ_CPU_MEMORIA);
     enviarPaquete(paquete,socket_memoria);
     t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
-    void * dato;
-    //dato = deserializar(paqueteRespuesta);
+    uint32_t dato = *deserializarUINT32_T(paqueteRespuesta); //REVISAR PUNTEROS
     return dato;
 }
 
-void memoria_write(uint32_t direccion_fisica, void * dato) {
+void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
 
     uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     t_paquete * paquete = armarPaqueteCon(&direccion_fisica, REQ_WRITE_CPU_MEMORIA);
