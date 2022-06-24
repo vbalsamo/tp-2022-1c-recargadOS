@@ -37,7 +37,6 @@ void deserializarSegun(t_paquete* paquete, int socket){
             freePCB(pcb);
             break;
         }
-
         case REQ_SUSP_PROCESO_KERNEL_MEMORIA:{
             t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
             suspenderProceso(pcb);
@@ -54,40 +53,39 @@ void deserializarSegun(t_paquete* paquete, int socket){
             freePCB(pcb);
             break;
         }
-        case REQ_READ_CPU_MEMORIA:{
-            uint32_t direccionFisica = deserializarUINT32_T(paquete->buffer->stream);
-            void * dato;
 
-            //memcpy(dato, memoria[direccionFisica], sizeof(uint32_t));
-
-            //log_info(logger, "dato: %d", (uint32_t) dato);
-            // devolver el dato
+        case REQ_TABLA_SEGUNDO_NIVEL_CPU_MEMORIA: {
+            t_consultaTablaPagina * consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
+            uint32_t tablaSegundoNivel = obtenerTablaSegundoNivel(consulta->tablaDePaginas, consulta->entradaPagina);
+            t_paquete * paqueteRespuesta = armarPaqueteCon(&tablaSegundoNivel,RES_TABLA_SEGUNDO_NIVEL_MEMORIA_CPU);
+            enviarPaquete(paquete, socket);
+            eliminarPaquete(paqueteRespuesta);
+            break;
         }
-//         uint32_t obtenerNumeroPagina(uint32_t direccion_logica) {
-//     return floor(direccion_logica/traduccion_direcciones->tamanio_pagina);
-// }
+        case REQ_MARCO_CPU_MEMORIA: {
+            t_consultaTablaPagina * consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
+            uint32_t tablaSegundoNivel = obtenerTablaSegundoNivel(consulta->tablaDePaginas, consulta->entradaPagina);
+            t_paquete * paqueteRespuesta = armarPaqueteCon(&tablaSegundoNivel,RES_MARCO_MEMORIA_CPU);
+            enviarPaquete(paquete, socket);
+            eliminarPaquete(paqueteRespuesta);
+            
+            break;
+        }
+        case REQ_READ_CPU_MEMORIA:{
+            uint32_t * direccionFisica = deserializarUINT32_T(paquete->buffer->stream);
+            void * marco = leerMarco(*direccionFisica);
+            uint32_t * dato = malloc(sizeof(uint32_t));
+            memcpy(dato, marco, sizeof(uint32_t));
+            log_info(logger, "se lee el dato: %d en el marco numero: %d", *dato, *direccionFisica);
+            t_paquete * paqueteRespuesta = armarPaqueteCon(dato,RES_READ_MEMORIA_CPU);
+            enviarPaquete(paquete, socket);
+            eliminarPaquete(paqueteRespuesta);
+            free(direccionFisica);
+            free(marco);
+            free(dato);
+            break;
+        }
 
-// uint32_t obtenerEntradaTabla1erNivel(uint32_t numero_pagina) {
-//     return floor(numero_pagina/traduccion_direcciones->paginas_por_tabla);
-// }
-
-// uint32_t obtenerEntradaTabla2doNivel(uint32_t numero_pagina) {
-//     return numero_pagina % traduccion_direcciones->paginas_por_tabla;
-// }
-
-// uint32_t obtenerDesplazamiento(uint32_t direccion_logica, uint32_t numero_pagina) {
-//     return direccion_logica - numero_pagina * traduccion_direcciones->tamanio_pagina;
-// }
-
-// uint32_t obtenerDireccionFisica(uint32_t desplazamiento, uint32_t numero_marco) {
-//     return desplazamiento + numero_marco * traduccion_direcciones->tamanio_pagina;
-//}
-
-
-/*
-direccionFisica = desplazamiento + numero_marco * tamanio_pagina
-
-*/
 		default:{
             break;
         }

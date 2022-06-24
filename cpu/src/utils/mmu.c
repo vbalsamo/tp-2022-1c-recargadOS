@@ -73,8 +73,8 @@ void incrementarIndiceFIFO() {
     indiceFIFO = (indiceFIFO + 1) % ENTRADAS_TLB;
 }
 
-uint32_t * consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t pagina) {
-    uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
+uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t pagina) {
+    int socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     uint32_t entradaPrimerNivel = obtenerEntradaTabla1erNivel(pagina);
     t_consultaTablaPagina * consulta = malloc(sizeof(t_consultaTablaPagina));
     
@@ -84,8 +84,11 @@ uint32_t * consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32
     t_paquete * paquete = armarPaqueteCon(consulta, REQ_TABLA_SEGUNDO_NIVEL_CPU_MEMORIA);
     enviarPaquete(paquete,socket_memoria);
     t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
-    
-    uint32_t * tablaSegundoNivel = deserializarUINT32_T(paqueteRespuesta);
+   
+    uint32_t * tablaSegundoNivelDeserializada = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
+    uint32_t tablaSegundoNivel = *tablaSegundoNivelDeserializada; 
+    free(tablaSegundoNivelDeserializada);
+    return tablaSegundoNivel;
 }
 
 uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina) {
@@ -100,7 +103,7 @@ uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina) {
     enviarPaquete(paquete,socket_memoria);
     t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
     
-    uint32_t * marco = deserializarUINT32_T(paqueteRespuesta);
+    uint32_t * marco = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
     uint32_t marcoo = * marco;
     free(marco);
     return marcoo;
@@ -112,8 +115,8 @@ uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t 
     uint32_t marco;
 
     if(entrada==NULL) { //Si no esta en TLB
-        uint32_t * tablaDePaginasSegundoNivel = consultarTablaSegundoNivel(tablaPaginasPrimerNivelPCB, pagina);
-        marco = consultarMarco(*tablaDePaginasSegundoNivel, pagina);
+        uint32_t tablaDePaginasSegundoNivel = consultarTablaSegundoNivel(tablaPaginasPrimerNivelPCB, pagina);
+        marco = consultarMarco(tablaDePaginasSegundoNivel, pagina);
         agregarTLB(pagina, marco);
     }
     else {

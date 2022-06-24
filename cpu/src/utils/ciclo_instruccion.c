@@ -1,5 +1,5 @@
 #include <utils/ciclo_instruccion.h>
-#include <utils/variables_globales.h>
+
 
 t_instruccion fetch(t_pcb *  pcb){
     t_instruccion instruccion_actual = pcb->instrucciones[pcb->PC];
@@ -87,7 +87,7 @@ bool execute(t_instruccion instruccion){
         }
         case WRITE:
             
-            execute_write( instruccion.parametro1, &instruccion.parametro2);
+            execute_write( instruccion.parametro1, instruccion.parametro2);
             log_info(logger, "Ejecutado Write");
             return true;
         case EXIT:
@@ -109,7 +109,7 @@ uint32_t execute_read(uint32_t direccion_logica){
     return dato;
 }
 
-void execute_write(uint32_t direccion_logica, void * dato){
+void execute_write(uint32_t direccion_logica, uint32_t dato){
     uint32_t direccionFisica = consultarDireccionFisica(tablaPaginasPrimerNivelPCB, direccion_logica);
     memoria_write(direccionFisica, dato);
 }
@@ -121,7 +121,9 @@ uint32_t memoria_read(uint32_t direccion_fisica) {
     t_paquete * paquete = armarPaqueteCon(&direccion_fisica, REQ_READ_CPU_MEMORIA);
     enviarPaquete(paquete,socket_memoria);
     t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
-    uint32_t dato = *deserializarUINT32_T(paqueteRespuesta); //REVISAR PUNTEROS
+    uint32_t * datoDeserializado = deserializarUINT32_T(paqueteRespuesta);
+    uint32_t dato = *datoDeserializado;
+    free(datoDeserializado);
     return dato;
 }
 

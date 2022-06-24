@@ -23,16 +23,8 @@
     t_list * tablasSegundoNivel;
 
     typedef struct{
-        t_list * tabla;//(t_entradaPrimerNivel)
-    }t_tablaPrimerNivel;
-
-    typedef struct{
         uint32_t tablaSegundoNivel;
     }t_entradaPrimerNivel;
-    
-    typedef struct{
-        t_list * tabla;//(t_entradaSegundoNivel)
-    }t_tablaSegundoNivel;
 
     typedef struct{
         uint32_t marco;
@@ -49,6 +41,8 @@
     t_list * crearTablaSegundoNivel(int entradas);
     uint32_t marcosProceso(uint32_t tamanioProceso);
     uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso);
+    uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina);
+    uint32_t obtenerTablaSegundoNivel(uint32_t indexTablaPrimerNivel, uint32_t entradaPagina);
     void eliminarMarcos(int indexTablaPrimerNivel);
     void eliminarEntradaSegundoNivel(void * entrada);
     void eliminarEntradaPrimerNivel(void * entrada);

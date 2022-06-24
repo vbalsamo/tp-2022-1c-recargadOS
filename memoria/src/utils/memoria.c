@@ -101,12 +101,25 @@ t_entradaPrimerNivel * crearEntradaPrimerNivel(int entradasSegundoNivel) {
 
     return entrada;
 }
+
+uint32_t obtenerTablaSegundoNivel(uint32_t indexTablaPrimerNivel, uint32_t entradaPagina) {
+    t_list * tablaPrimerNivel = list_get(tablasPrimerNivel, indexTablaPrimerNivel);
+    t_entradaPrimerNivel * entrada = list_get(tablaPrimerNivel, entradaPagina);
+    return entrada->tablaSegundoNivel; 
+}
 //  typedef struct{
 //         uint32_t marco;
 //         bool presencia;
 //         bool uso;
 //         bool modificado;
 //     }t_entradaSegundoNivel;
+uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina) {
+    t_list * tablaSegundoNivel = list_get(tablasSegundoNivel, indexTablaSegundoNivel);
+    t_entradaSegundoNivel * entrada = list_get(tablaSegundoNivel, entradaPagina);
+    
+    //hacer todo el tema de algoritmos de desalojo
+    return entrada->marco;
+}
 
 void eliminarEntradaSegundoNivel(void * entrada) { 
     if (((t_entradaSegundoNivel *)entrada)->presencia) {

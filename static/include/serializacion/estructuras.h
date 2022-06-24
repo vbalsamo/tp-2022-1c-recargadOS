@@ -22,11 +22,14 @@
 		RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU,
 		REQ_DATO_DIRECCION_LOGICA_CPU_MEMORIA,
 		REQ_READ_CPU_MEMORIA,
+		RES_READ_MEMORIA_CPU,
 		REQ_WRITE_CPU_MEMORIA,
 		REQ_MARCO_CPU_MEMORIA,
+		RES_MARCO_MEMORIA_CPU,
 		REQ_CREAR_PROCESO_KERNEL_MEMORIA,
 		RES_CREAR_PROCESO_KERNEL_MEMORIA,
 		REQ_TABLA_SEGUNDO_NIVEL_CPU_MEMORIA,
+		RES_TABLA_SEGUNDO_NIVEL_MEMORIA_CPU,
 		RES_FIN_PROCESO_KERNEL_CONSOLA,
 		REQ_FIN_PROCESO_KERNEL_MEMORIA,
 		REQ_SUSP_PROCESO_KERNEL_MEMORIA,
@@ -121,4 +124,6 @@
 	void * serializarUINT32_T(void* stream, void* estructura);
 	uint32_t * deserializarUINT32_T(void* stream);
 
+	t_consultaTablaPagina * deserializarConsultaTablaPagina(void* stream);
+	void * serializarConsultaTablaPagina(void* stream, void* estructura);
 #endif

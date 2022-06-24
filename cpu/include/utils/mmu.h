@@ -9,6 +9,7 @@
     #include <utils/variables_globales.h>
     #include <commons/collections/list.h>
     #include <commons/string.h>
+    #include <sockets/socket.h>
     t_list * listaTLB;
     uint32_t tiempoAccesoGlobal;
     uint32_t indiceFIFO;
@@ -35,7 +36,7 @@
     
     void incrementarIndiceFIFO();
 
-    uint32_t * consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t pagina);
+    uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t pagina);
 
     uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina);
     

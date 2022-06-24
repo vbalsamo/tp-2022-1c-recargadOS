@@ -265,10 +265,29 @@ void * serializarUINT32_T(void* stream, void* estructura) {
     memcpy(stream, number,sizeof(uint32_t));
 	return stream;
 }
+
 uint32_t * deserializarUINT32_T(void* stream) {
 	uint32_t* number = malloc(sizeof(uint32_t));
     memcpy(number, stream, sizeof(uint32_t));
 	return number;
+}
+
+void * serializarConsultaTablaPagina(void* stream, void* estructura) {
+	int offset = 0;
+	t_consultaTablaPagina* consulta = (t_consultaTablaPagina*) estructura;
+    memcpy(stream + offset, &(consulta->entradaPagina),sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+    memcpy(stream + offset, &(consulta->tablaDePaginas),sizeof(uint32_t));
+	return stream;
+}
+
+t_consultaTablaPagina * deserializarConsultaTablaPagina(void* stream) {
+	int offset = 0;
+	t_consultaTablaPagina* consulta = malloc(sizeof(t_consultaTablaPagina));
+    memcpy(&(consulta->entradaPagina), stream + offset, sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+    memcpy(&(consulta->tablaDePaginas), stream + offset,sizeof(uint32_t));
+	return consulta;
 }
 void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 
@@ -322,6 +341,24 @@ void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 		}
 		case REQ_SUSP_PROCESO_KERNEL_MEMORIA:{
 			return serializarPCB(stream,estructura,0);
+		}
+		case REQ_TABLA_SEGUNDO_NIVEL_CPU_MEMORIA:{
+			return serializarConsultaTablaPagina(stream,estructura);
+		}
+		case RES_TABLA_SEGUNDO_NIVEL_MEMORIA_CPU: {
+			return serializarUINT32_T(stream,estructura);
+		}
+		case REQ_MARCO_CPU_MEMORIA:{
+			return serializarConsultaTablaPagina(stream,estructura);
+		}
+		case RES_MARCO_MEMORIA_CPU:{
+			return serializarUINT32_T(stream,estructura);
+		}
+		case REQ_READ_CPU_MEMORIA:{
+			return serializarUINT32_T(stream,estructura);
+		}
+		case RES_READ_MEMORIA_CPU:{
+			return serializarUINT32_T(stream,estructura);
 		}
 		default:
 			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
@@ -393,9 +430,23 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 			t_pcb * pcb = (t_pcb *) estructura; 
 			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
 		}
+		case REQ_TABLA_SEGUNDO_NIVEL_CPU_MEMORIA:{
+			return sizeof(uint32_t)*2;
+		}
+		case RES_TABLA_SEGUNDO_NIVEL_MEMORIA_CPU: {
+			return sizeof(uint32_t);
+		}
+		case REQ_MARCO_CPU_MEMORIA:{
+			return sizeof(uint32_t)*2;
+		}
+		case RES_MARCO_MEMORIA_CPU:{
+			return sizeof(uint32_t);
+		}
 		case REQ_READ_CPU_MEMORIA:{
 			return sizeof(uint32_t);
-			break;
+		}
+		case RES_READ_MEMORIA_CPU:{
+			return sizeof(uint32_t);
 		}
 		default:
 			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);

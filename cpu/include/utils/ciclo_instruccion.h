@@ -7,6 +7,7 @@
     #include <pthread.h>
     #include <instruccion.h>
     #include <serializacion/estructuras.h>
+    #include <utils/variables_globales.h>
     #include <utils/mmu.h>
     
     uint32_t tablaPaginasPrimerNivelPCB;
@@ -14,7 +15,7 @@
     t_instruccion fetch(t_pcb *  pcb);
     bool execute(t_instruccion instruccion);
     uint32_t execute_read(uint32_t direccion_logica);
-    void execute_write(uint32_t direccion_logica, void * dato);
+    void execute_write(uint32_t direccion_logica, uint32_t dato);
     uint32_t memoria_read(uint32_t direccion_fisica);
     void memoria_write(uint32_t direccion_fisica, uint32_t dato);
 #endif

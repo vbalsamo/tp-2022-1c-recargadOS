@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../static"
+		},
+		{
+			"path": "../pruebas"
 		}
 	],
 	"settings": {

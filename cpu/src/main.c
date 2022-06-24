@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     traduccion_direcciones = obtenerTraduccionDeDirecciones(socket_memoria);
     close(socket_memoria);
     log_info(logger, "traduccion de direcciones obtenida de memoria");
-    
+    iniciarEstructurasMMU();
     iniciarHilos();
     
     //liberar heap
