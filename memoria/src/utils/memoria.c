@@ -38,6 +38,18 @@ void * leerMarco(uint32_t numeroMarco) {
     return marco;
 }
 
+uint32_t * leerDireccionFisica(uint32_t direccionFisica) {
+    uint32_t * dato = malloc(sizeof(uint32_t));
+    memcpy(dato, memoria + direccionFisica, sizeof(uint32_t));
+    log_info(logger, "dato leido: %d en direccion fisica:%d", *dato, direccionFisica);
+    return dato;
+}
+
+void writeEnMemoria(uint32_t direccionFisica, uint32_t dato){
+    memcpy(memoria + direccionFisica, dato, sizeof(uint32_t));
+    log_info(logger, "dato escrito: %d en direccion fisica:%d", *dato, direccionFisica);
+}
+
 uint32_t marcosProceso(uint32_t tamanioProceso) {
     return (uint32_t) ceil((double)tamanioProceso / (double)TAM_PAGINA);
 }

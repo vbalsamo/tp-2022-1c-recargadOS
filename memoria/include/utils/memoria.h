@@ -36,6 +36,7 @@
     char* asignar_bytes(int cant_frames);
     void iniciarEstructurasMemoria(void);
     void * leerMarco(uint32_t numeroMarco);
+    uint32_t * leerDireccionFisica(uint32_t direccionFisica);
     t_entradaSegundoNivel * crearEntradaSegundoNivel();
     t_entradaPrimerNivel * crearEntradaPrimerNivel(int entradasSegundoNivel);
     t_list * crearTablaSegundoNivel(int entradas);
@@ -49,5 +50,6 @@
     void swapearEntradaPrimerNivel(void * entrada);
     void swapearEntradaSegundoNivel(void * entrada);
     void suspenderProceso(t_pcb * pcb);
+    void writeEnMemoria(uint32_t direccionFisica, uint32_t dato);
     
 #endif

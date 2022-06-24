@@ -13,7 +13,8 @@
     t_list * listaTLB;
     uint32_t tiempoAccesoGlobal;
     uint32_t indiceFIFO;
-    
+    uint32_t PCB_ACTUAL;
+
     typedef struct{
         uint32_t pagina;
         uint32_t marco;
@@ -51,4 +52,6 @@
     uint32_t obtenerDesplazamiento(uint32_t direccion_logica, uint32_t numero_pagina);
     
     uint32_t obtenerDireccionFisica(uint32_t desplazamiento, uint32_t numero_marco);
+
+    void vaciarTLB(uint32_t nuevo_id);
 #endif
