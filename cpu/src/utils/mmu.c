@@ -33,12 +33,12 @@ void agregarTLB(uint32_t pagina, uint32_t marco) {
             exit(-1);
         }
     }
-    
 }
 
 void vaciarTLB(uint32_t pcb_nuevo){
     if(PCB_ACTUAL != pcb_nuevo){
         list_clean(listaTLB);
+        log_info(logger, "TLB vaciada por cambio de proceso");
     }
     PCB_ACTUAL = pcb_nuevo;
 }

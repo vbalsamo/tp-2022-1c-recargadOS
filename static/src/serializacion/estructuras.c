@@ -289,6 +289,25 @@ t_consultaTablaPagina * deserializarConsultaTablaPagina(void* stream) {
     memcpy(&(consulta->tablaDePaginas), stream + offset,sizeof(uint32_t));
 	return consulta;
 }
+
+void * serializartPeticionEscritura(void* stream, void* estructura) {
+	int offset = 0;
+	t_peticionEscritura* peticion = (t_peticionEscritura*) estructura;
+    memcpy(stream + offset, &(peticion->direccionFisica),sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+    memcpy(stream + offset, &(peticion->dato),sizeof(uint32_t));
+	return stream;
+}
+
+t_peticionEscritura * deserializarPeticionEscritura(void* stream) {
+	int offset = 0;
+	t_peticionEscritura* peticion = malloc(sizeof(t_peticionEscritura));
+    memcpy(&(peticion->direccionFisica), stream + offset, sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+    memcpy(&(peticion->dato), stream + offset,sizeof(uint32_t));
+	return peticion;
+}
+
 void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 
 	void* stream = malloc(tamanio);
@@ -296,25 +315,18 @@ void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 	switch(cod_op){
 		case PROCESO:{
 			return serializarProceso(stream,estructura);
-			break;
 		}
-
 		case REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA:{
 			return serializarMensaje(stream,estructura);
-
-			break;
 		}
 		case RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU:{
 			return serializarTraduccionDirecciones(stream,estructura);
-			break;
 		}
 		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:{
 			return serializarPCB(stream,estructura,0);
-			break;
 		}
 		case PCB_EJECUTADO_IO_CPU_KERNEL:{
 			return serializarIO(stream,estructura);
-			break;
 		}
 		case PCB_EJECUTADO_EXIT_CPU_KERNEL:{
 			return serializarPCB(stream,estructura,0);
@@ -327,11 +339,9 @@ void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 		}
 		case RES_FIN_PROCESO_KERNEL_CONSOLA:{
 			return serializarUINT32_T(stream,estructura);
-			break;
 		}
 		case REQ_FIN_PROCESO_KERNEL_MEMORIA:{
 			return serializarPCB(stream,estructura,0);
-			break;
 		}
 		case REQ_CREAR_PROCESO_KERNEL_MEMORIA:{
 			return serializarPCB(stream,estructura,0);
@@ -360,11 +370,17 @@ void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 		case RES_READ_MEMORIA_CPU:{
 			return serializarUINT32_T(stream,estructura);
 		}
-		default:
+		case REQ_WRITE_CPU_MEMORIA :{
+			return serializartPeticionEscritura(stream, estructura);
+		}
+		case RES_WRITE_CPU_MEMORIA :{
+			return serializarUINT32_T(stream,estructura);
+		}
+		default:{
 			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
 			exit(EXIT_FAILURE);
+		}
 	}
-
 }
 
 int tamanioEstructura(void* estructura ,t_cod_op cod_op){
@@ -374,16 +390,13 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 		case PROCESO:{
 			t_proceso * proceso = (t_proceso *) estructura;
 			return sizeof(uint32_t)*2 + proceso->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
-			break;
 		}
 		case REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA:{
 			t_mensaje * msg = (t_mensaje*) estructura;
 			return msg->longitud + sizeof(uint32_t);
-			break;
 		}
 		case RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU:{
 			return sizeof(uint32_t)*2;
-			break;
 		}
 		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:{
 			t_pcb * pcb = (t_pcb *) estructura; 
@@ -392,32 +405,24 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 		case PCB_EJECUTADO_IO_CPU_KERNEL:{
 			t_IO * io = (t_IO *) estructura; 
 			return sizeof(uint32_t) + sizeof(uint32_t)*7 + io->pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
-			// t_pcb * pcb = (t_pcb *) estructura; 
-			// return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
-			break;
 		}
 		case PCB_EJECUTADO_EXIT_CPU_KERNEL:{
 			t_pcb * pcb = (t_pcb *) estructura; 
 			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
-			break;
 		}
 		case PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL:{
 			t_pcb * pcb = (t_pcb *) estructura; 
 			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
-			break;
 		}
 		case REQ_INTERRUPCION_KERNEL_CPU:{
 			return sizeof(uint32_t);
-			break;
 		}
 		case RES_FIN_PROCESO_KERNEL_CONSOLA:{
 			return sizeof(uint32_t);
-			break;
 		}
 		case REQ_FIN_PROCESO_KERNEL_MEMORIA:{
 			t_pcb * pcb = (t_pcb *) estructura; 
 			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
-			break;
 		}
 		case REQ_CREAR_PROCESO_KERNEL_MEMORIA:{
 			t_pcb * pcb = (t_pcb *) estructura; 
@@ -448,10 +453,10 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 		case RES_READ_MEMORIA_CPU:{
 			return sizeof(uint32_t);
 		}
-		default:
+		default: {
 			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
 			exit(EXIT_FAILURE);
+		}	
 	}
-
 }
 

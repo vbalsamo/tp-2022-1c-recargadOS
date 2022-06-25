@@ -22,6 +22,7 @@
     t_list * tablasPrimerNivel;
     t_list * tablasSegundoNivel;
 
+
     typedef struct{
         uint32_t tablaSegundoNivel;
     }t_entradaPrimerNivel;
@@ -33,6 +34,7 @@
         bool modificado;
         uint32_t paginaSwap;
     }t_entradaSegundoNivel;
+
     char* asignar_bytes(int cant_frames);
     void iniciarEstructurasMemoria(void);
     void * leerMarco(uint32_t numeroMarco);
@@ -51,5 +53,6 @@
     void swapearEntradaSegundoNivel(void * entrada);
     void suspenderProceso(t_pcb * pcb);
     void writeEnMemoria(uint32_t direccionFisica, uint32_t dato);
+    void reemplazarClock(uint32_t indexTablaPaginasPrimerNivel);
     
 #endif

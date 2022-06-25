@@ -59,15 +59,9 @@ int main(int argc, char* argv[]) {
     sem_init(&sem_susp_ready, 0, 0);
     sem_init(&sem_hay_pcb_esperando_ready, 0, 0);
     
-    
-
-    //int socket_cliente = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     int * socket = malloc(sizeof(int));
     *socket = iniciar_servidor(IP, PUERTO_ESCUCHA);
-    
-    // int socketInterrupt = crear_conexion(IP_CPU, PUERTO_CPU_INTERRUPT);
-    // t_paquete * paquete = armarPaqueteCon(NULL, REQ_INTERRUPCION_KERNEL_CPU);
-    // enviarPaquete(paquete, socketInterrupt);
+
     inicializarEstados();
     inicializarPlanificacion();
 

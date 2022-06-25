@@ -46,8 +46,8 @@ uint32_t * leerDireccionFisica(uint32_t direccionFisica) {
 }
 
 void writeEnMemoria(uint32_t direccionFisica, uint32_t dato){
-    memcpy(memoria + direccionFisica, dato, sizeof(uint32_t));
-    log_info(logger, "dato escrito: %d en direccion fisica:%d", *dato, direccionFisica);
+    memcpy(memoria + direccionFisica, &dato, sizeof(uint32_t));
+    log_info(logger, "dato escrito: %d en direccion fisica:%d", dato, direccionFisica);
 }
 
 uint32_t marcosProceso(uint32_t tamanioProceso) {
@@ -129,7 +129,20 @@ uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina) {
     t_list * tablaSegundoNivel = list_get(tablasSegundoNivel, indexTablaSegundoNivel);
     t_entradaSegundoNivel * entrada = list_get(tablaSegundoNivel, entradaPagina);
     
-    //hacer todo el tema de algoritmos de desalojo
+    if(!entrada->presencia) {
+        t_entradaSegundoNivel * victima = reemplazar();
+        //swapeo
+        if (victima->modificado) {
+            void * contenidoMarco = leerMarco(victima->marco);
+            escribirMarcoSwap(contenidoMarco, victima->paginaSwap,/*id*/);
+        }
+
+        entrada->marco = reemplazada->marco;
+        entrada->presencia = true;
+        entrada->modificado = false;
+    }
+    
+    entrada->uso = true;
     return entrada->marco;
 }
 
@@ -177,4 +190,54 @@ void suspenderProceso(t_pcb * pcb){
     list_iterate(tablaPrimerNivel, swapearEntradaPrimerNivel);
     //desplazamiento = tam pag * num pag
     //fwrite(tabladepaginas)
+}
+
+void reemplazarClock(uint32_t indexTablaPaginasPrimerNivel) {
+    t_list * tablaPrimerNivel = list_get(tablasPrimerNivel, indexTablaPaginasPrimerNivel);
+    t_list * entradasSegundoNivel = list_create();
+    t_entradaSegundoNivel * entradaRemplazar;
+    int punteroClock = 0;
+    void iterarPrimerNivel(t_entradaPrimerNivel * entrada) {
+        t_list * tablaSegundoNivel = list_get(tablasPrimerNivel, entrada->tablaSegundoNivel);
+        
+        void iterarSegundoNivel(t_entradaSegundoNivel * entrada) {
+            list_add(entradasSegundoNivel, entrada);
+        }
+        list_iterate(tablaSegundoNivel, (void*) iterarSegundoNivel);
+    }
+    list_iterate(tablaPrimerNivel, (void*) iterarPrimerNivel);
+
+    int cant_entradas = list_size(entradasSegundoNivel);
+    //ESTE IF ES PARA QUE SEA VEA BIEN EN EL LOG, LOGICAENTE ESTA BIEN
+    if(punteroClock == cant_entradas)
+        punteroClock = 0;
+
+    void imprimirBitsUso(t_entradaSegundoNivel* entrada) {
+        log_info(logger, "PAGINASWAP: %d - FRAME: %d - BIT USO: %d", entrada->paginaSwap, entrada->marco, entrada->uso);
+    }
+
+    list_iterate(entradasSegundoNivel, (void*) imprimirBitsUso);
+    log_info(logger, "PUNTERO CLOCK EN: %d", punteroClock);
+
+    t_entradaSegundoNivel* recorredorEntrada;
+
+    while(1) {
+
+        if(punteroClock == cant_entradas)
+            punteroClock = 0;
+
+        recorredorEntrada = list_get(entradasSegundoNivel, punteroClock);
+        punteroClock++;
+
+        if(!recorredorEntrada->uso) {
+            entradaRemplazar = recorredorEntrada;
+            log_info(logMemoria, "Victima %s: pagina:%d - frame:%d", configRam.algoritmoReemplazo,
+                    info_paginaAReemplazar->indice, info_paginaAReemplazar->frame);
+            break;
+        }
+        else {
+            recorredorPaginas->uso = false;
+        }
+    }
+    return entradaRemplazar;
 }

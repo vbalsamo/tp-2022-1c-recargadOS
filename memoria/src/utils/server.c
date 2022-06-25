@@ -26,22 +26,7 @@ void deserializarSegun(t_paquete* paquete, int socket){
             freePCB(pcb);
             break;
         }
-        case REQ_SUSP_PROCESO_KERNEL_MEMORIA:{
-            t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
-            suspenderProceso(pcb);
-            freePCB(pcb);
-            break;
-        }
-        case REQ_DESUSP_PROCESO_KERNEL_MEMORIA:{
-            //por que hacemos esto? no sabemos que paginas necesitariamos
-            //levantar del swap para colocar en memoria
-            //al pasar de susp a ready no debemos mandar este mensaje
-            t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
-            desuspenderProceso(pcb);
-            //RESPUESTA A KERNEL
-            freePCB(pcb);
-            break;
-        }
+        
         case REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA:{
             log_info(logger, "se solicita traducciones de direciones");
             t_traduccion_direcciones * traduccionDirecciones = malloc(sizeof(t_traduccion_direcciones));
@@ -63,8 +48,8 @@ void deserializarSegun(t_paquete* paquete, int socket){
         }
         case REQ_MARCO_CPU_MEMORIA: {
             t_consultaTablaPagina * consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
-            uint32_t tablaSegundoNivel = obtenerMarco(consulta->tablaDePaginas, consulta->entradaPagina);
-            t_paquete * paqueteRespuesta = armarPaqueteCon(&tablaSegundoNivel,RES_MARCO_MEMORIA_CPU);
+            uint32_t marco = obtenerMarco(consulta->tablaDePaginas, consulta->entradaPagina, consulta->id);
+            t_paquete * paqueteRespuesta = armarPaqueteCon(&marco,RES_MARCO_MEMORIA_CPU);
             enviarPaquete(paquete, socket);
             eliminarPaquete(paqueteRespuesta);
             
@@ -82,9 +67,9 @@ void deserializarSegun(t_paquete* paquete, int socket){
             break;
         }
         case REQ_WRITE_CPU_MEMORIA:{
-            uint32_t * dato = 0; //estructura -> dato
-            uint32_t * direccionFisica = 0; //estructura -> direccionFisica
-            writeEnMemoria(direccionFisica, dato);
+            t_peticionEscritura * aEscribir = deserializarPeticionEscritura(paquete->buffer->stream);
+            writeEnMemoria(aEscribir->direccionFisica, aEscribir->dato);
+            //responder ok escritura
             break;
         }
 		default:{

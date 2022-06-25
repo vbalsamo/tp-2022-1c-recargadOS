@@ -24,6 +24,7 @@
 		REQ_READ_CPU_MEMORIA,
 		RES_READ_MEMORIA_CPU,
 		REQ_WRITE_CPU_MEMORIA,
+		RES_WRITE_CPU_MEMORIA,
 		REQ_MARCO_CPU_MEMORIA,
 		RES_MARCO_MEMORIA_CPU,
 		REQ_CREAR_PROCESO_KERNEL_MEMORIA,
@@ -33,7 +34,6 @@
 		RES_FIN_PROCESO_KERNEL_CONSOLA,
 		REQ_FIN_PROCESO_KERNEL_MEMORIA,
 		REQ_SUSP_PROCESO_KERNEL_MEMORIA,
-		REQ_DESUSP_PROCESO_KERNEL_MEMORIA,
 		ALGO
 	}t_cod_op;
 
@@ -84,7 +84,10 @@
 		uint32_t tablaDePaginas;
 		uint32_t entradaPagina;
 	}t_consultaTablaPagina;
-
+	typedef struct{
+		uint32_t direccionFisica;
+		uint32_t dato;
+	}t_peticionEscritura;
 	char * codOPtoString(t_cod_op);
 
 	void* serializarEstructura(void* estructura,int tamanio,t_cod_op codigoOperacion);
@@ -126,4 +129,7 @@
 
 	t_consultaTablaPagina * deserializarConsultaTablaPagina(void* stream);
 	void * serializarConsultaTablaPagina(void* stream, void* estructura);
+
+	t_peticionEscritura * deserializarPeticionEscritura(void* stream);
+	void * serializarPeticionEscritura(void* stream, void* estructura);
 #endif

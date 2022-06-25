@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../memoria"
+		},
+		{
+			"path": "../cpu"
 		}
 	],
 	"settings": {
