@@ -3,17 +3,6 @@
 void deserializarSegun(t_paquete* paquete, int socket){
 
 	switch(paquete->codigo_operacion){
-		case REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA:{
-            log_info(logger, "se solicita traducciones de direciones");
-            t_traduccion_direcciones * traduccionDirecciones = malloc(sizeof(t_traduccion_direcciones));
-            
-            traduccionDirecciones->tamanio_pagina = TAM_PAGINA;
-            traduccionDirecciones->paginas_por_tabla = ENTRADAS_POR_TABLA;
-            t_paquete* paquete = armarPaqueteCon(traduccionDirecciones, RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU);
-            enviarPaquete(paquete,socket);
-            log_info(logger, "se envia traducciones de direciones");
-			break;
-        }
         case REQ_CREAR_PROCESO_KERNEL_MEMORIA:{
             log_info(logger, "se solicita crear proceso");
             
@@ -53,7 +42,17 @@ void deserializarSegun(t_paquete* paquete, int socket){
             freePCB(pcb);
             break;
         }
-
+        case REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA:{
+            log_info(logger, "se solicita traducciones de direciones");
+            t_traduccion_direcciones * traduccionDirecciones = malloc(sizeof(t_traduccion_direcciones));
+            
+            traduccionDirecciones->tamanio_pagina = TAM_PAGINA;
+            traduccionDirecciones->paginas_por_tabla = ENTRADAS_POR_TABLA;
+            t_paquete* paquete = armarPaqueteCon(traduccionDirecciones, RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU);
+            enviarPaquete(paquete,socket);
+            log_info(logger, "se envia traducciones de direciones");
+			break;
+        }
         case REQ_TABLA_SEGUNDO_NIVEL_CPU_MEMORIA: {
             t_consultaTablaPagina * consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
             uint32_t tablaSegundoNivel = obtenerTablaSegundoNivel(consulta->tablaDePaginas, consulta->entradaPagina);
@@ -86,8 +85,8 @@ void deserializarSegun(t_paquete* paquete, int socket){
             uint32_t * dato = 0; //estructura -> dato
             uint32_t * direccionFisica = 0; //estructura -> direccionFisica
             writeEnMemoria(direccionFisica, dato);
+            break;
         }
-
 		default:{
             break;
         }
