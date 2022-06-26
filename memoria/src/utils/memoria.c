@@ -83,12 +83,9 @@ uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso){
 
 t_entradaSegundoNivel * crearEntradaSegundoNivel() {
     t_entradaSegundoNivel * entrada = malloc(sizeof(t_entradaSegundoNivel));
-    bool random = numeroMarco%2;
-    entrada->marco = numeroMarco++;
-    //entrada->marco = 0;
-    entrada->modificado = random;
-    //entrada->presencia = false;
-    entrada->presencia = random;
+    entrada->marco = TAM_MEMORIA;
+    entrada->modificado = false;
+    entrada->presencia = false;
     entrada->uso = false;
     entrada->paginaSwap = ID_EN_SWAP;
     log_info(logger, "id_en_swap: %d", ID_EN_SWAP);
@@ -119,29 +116,31 @@ uint32_t obtenerTablaSegundoNivel(uint32_t indexTablaPrimerNivel, uint32_t entra
     t_entradaPrimerNivel * entrada = list_get(tablaPrimerNivel, entradaPagina);
     return entrada->tablaSegundoNivel; 
 }
-//  typedef struct{
-//         uint32_t marco;
-//         bool presencia;
-//         bool uso;
-//         bool modificado;
-//     }t_entradaSegundoNivel;
-uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina) {
+
+uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, uint32_t id) {
     t_list * tablaSegundoNivel = list_get(tablasSegundoNivel, indexTablaSegundoNivel);
     t_entradaSegundoNivel * entrada = list_get(tablaSegundoNivel, entradaPagina);
     
     if(!entrada->presencia) {
-        t_entradaSegundoNivel * victima = reemplazar();
-        //swapeo
-        if (victima->modificado) {
-            void * contenidoMarco = leerMarco(victima->marco);
-            escribirMarcoSwap(contenidoMarco, victima->paginaSwap,/*id*/);
+        if(marcosOcupados < MARCOS_POR_PROCESO) {
+            int marco = 0;
+            while(!bitarray_test_bit(bitarray, marco))
+                marco++;
+            entrada->marco =  marco;  
         }
+        else {
+            t_entradaSegundoNivel * victima = reemplazar();
+            //swapeo
+            if (victima->modificado) {
+                void * contenidoMarco = leerMarco(victima->marco);
+                escribirMarcoSwap(contenidoMarco, victima->paginaSwap, id);
+            }
 
-        entrada->marco = reemplazada->marco;
+            entrada->marco = victima->marco;
+        }
         entrada->presencia = true;
         entrada->modificado = false;
     }
-    
     entrada->uso = true;
     return entrada->marco;
 }
@@ -188,11 +187,23 @@ void suspenderProceso(t_pcb * pcb){
     t_list * tablaPrimerNivel = list_get(tablasPrimerNivel, pcb->tablaDePaginas);
     log_info(logger, "swapeando tabla de primerNivel nivel index:%d", pcb->tablaDePaginas);
     list_iterate(tablaPrimerNivel, swapearEntradaPrimerNivel);
-    //desplazamiento = tam pag * num pag
-    //fwrite(tabladepaginas)
 }
 
-void reemplazarClock(uint32_t indexTablaPaginasPrimerNivel) {
+t_entradaSegundoNivel * reemplazar() {
+    t_entradaSegundoNivel * entradaRemplazar=NULL;
+    if(string_equals_ignore_case(ALGORITMO_REEMPLAZO, "CLOCK")){
+
+    }else if(string_equals_ignore_case(ALGORITMO_REEMPLAZO, "CLOCK-M")){
+    
+    }
+    else {
+        log_error(logger, "ALGORITMO_REEMPLAZO: %s no contemplado", ALGORITMO_REEMPLAZO);
+        exit(-1);
+    }
+    return entradaRemplazar;
+}
+
+t_entradaSegundoNivel * reemplazarClock(uint32_t indexTablaPaginasPrimerNivel) {
     t_list * tablaPrimerNivel = list_get(tablasPrimerNivel, indexTablaPaginasPrimerNivel);
     t_list * entradasSegundoNivel = list_create();
     t_entradaSegundoNivel * entradaRemplazar;
@@ -208,16 +219,12 @@ void reemplazarClock(uint32_t indexTablaPaginasPrimerNivel) {
     list_iterate(tablaPrimerNivel, (void*) iterarPrimerNivel);
 
     int cant_entradas = list_size(entradasSegundoNivel);
-    //ESTE IF ES PARA QUE SEA VEA BIEN EN EL LOG, LOGICAENTE ESTA BIEN
-    if(punteroClock == cant_entradas)
-        punteroClock = 0;
-
+    
     void imprimirBitsUso(t_entradaSegundoNivel* entrada) {
         log_info(logger, "PAGINASWAP: %d - FRAME: %d - BIT USO: %d", entrada->paginaSwap, entrada->marco, entrada->uso);
     }
 
     list_iterate(entradasSegundoNivel, (void*) imprimirBitsUso);
-    log_info(logger, "PUNTERO CLOCK EN: %d", punteroClock);
 
     t_entradaSegundoNivel* recorredorEntrada;
 
@@ -231,12 +238,12 @@ void reemplazarClock(uint32_t indexTablaPaginasPrimerNivel) {
 
         if(!recorredorEntrada->uso) {
             entradaRemplazar = recorredorEntrada;
-            log_info(logMemoria, "Victima %s: pagina:%d - frame:%d", configRam.algoritmoReemplazo,
-                    info_paginaAReemplazar->indice, info_paginaAReemplazar->frame);
+            log_info(logger, "Victima Algoritmo %s: paginaSwap:%d - frame:%d", ALGORITMO_REEMPLAZO,
+                    entradaRemplazar->paginaSwap, entradaRemplazar->marco);
             break;
         }
         else {
-            recorredorPaginas->uso = false;
+            recorredorEntrada->uso = false;
         }
     }
     return entradaRemplazar;

@@ -11,8 +11,6 @@
     #include <utils/variables_globales.h>
     #include <utils/memoria.h>
     #include <utils/swap.h>
-    
-    
-    
+        
     void deserializarSegun(t_paquete* paquete, int socket);
 #endif

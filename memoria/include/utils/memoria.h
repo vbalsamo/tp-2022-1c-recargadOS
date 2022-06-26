@@ -44,7 +44,9 @@
     t_list * crearTablaSegundoNivel(int entradas);
     uint32_t marcosProceso(uint32_t tamanioProceso);
     uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso);
-    uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina);
+    t_entradaSegundoNivel * reemplazar();
+    t_entradaSegundoNivel * reemplazarClock(uint32_t indexTablaPaginasPrimerNivel);
+    uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, uint32_t id);
     uint32_t obtenerTablaSegundoNivel(uint32_t indexTablaPrimerNivel, uint32_t entradaPagina);
     void eliminarMarcos(int indexTablaPrimerNivel);
     void eliminarEntradaSegundoNivel(void * entrada);
@@ -53,6 +55,5 @@
     void swapearEntradaSegundoNivel(void * entrada);
     void suspenderProceso(t_pcb * pcb);
     void writeEnMemoria(uint32_t direccionFisica, uint32_t dato);
-    void reemplazarClock(uint32_t indexTablaPaginasPrimerNivel);
     
 #endif
