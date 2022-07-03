@@ -83,10 +83,12 @@
 	typedef struct{
 		uint32_t tablaDePaginas;
 		uint32_t entradaPagina;
+		uint32_t id;
 	}t_consultaTablaPagina;
 	typedef struct{
 		uint32_t direccionFisica;
 		uint32_t dato;
+		uint32_t id;
 	}t_peticionEscritura;
 	char * codOPtoString(t_cod_op);
 

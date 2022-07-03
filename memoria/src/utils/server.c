@@ -8,7 +8,7 @@ void deserializarSegun(t_paquete* paquete, int socket){
             
             t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
             uint32_t * tablaPaginas1erNivel = malloc(sizeof(uint32_t));
-            * tablaPaginas1erNivel = inicializarEstructurasProceso(pcb->tamanioProceso);
+            * tablaPaginas1erNivel = inicializarEstructurasProceso(pcb);
             t_paquete* paqueteRespuesta = armarPaqueteCon(tablaPaginas1erNivel, RES_CREAR_PROCESO_KERNEL_MEMORIA);
             crearArchivoSwap(pcb->id, pcb->tamanioProceso);
             enviarPaquete(paqueteRespuesta,socket);

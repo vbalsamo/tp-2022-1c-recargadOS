@@ -29,6 +29,15 @@ void iniciarEstructurasMemoria(void) {
 
     tablasPrimerNivel = list_create();
     tablasSegundoNivel = list_create();
+    estadosPCBS = dictionary_create();
+}
+
+t_estadoPCB * newEstadoPCB(uint32_t indexTablaPaginasPrimerNivel) {
+    t_estadoPCB * estado = malloc(sizeof(t_estadoPCB));
+    estado->marcosOcupados=0;
+    estado->punteroClock=0;
+    estado->indexTablaPaginasPrimerNivel=indexTablaPaginasPrimerNivel;
+    return estado;
 }
 
 void * leerMarco(uint32_t numeroMarco) {
@@ -54,9 +63,9 @@ uint32_t marcosProceso(uint32_t tamanioProceso) {
     return (uint32_t) ceil((double)tamanioProceso / (double)TAM_PAGINA);
 }
 
-uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso){
+uint32_t inicializarEstructurasProceso(t_pcb* pcb){
     ID_EN_SWAP = 0;
-    uint32_t marcosQueOcupa = marcosProceso(tamanioProceso);
+    uint32_t marcosQueOcupa = marcosProceso(pcb->tamanioProceso);
     //CANTIDAD DE ENTRADAS DE SEGUNDO NIVEL QUE NECESITA
     uint32_t paginasDeSegundoNivelCompletas = (uint32_t) floor((double)marcosQueOcupa / (double)ENTRADAS_POR_TABLA);
     uint32_t entradasUltimaPaginaSegundoNivel = marcosQueOcupa % ENTRADAS_POR_TABLA;
@@ -77,8 +86,18 @@ uint32_t inicializarEstructurasProceso(uint32_t tamanioProceso){
     uint32_t indexTablaPrimerNivel = list_add(tablasPrimerNivel, tablaPrimerNivel);
     
     log_info(logger, "index: %d",indexTablaPrimerNivel);
-
+    t_estadoPCB * estado = newEstadoPCB(indexTablaPrimerNivel);
+    
+    //ver si esto anda y pasar a funcion
+    
+    dictionary_put(estadosPCBS, stringID(pcb->id), estado);
     return indexTablaPrimerNivel;
+}
+char * stringID(uint32_t _id) {
+    
+    char * id = string_new();
+    string_append_with_format(&id, "%d", _id);
+    return id;
 }
 
 t_entradaSegundoNivel * crearEntradaSegundoNivel() {
@@ -120,16 +139,17 @@ uint32_t obtenerTablaSegundoNivel(uint32_t indexTablaPrimerNivel, uint32_t entra
 uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, uint32_t id) {
     t_list * tablaSegundoNivel = list_get(tablasSegundoNivel, indexTablaSegundoNivel);
     t_entradaSegundoNivel * entrada = list_get(tablaSegundoNivel, entradaPagina);
-    
+    char * _id = stringID(id);
+    t_estadoPCB * estado = dictionary_get(estadosPCBS, _id);
     if(!entrada->presencia) {
-        if(marcosOcupados < MARCOS_POR_PROCESO) {
+        if(estado->marcosOcupados < MARCOS_POR_PROCESO) {
             int marco = 0;
             while(!bitarray_test_bit(bitarray, marco))
                 marco++;
             entrada->marco =  marco;  
         }
         else {
-            t_entradaSegundoNivel * victima = reemplazar();
+            t_entradaSegundoNivel * victima = reemplazar(estado);
             //swapeo
             if (victima->modificado) {
                 void * contenidoMarco = leerMarco(victima->marco);
@@ -142,6 +162,7 @@ uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, u
         entrada->modificado = false;
     }
     entrada->uso = true;
+    free(_id);
     return entrada->marco;
 }
 
@@ -189,12 +210,13 @@ void suspenderProceso(t_pcb * pcb){
     list_iterate(tablaPrimerNivel, swapearEntradaPrimerNivel);
 }
 
-t_entradaSegundoNivel * reemplazar() {
+t_entradaSegundoNivel * reemplazar(t_estadoPCB* estado) {
     t_entradaSegundoNivel * entradaRemplazar=NULL;
+    t_list * entradasSegundoNivel = obtenerEntradasSegundoNivel(estado->indexTablaPaginasPrimerNivel);
     if(string_equals_ignore_case(ALGORITMO_REEMPLAZO, "CLOCK")){
-
+        entradaRemplazar = reemplazarClock(estado, entradasSegundoNivel);
     }else if(string_equals_ignore_case(ALGORITMO_REEMPLAZO, "CLOCK-M")){
-    
+        entradaRemplazar = reemplazarClockM(estado, entradasSegundoNivel);
     }
     else {
         log_error(logger, "ALGORITMO_REEMPLAZO: %s no contemplado", ALGORITMO_REEMPLAZO);
@@ -202,12 +224,10 @@ t_entradaSegundoNivel * reemplazar() {
     }
     return entradaRemplazar;
 }
-
-t_entradaSegundoNivel * reemplazarClock(uint32_t indexTablaPaginasPrimerNivel) {
+ t_list * obtenerEntradasSegundoNivel(uint32_t indexTablaPaginasPrimerNivel) {
     t_list * tablaPrimerNivel = list_get(tablasPrimerNivel, indexTablaPaginasPrimerNivel);
     t_list * entradasSegundoNivel = list_create();
-    t_entradaSegundoNivel * entradaRemplazar;
-    int punteroClock = 0;
+    
     void iterarPrimerNivel(t_entradaPrimerNivel * entrada) {
         t_list * tablaSegundoNivel = list_get(tablasPrimerNivel, entrada->tablaSegundoNivel);
         
@@ -217,9 +237,12 @@ t_entradaSegundoNivel * reemplazarClock(uint32_t indexTablaPaginasPrimerNivel) {
         list_iterate(tablaSegundoNivel, (void*) iterarSegundoNivel);
     }
     list_iterate(tablaPrimerNivel, (void*) iterarPrimerNivel);
+    return entradasSegundoNivel;
+}
 
+t_entradaSegundoNivel * reemplazarClock(t_estadoPCB* estado, t_list * entradasSegundoNivel) {
     int cant_entradas = list_size(entradasSegundoNivel);
-    
+    t_entradaSegundoNivel * entradaRemplazar;
     void imprimirBitsUso(t_entradaSegundoNivel* entrada) {
         log_info(logger, "PAGINASWAP: %d - FRAME: %d - BIT USO: %d", entrada->paginaSwap, entrada->marco, entrada->uso);
     }
@@ -230,11 +253,11 @@ t_entradaSegundoNivel * reemplazarClock(uint32_t indexTablaPaginasPrimerNivel) {
 
     while(1) {
 
-        if(punteroClock == cant_entradas)
-            punteroClock = 0;
+        if(estado->punteroClock == cant_entradas)
+            estado->punteroClock = 0;
 
-        recorredorEntrada = list_get(entradasSegundoNivel, punteroClock);
-        punteroClock++;
+        recorredorEntrada = list_get(entradasSegundoNivel, estado->punteroClock);
+        estado->punteroClock++;
 
         if(!recorredorEntrada->uso) {
             entradaRemplazar = recorredorEntrada;
@@ -247,4 +270,8 @@ t_entradaSegundoNivel * reemplazarClock(uint32_t indexTablaPaginasPrimerNivel) {
         }
     }
     return entradaRemplazar;
+}
+
+t_entradaSegundoNivel * reemplazarClockM(t_estadoPCB * estado, t_list * entradasSegundoNivel) {
+    return NULL;
 }

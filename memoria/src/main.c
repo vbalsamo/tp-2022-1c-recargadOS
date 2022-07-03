@@ -12,7 +12,8 @@ int main(int argc, char* argv[]) {
     iniciarEstructurasMemoria();
 
     int socket = iniciar_servidor(IP, PUERTO_ESCUCHA);
-    
+
+
     while(1){
         int socket_cliente = esperar_cliente(socket);
         log_info(logger, "se conecto cliente");

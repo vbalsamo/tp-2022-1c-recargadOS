@@ -278,6 +278,8 @@ void * serializarConsultaTablaPagina(void* stream, void* estructura) {
     memcpy(stream + offset, &(consulta->entradaPagina),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
     memcpy(stream + offset, &(consulta->tablaDePaginas),sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+    memcpy(stream + offset, &(consulta->id),sizeof(uint32_t));
 	return stream;
 }
 
@@ -287,6 +289,8 @@ t_consultaTablaPagina * deserializarConsultaTablaPagina(void* stream) {
     memcpy(&(consulta->entradaPagina), stream + offset, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
     memcpy(&(consulta->tablaDePaginas), stream + offset,sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+    memcpy(&(consulta->id), stream + offset,sizeof(uint32_t));
 	return consulta;
 }
 
@@ -296,6 +300,8 @@ void * serializartPeticionEscritura(void* stream, void* estructura) {
     memcpy(stream + offset, &(peticion->direccionFisica),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
     memcpy(stream + offset, &(peticion->dato),sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+    memcpy(stream + offset, &(peticion->id),sizeof(uint32_t));
 	return stream;
 }
 
@@ -305,6 +311,8 @@ t_peticionEscritura * deserializarPeticionEscritura(void* stream) {
     memcpy(&(peticion->direccionFisica), stream + offset, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
     memcpy(&(peticion->dato), stream + offset,sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+    memcpy(&(peticion->id), stream + offset,sizeof(uint32_t));
 	return peticion;
 }
 
@@ -436,13 +444,13 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
 		}
 		case REQ_TABLA_SEGUNDO_NIVEL_CPU_MEMORIA:{
-			return sizeof(uint32_t)*2;
+			return sizeof(uint32_t)*3;
 		}
 		case RES_TABLA_SEGUNDO_NIVEL_MEMORIA_CPU: {
 			return sizeof(uint32_t);
 		}
 		case REQ_MARCO_CPU_MEMORIA:{
-			return sizeof(uint32_t)*2;
+			return sizeof(uint32_t)*3;
 		}
 		case RES_MARCO_MEMORIA_CPU:{
 			return sizeof(uint32_t);

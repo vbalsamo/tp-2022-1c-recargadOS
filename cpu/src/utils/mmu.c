@@ -106,7 +106,8 @@ uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina) {
     
     consulta->tablaDePaginas = tablaDePaginasSegundoNivel;
     consulta->entradaPagina = entradaSegundoNivel;
-    
+    consulta->id = PCB_ACTUAL;//TODO: problema de concurrencia
+
     t_paquete * paquete = armarPaqueteCon(consulta, REQ_MARCO_CPU_MEMORIA);
     enviarPaquete(paquete,socket_memoria);
     t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
