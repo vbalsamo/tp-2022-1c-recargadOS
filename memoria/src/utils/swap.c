@@ -32,10 +32,3 @@ void escribirMarcoSwap(void * contenidoMarco, uint32_t numeroPagina, uint32_t id
     free(nombreArchivo);
     fclose(archivo);
 }
-
-void desuspenderProceso(t_pcb * pcb){
-    
-}
-
-
-//suspension -> agarras el pcb con las instrucciones -> lo copias y haces un write en swap de esas instrucciones

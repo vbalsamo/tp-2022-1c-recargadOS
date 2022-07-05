@@ -272,6 +272,6 @@ t_entradaSegundoNivel * reemplazarClock(t_estadoPCB* estado, t_list * entradasSe
     return entradaRemplazar;
 }
 
-t_entradaSegundoNivel * reemplazarClockM(t_estadoPCB * estado, t_list * entradasSegundoNivel) {
+t_entradaSegundoNivel * reemplazarClockM(t_estadoPCB * estado,  t_list * entradasSegundoNivel) {
     return NULL;
 }

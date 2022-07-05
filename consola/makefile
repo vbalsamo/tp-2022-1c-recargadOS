@@ -126,3 +126,8 @@ suspe2: release
 suspe3: release
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
 	./$(BIN) $(SUSPE3)
+
+.PHONY: memoria1
+memoria1: release
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(MEMORIA1)

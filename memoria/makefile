@@ -106,3 +106,8 @@ plani: release
 suspe: release
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
 	./$(BIN) $(SUSPE)
+
+.PHONY: memoria
+memoria: release
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(MEMORIA)

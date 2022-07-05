@@ -15,6 +15,7 @@ ARGS=/home/utnso/git/tp-2022-1c-recargadOS/kernel/config/kernel.cfg
 BASE=/home/utnso/tp-2022-1c-recargadOS/pruebas/BASE_KERNEL.cfg
 PLANI=/home/utnso/tp-2022-1c-recargadOS/pruebas/PLANI_KERNEL.cfg
 SUSPE=/home/utnso/tp-2022-1c-recargadOS/pruebas/SUSPE_KERNEL.cfg
+MEMORIA=/home/utnso/tp-2022-1c-recargadOS/pruebas/MEMORIA_KERNEL.cfg
 # Valgrind flags
 MEMCHECK_FLAGS=--track-origins=yes --log-file="memcheck.txt"
 HELGRIND_FLAGS=--log-file="helgrind.txt"
