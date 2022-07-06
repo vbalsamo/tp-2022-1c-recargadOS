@@ -215,20 +215,6 @@ void comunicacionMemoriaSuspender(t_pcb * pcb){
   
 }
 
-void comunicacionMemoriaDesuspender(t_pcb * pcb){
-    int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
-    t_paquete * paqueteAmemoria = armarPaqueteCon(pcb, REQ_DESUSP_PROCESO_KERNEL_MEMORIA);
-    enviarPaquete(paqueteAmemoria, socketMemoria);
-    eliminarPaquete(paqueteAmemoria);
-
-    //esperamos respuesta??
-    t_paquete * paqueteRespuesta = recibirPaquete(socketMemoria);
-    uint32_t * tablaPaginas1erNivel = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
-    pcb->tablaDePaginas = *tablaPaginas1erNivel;
-    log_info(logger, "pcbid: %d se le asigna tabla de paginas primer nivel: %d", pcb->id, *tablaPaginas1erNivel);
-    free(tablaPaginas1erNivel);
-}
-
 void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
     int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
     t_paquete * paqueteAmemoria = armarPaqueteCon(pcb, REQ_CREAR_PROCESO_KERNEL_MEMORIA);

@@ -26,7 +26,6 @@ void deserializarSegun(t_paquete* paquete, int socket){
             freePCB(pcb);
             break;
         }
-        
         case REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA:{
             log_info(logger, "se solicita traducciones de direciones");
             t_traduccion_direcciones * traduccionDirecciones = malloc(sizeof(t_traduccion_direcciones));
