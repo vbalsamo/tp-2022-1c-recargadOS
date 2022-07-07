@@ -136,7 +136,7 @@ uint32_t obtenerTablaSegundoNivel(uint32_t indexTablaPrimerNivel, uint32_t entra
     return entrada->tablaSegundoNivel; 
 }
 
-uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, uint32_t id) {
+uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, uint32_t id,bool esWrite) {
     t_list * tablaSegundoNivel = list_get(tablasSegundoNivel, indexTablaSegundoNivel);
     t_entradaSegundoNivel * entrada = list_get(tablaSegundoNivel, entradaPagina);
     char * _id = stringID(id);
@@ -144,9 +144,12 @@ uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, u
     if(!entrada->presencia) {
         if(estado->marcosOcupados < MARCOS_POR_PROCESO) {
             int marco = 0;
-            while(!bitarray_test_bit(bitarray, marco))
+            while(!bitarray_test_bit(bitarray, marco)){
                 marco++;
-            entrada->marco =  marco;  
+            }
+            bitarray_set_bit(bitarray, marco);
+            entrada->marco =  marco;
+            estado->marcosOcupados++;
         }
         else {
             t_entradaSegundoNivel * victima = reemplazar(estado);
@@ -154,12 +157,15 @@ uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, u
             if (victima->modificado) {
                 void * contenidoMarco = leerMarco(victima->marco);
                 escribirMarcoSwap(contenidoMarco, victima->paginaSwap, id);
+                victima->modificado=false;
             }
 
             entrada->marco = victima->marco;
         }
         entrada->presencia = true;
-        entrada->modificado = false;
+    }
+    if(esWrite) {
+        entrada->modificado = true;
     }
     entrada->uso = true;
     free(_id);
@@ -190,7 +196,8 @@ void swapearEntradaSegundoNivel(void * entrada) {
     t_entradaSegundoNivel* entradaSegundoNivel = (t_entradaSegundoNivel*) entrada;
     if (entradaSegundoNivel->presencia && entradaSegundoNivel->modificado) {
         void * marco = leerMarco(entradaSegundoNivel->marco);
-        //chequear que el PCB_ID glonal en memoria funcione bien
+        //chequear que el PCB_ID global en memoria funcione bien
+        log_info(logger, "se lee el marco:%d. Contenido del marco %s", entradaSegundoNivel->marco, (char *) marco);
         escribirMarcoSwap(marco, entradaSegundoNivel->paginaSwap, PCB_ID);
         bitarray_clean_bit(bitarray, entradaSegundoNivel->marco);
     }
@@ -204,7 +211,7 @@ void swapearEntradaPrimerNivel(void * entrada) {
 }
 
 void suspenderProceso(t_pcb * pcb){
-    PCB_ID = pcb->id;
+    PCB_ID = pcb->id;//TODO: Problema de concurrencia
     t_list * tablaPrimerNivel = list_get(tablasPrimerNivel, pcb->tablaDePaginas);
     log_info(logger, "swapeando tabla de primerNivel nivel index:%d", pcb->tablaDePaginas);
     list_iterate(tablaPrimerNivel, swapearEntradaPrimerNivel);

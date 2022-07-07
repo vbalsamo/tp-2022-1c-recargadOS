@@ -56,7 +56,7 @@
     t_list * obtenerEntradasSegundoNivel(uint32_t indexTablaPaginasPrimerNivel);
     t_entradaSegundoNivel * reemplazarClock(t_estadoPCB * estado, t_list * entradasSegundoNivel);
     t_entradaSegundoNivel * reemplazarClockM(t_estadoPCB * estado, t_list * entradasSegundoNivel);
-    uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, uint32_t id);
+    uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, uint32_t id,bool modificado);
     uint32_t obtenerTablaSegundoNivel(uint32_t indexTablaPrimerNivel, uint32_t entradaPagina);
     void eliminarMarcos(int indexTablaPrimerNivel);
     void eliminarEntradaSegundoNivel(void * entrada);

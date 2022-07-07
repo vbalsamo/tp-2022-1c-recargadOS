@@ -99,7 +99,7 @@ uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t
     return tablaSegundoNivel;
 }
 
-uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina) {
+uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina, t_cod_op codOP) {
     uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     uint32_t entradaSegundoNivel = obtenerEntradaTabla2doNivel(pagina);
     t_consultaTablaPagina * consulta = malloc(sizeof(t_consultaTablaPagina));
@@ -108,7 +108,7 @@ uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina) {
     consulta->entradaPagina = entradaSegundoNivel;
     consulta->id = PCB_ACTUAL;//TODO: problema de concurrencia
 
-    t_paquete * paquete = armarPaqueteCon(consulta, REQ_MARCO_CPU_MEMORIA);
+    t_paquete * paquete = armarPaqueteCon(consulta, codOP);
     enviarPaquete(paquete,socket_memoria);
     t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
     
@@ -118,14 +118,14 @@ uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina) {
     return marcoo;
 }
 
-uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t direccion_logica) {
+uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t direccion_logica, t_cod_op codOP) {
     uint32_t pagina = obtenerNumeroPagina(direccion_logica);
     t_EntradaTLB * entrada = obtenerEntradaTLB(pagina);
     uint32_t marco;
 
     if(entrada==NULL) { //Si no esta en TLB
         uint32_t tablaDePaginasSegundoNivel = consultarTablaSegundoNivel(tablaPaginasPrimerNivelPCB, pagina);
-        marco = consultarMarco(tablaDePaginasSegundoNivel, pagina);
+        marco = consultarMarco(tablaDePaginasSegundoNivel, pagina, codOP);
         agregarTLB(pagina, marco);
     }
     else {

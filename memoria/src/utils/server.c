@@ -16,10 +16,17 @@ void deserializarSegun(t_paquete* paquete, int socket){
             log_info(logger, "se envia tabla Paginas 1er Nivel");
 			break;
         }
+        case REQ_SUSP_PROCESO_KERNEL_MEMORIA:{
+            t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
+            suspenderProceso(pcb);//liberarMarcos()
+            eliminarMarcos(pcb->tablaDePaginas);
+            log_info(logger, "se solicita suspender el proceso, se swapean sus marcos: %d", pcb->id);
+            freePCB(pcb);
+            break;
+        }
         case REQ_FIN_PROCESO_KERNEL_MEMORIA:{
             t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
-            //eliminar pcb->id.swap
-            suspenderProceso(pcb);
+            //suspenderProceso(pcb);
             eliminarMarcos(pcb->tablaDePaginas);
             eliminarArchivoSwap(pcb -> id);
             log_info(logger, "se solicita borrar memoria y swap del proceso: %d", pcb->id);
@@ -32,8 +39,8 @@ void deserializarSegun(t_paquete* paquete, int socket){
             
             traduccionDirecciones->tamanio_pagina = TAM_PAGINA;
             traduccionDirecciones->paginas_por_tabla = ENTRADAS_POR_TABLA;
-            t_paquete* paquete = armarPaqueteCon(traduccionDirecciones, RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU);
-            enviarPaquete(paquete,socket);
+            t_paquete* paqueteRespuesta = armarPaqueteCon(traduccionDirecciones, RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU);
+            enviarPaquete(paqueteRespuesta,socket);
             log_info(logger, "se envia traducciones de direciones");
 			break;
         }
@@ -41,15 +48,24 @@ void deserializarSegun(t_paquete* paquete, int socket){
             t_consultaTablaPagina * consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
             uint32_t tablaSegundoNivel = obtenerTablaSegundoNivel(consulta->tablaDePaginas, consulta->entradaPagina);
             t_paquete * paqueteRespuesta = armarPaqueteCon(&tablaSegundoNivel,RES_TABLA_SEGUNDO_NIVEL_MEMORIA_CPU);
-            enviarPaquete(paquete, socket);
+            enviarPaquete(paqueteRespuesta, socket);
             eliminarPaquete(paqueteRespuesta);
             break;
         }
-        case REQ_MARCO_CPU_MEMORIA: {
+        case REQ_MARCO_LECTURA_CPU_MEMORIA: {
             t_consultaTablaPagina * consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
-            uint32_t marco = obtenerMarco(consulta->tablaDePaginas, consulta->entradaPagina, consulta->id);
+            uint32_t marco = obtenerMarco(consulta->tablaDePaginas, consulta->entradaPagina, consulta->id,false);
             t_paquete * paqueteRespuesta = armarPaqueteCon(&marco,RES_MARCO_MEMORIA_CPU);
-            enviarPaquete(paquete, socket);
+            enviarPaquete(paqueteRespuesta, socket);
+            eliminarPaquete(paqueteRespuesta);
+            
+            break;
+        }
+        case REQ_MARCO_ESCRITURA_CPU_MEMORIA: {
+            t_consultaTablaPagina * consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
+            uint32_t marco = obtenerMarco(consulta->tablaDePaginas, consulta->entradaPagina, consulta->id,true);
+            t_paquete * paqueteRespuesta = armarPaqueteCon(&marco,RES_MARCO_MEMORIA_CPU);
+            enviarPaquete(paqueteRespuesta, socket);
             eliminarPaquete(paqueteRespuesta);
             
             break;

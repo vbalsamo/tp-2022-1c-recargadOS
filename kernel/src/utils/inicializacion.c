@@ -29,7 +29,7 @@ void inicializarVariablesGlobales(char * pathConfig){
     GRADO_MULTIPROGRAMACION = config_get_int_value(config, "GRADO_MULTIPROGRAMACION");
     ALGORITMO_PLANIFICACION = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
     ALFA = config_get_double_value(config, "ALFA");
-    TIEMPO_MAXIMO_BLOQUEADO = config_get_int_value(config, "TIEMPO_MAXIMO_BLOQUEADO") * 100;
+    TIEMPO_MAXIMO_BLOQUEADO = config_get_int_value(config, "TIEMPO_MAXIMO_BLOQUEADO")/1000;
 }
 
 //TO DO: 

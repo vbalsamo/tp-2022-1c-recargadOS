@@ -60,7 +60,8 @@
 			"server.h": "c",
 			"memoria.h": "c",
 			"bitarray.h": "c",
-			"swap.h": "c"
+			"swap.h": "c",
+			"queue.h": "c"
 		}
     }
 }

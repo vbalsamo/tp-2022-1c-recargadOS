@@ -39,9 +39,9 @@
 
     uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t pagina);
 
-    uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina);
+    uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina, t_cod_op codOP);
     
-    uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t direccion_logica);
+    uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t direccion_logica, t_cod_op codOP);
 
     uint32_t obtenerNumeroPagina(uint32_t direccion_logica);
 
