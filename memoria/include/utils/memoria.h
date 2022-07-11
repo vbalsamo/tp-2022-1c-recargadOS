@@ -53,10 +53,10 @@
     t_list * crearTablaSegundoNivel(int entradas);
     uint32_t marcosProceso(uint32_t tamanioProceso);
     uint32_t inicializarEstructurasProceso(t_pcb* pcb);
-    t_entradaSegundoNivel * reemplazar(t_estadoPCB * estado);
+    t_entradaSegundoNivel * reemplazar(t_estadoPCB * estado, t_entradaSegundoNivel* entrada);
     t_list * obtenerEntradasSegundoNivel(uint32_t indexTablaPaginasPrimerNivel);
-    t_entradaSegundoNivel * reemplazarClock(t_estadoPCB * estado, t_list * entradasSegundoNivel);
-    t_entradaSegundoNivel * reemplazarClockM(t_estadoPCB * estado, t_list * entradasSegundoNivel);
+    t_entradaSegundoNivel * reemplazarClock(t_estadoPCB * estado, t_list * entradasSegundoNivel, t_entradaSegundoNivel* entrada);
+    t_entradaSegundoNivel * reemplazarClockM(t_estadoPCB * estado, t_list * entradasSegundoNivel, t_entradaSegundoNivel* entrada);
     uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, uint32_t id,bool modificado);
     uint32_t obtenerTablaSegundoNivel(uint32_t indexTablaPrimerNivel, uint32_t entradaPagina);
     void eliminarMarcos(int indexTablaPrimerNivel);

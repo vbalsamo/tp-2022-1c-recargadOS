@@ -33,12 +33,30 @@ void agregarTLB(uint32_t pagina, uint32_t marco) {
             exit(-1);
         }
     }
+    imprimirEntradasTLB();
 }
+
+void imprimirEntradasTLB(){
+    list_iterate(listaTLB, (void*) imprimirEntradaTLB);
+}
+void imprimirEntradaTLB(t_EntradaTLB* entrada){
+    log_info(logger, "ENTRADA_TLB: página: %d - marco: %d - tiempoAcceso: %d", entrada->pagina, entrada->marco, entrada->tiempoAcceso);
+}
+
+// void imprimirBitsUso(t_entradaSegundoNivel* entrada) {
+//         if(entrada->presencia)
+//             log_info(logger, "PAGINASWAP: %d - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d", entrada->paginaSwap, entrada->marco, entrada->uso, entrada->presencia);
+//     }
+
+//     list_iterate(entradasSegundoNivel, (void*) imprimirBitsUso);
 
 void vaciarTLB(uint32_t pcb_nuevo){
     if(PCB_ACTUAL != pcb_nuevo){
         list_clean(listaTLB);
         log_info(logger, "TLB vaciada por cambio de proceso");
+    }
+    else{
+        log_info(logger, "No se vacía la TLB porque sigue ejecutando el mismo proceso");
     }
     PCB_ACTUAL = pcb_nuevo;
 }
@@ -51,6 +69,7 @@ void actualizarTLB(t_EntradaTLB * entrada) {
 void reemplazarTLB_FIFO(uint32_t pagina, uint32_t marco) {
     t_EntradaTLB * nuevaEntrada = newEntradaTLB(pagina, marco);
     t_EntradaTLB * viejaEntrada = list_replace(listaTLB, indiceFIFO, nuevaEntrada);
+    log_info(logger, "pagina viejaEntrada:%d - marco viejaEntrada:%d - pagina nuevaEntrada: %d - marco nuevaEntrada:%d", viejaEntrada->pagina, viejaEntrada->marco, nuevaEntrada->pagina, nuevaEntrada->marco);
     free(viejaEntrada);
     incrementarIndiceFIFO();
 }
@@ -64,6 +83,7 @@ void reemplazarTLB_LRU(uint32_t pagina, uint32_t marco) {
     list_sort(listaTLB, comparator);
     t_EntradaTLB * viejaEntrada = list_remove(listaTLB,0);
     list_add(listaTLB, nuevaEntrada);
+    log_info(logger, "pagina viejaEntrada:%d - marco viejaEntrada:%d - pagina nuevaEntrada: %d - marco nuevaEntrada:%d", viejaEntrada->pagina, viejaEntrada->marco, nuevaEntrada->pagina, nuevaEntrada->marco);
     free(viejaEntrada);
 }
 
@@ -127,10 +147,12 @@ uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t 
     if(entrada==NULL) { //Si no esta en TLB
         uint32_t tablaDePaginasSegundoNivel = consultarTablaSegundoNivel(tablaPaginasPrimerNivelPCB, pagina);
         marco = consultarMarco(tablaDePaginasSegundoNivel, pagina, codOP);
+        log_info(logger, "TLB MISS: página:%d - marco:%d NO encontrada en TLB, buscando en memoria", pagina, marco);
         agregarTLB(pagina, marco);
     }
     else {
         marco = entrada->marco;
+        log_info(logger, "TLB HIT: página:%d - marco:%d encontrada en TLB", pagina, marco);
         actualizarTLB(entrada);
     }
 

@@ -17,7 +17,7 @@
         },
         {
             "label": "run",
-            "command": "${workspaceFolder}/bin/consola.out ${workspaceFolder}/instrucciones/instrucciones.txt 10 ${workspaceFolder}/config/consola.cfg",
+            "command": "${workspaceFolder}/bin/consola.out ${workspaceFolder}/pruebas/MEMORIA_1 10 ${workspaceFolder}/config/consola.cfg",
             "type": "shell",
             "group": {
                 "kind": "none",

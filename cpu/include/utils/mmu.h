@@ -31,6 +31,10 @@
 
     t_EntradaTLB * obtenerEntradaTLB(uint32_t pagina);
     
+    void imprimirEntradaTLB(t_EntradaTLB* entrada);
+
+    void imprimirEntradasTLB();
+
     void agregarTLB(uint32_t pagina, uint32_t marco);
     
     void actualizarTLB(t_EntradaTLB * entrada);

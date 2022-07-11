@@ -10,8 +10,8 @@ char* leerInstrucciones(char* path){
     FILE* fileInstrucciones = fopen(path,"r");
     char* stringInstrucciones = string_new();
     char* instruccionActual = malloc(sizeof(char)*BUFFSIZE);
-    instruccionActual = fgets(instruccionActual,BUFFSIZE,fileInstrucciones);
     rewind(fileInstrucciones);
+    instruccionActual = fgets(instruccionActual,BUFFSIZE,fileInstrucciones);
     while(!feof(fileInstrucciones)){
         string_append(&stringInstrucciones,instruccionActual);
         instruccionActual = fgets(instruccionActual,BUFFSIZE,fileInstrucciones);

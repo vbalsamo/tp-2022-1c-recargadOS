@@ -161,7 +161,7 @@ uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, u
             escribirMarco(marco, contenidoPaginaSwap);
         }
         else {
-            t_entradaSegundoNivel * victima = reemplazar(estado);
+            t_entradaSegundoNivel * victima = reemplazar(estado, entrada);
             if (victima->modificado) {
                 void * contenidoMarco = leerMarco(victima->marco);
                 escribirMarcoSwap(contenidoMarco, victima->paginaSwap, id);
@@ -226,13 +226,13 @@ void suspenderProceso(t_pcb * pcb){
     list_iterate(tablaPrimerNivel, swapearEntradaPrimerNivel);
 }
 
-t_entradaSegundoNivel * reemplazar(t_estadoPCB* estado) {
+t_entradaSegundoNivel * reemplazar(t_estadoPCB* estado, t_entradaSegundoNivel* entrada) {
     t_entradaSegundoNivel * entradaRemplazar=NULL;
     t_list * entradasSegundoNivel = obtenerEntradasSegundoNivel(estado->indexTablaPaginasPrimerNivel);
     if(string_equals_ignore_case(ALGORITMO_REEMPLAZO, "CLOCK")){
-        entradaRemplazar = reemplazarClock(estado, entradasSegundoNivel);
+        entradaRemplazar = reemplazarClock(estado, entradasSegundoNivel, entrada);
     }else if(string_equals_ignore_case(ALGORITMO_REEMPLAZO, "CLOCK-M")){
-        entradaRemplazar = reemplazarClockM(estado, entradasSegundoNivel);
+        entradaRemplazar = reemplazarClockM(estado, entradasSegundoNivel, entrada);
     }
     else {
         log_error(logger, "ALGORITMO_REEMPLAZO: %s no contemplado", ALGORITMO_REEMPLAZO);
@@ -257,7 +257,7 @@ t_list * obtenerEntradasSegundoNivel(uint32_t indexTablaPaginasPrimerNivel) {
     return entradasSegundoNivel;
 }
 
-t_entradaSegundoNivel * reemplazarClock(t_estadoPCB* estado, t_list * entradasSegundoNivel) {
+t_entradaSegundoNivel * reemplazarClock(t_estadoPCB* estado, t_list * entradasSegundoNivel, t_entradaSegundoNivel* entrada) {
     int cant_entradas = list_size(entradasSegundoNivel);
     t_entradaSegundoNivel * entradaRemplazar;
     void imprimirBitsUso(t_entradaSegundoNivel* entrada) {
@@ -277,8 +277,8 @@ t_entradaSegundoNivel * reemplazarClock(t_estadoPCB* estado, t_list * entradasSe
         if(recorredorEntrada->presencia) {
             if(!recorredorEntrada->uso) {
             entradaRemplazar = recorredorEntrada;
-            log_info(logger, "Victima Algoritmo %s: paginaSwap:%d - frame:%d", ALGORITMO_REEMPLAZO,
-                    entradaRemplazar->paginaSwap, entradaRemplazar->marco);
+            log_info(logger, "Victima Algoritmo %s: paginaSwap Reemplazada:%d - paginaSwap Nueva:%d  - frame:%d", ALGORITMO_REEMPLAZO,
+                    entradaRemplazar->paginaSwap, entrada->paginaSwap, entradaRemplazar->marco);
             break;
             }
             else {
@@ -290,6 +290,42 @@ t_entradaSegundoNivel * reemplazarClock(t_estadoPCB* estado, t_list * entradasSe
     return entradaRemplazar;
 }
 
-t_entradaSegundoNivel * reemplazarClockM(t_estadoPCB * estado,  t_list * entradasSegundoNivel) {
-    return NULL;
+t_entradaSegundoNivel * reemplazarClockM(t_estadoPCB * estado,  t_list * entradasSegundoNivel, t_entradaSegundoNivel* entrada) {
+    int cant_entradas = list_size(entradasSegundoNivel);
+    t_entradaSegundoNivel * entradaRemplazar;
+    void imprimirBitsUso(t_entradaSegundoNivel* entrada) {
+        if(entrada->presencia)
+            log_info(logger, "PAGINASWAP: %d - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d - BIT MODIFICADO: %d", entrada->paginaSwap, entrada->marco, entrada->uso, entrada->presencia, entrada->modificado);
+    }
+
+    list_iterate(entradasSegundoNivel, (void*) imprimirBitsUso);
+
+    t_entradaSegundoNivel* recorredorEntrada;
+
+    while(1) {
+
+        recorredorEntrada = list_get(entradasSegundoNivel, estado->punteroClock);
+        estado->punteroClock= (estado->punteroClock+1) % cant_entradas;
+        
+        if(recorredorEntrada->presencia) {
+
+            if(!(recorredorEntrada->modificado || recorredorEntrada->uso)){
+                entradaRemplazar = recorredorEntrada;
+                log_info(logger, "Victima Algoritmo %s: paginaSwapReemplazada:%d -paginaSwapNueva: %d - frame:%d", ALGORITMO_REEMPLAZO,
+                    entradaRemplazar->paginaSwap, entrada->paginaSwap, entradaRemplazar->marco);
+                break;
+            }
+            else if(!recorredorEntrada->uso) {
+                entradaRemplazar = recorredorEntrada;
+                log_info(logger, "Victima Algoritmo %s: paginaSwapReemplazada:%d -paginaSwapNueva: %d - frame:%d", ALGORITMO_REEMPLAZO,
+                    entradaRemplazar->paginaSwap, entrada->paginaSwap, entradaRemplazar->marco);
+                break;
+            }
+            else {
+                recorredorEntrada->uso = false;
+            }
+        }
+        
+    }
+    return entradaRemplazar;
 }
