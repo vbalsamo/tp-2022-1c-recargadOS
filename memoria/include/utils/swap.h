@@ -15,6 +15,7 @@
 char * obtnerPathSwap(uint32_t id);
 void crearArchivoSwap(uint32_t id, uint32_t tamanioProceso);
 void escribirMarcoSwap(void * contenidoMarco, uint32_t numeroMarco, uint32_t id);
+void * leerPaginaSwap(uint32_t paginaSwap,uint32_t id);
 void eliminarArchivoSwap(uint32_t id);
 void suspenderProceso (t_pcb * pcb);
 void desuspenderProceso (t_pcb * pcb);

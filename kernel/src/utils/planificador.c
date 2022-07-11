@@ -181,23 +181,23 @@ void hilo_block(){
                t_IO * ultimoIO = queue_pop(estado_blocked);
         pthread_mutex_unlock(&mutex_estado_blocked);        
         
-        uint32_t ultimoIOenMicroseg = ultimoIO->tiempoBloqueo;
+        uint32_t ultimoIOenSegundos = ultimoIO->tiempoBloqueo/1000;
         
-        if(ultimoIOenMicroseg > TIEMPO_MAXIMO_BLOQUEADO){
+        if(ultimoIOenSegundos > TIEMPO_MAXIMO_BLOQUEADO){
             log_info(logger, "pcb: %d ejecutando IO de TIEMPO_MAXIMO_BLOQUEADO: %d segundos", ultimoIO->pcb->id, TIEMPO_MAXIMO_BLOQUEADO);
             sleep(TIEMPO_MAXIMO_BLOQUEADO);
             // Hablar memoria, lo swapeamos
             //addEstadoSuspBlocked(ultimoIO->pcb);
             comunicacionMemoriaSuspender(ultimoIO->pcb);
             sem_post(&sem_multiprogramacion);
-            log_info(logger, "pcb: %d ejecutando IO restante de: %d segundos", ultimoIO->pcb->id, (ultimoIOenMicroseg - TIEMPO_MAXIMO_BLOQUEADO));
-            sleep(ultimoIOenMicroseg - TIEMPO_MAXIMO_BLOQUEADO);
+            log_info(logger, "pcb: %d ejecutando IO restante de: %d segundos", ultimoIO->pcb->id, (ultimoIOenSegundos - TIEMPO_MAXIMO_BLOQUEADO));
+            sleep(ultimoIOenSegundos - TIEMPO_MAXIMO_BLOQUEADO);
             addEstadoSuspReady(ultimoIO->pcb);
             //sem_post(&sem_susp_ready);
             sem_post(&sem_hay_pcb_esperando_ready);
         } else{
-            log_info(logger, "pcb: %d ejecutando IO de: %d segundos", ultimoIO->pcb->id, ultimoIOenMicroseg);
-            sleep(ultimoIOenMicroseg);
+            log_info(logger, "pcb: %d ejecutando IO de: %d segundos", ultimoIO->pcb->id, ultimoIOenSegundos);
+            sleep(ultimoIOenSegundos);
             addEstadoReady(ultimoIO->pcb);
             sem_post(&sem_ready);
         }
@@ -362,7 +362,7 @@ void ejecutarPCB(t_pcb * pcb){
             char * error = string_new();
             string_append_with_format(&error,"Respuesta de CPU %s no soportada",codOPtoString(paqueteRespuesta->codigo_operacion));
             perror(error);
-            exit(1);
+            exit(EXIT_FAILURE);
             break;
         }
         

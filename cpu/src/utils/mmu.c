@@ -88,6 +88,7 @@ uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t
     
     consulta->tablaDePaginas = tablaDePaginasPrimerNivel;
     consulta->entradaPagina = entradaPrimerNivel;
+    consulta->id = PCB_ACTUAL;//TODO: problema de concurrencia
     
     t_paquete * paquete = armarPaqueteCon(consulta, REQ_TABLA_SEGUNDO_NIVEL_CPU_MEMORIA);
     enviarPaquete(paquete,socket_memoria);
@@ -129,7 +130,7 @@ uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t 
         agregarTLB(pagina, marco);
     }
     else {
-        marco =  entrada->marco;
+        marco = entrada->marco;
         actualizarTLB(entrada);
     }
 

@@ -16,19 +16,35 @@ void crearArchivoSwap(uint32_t id, uint32_t tamanioProceso){
 }
 
 void eliminarArchivoSwap(uint32_t id){
-    char * nombreArchivo =obtnerPathSwap(id);
+    char * nombreArchivo = obtnerPathSwap(id);
     remove(nombreArchivo);
     free(nombreArchivo);
 }
 
 void escribirMarcoSwap(void * contenidoMarco, uint32_t numeroPagina, uint32_t id) {
+    //mutex_lock
+    sleep(RETARDO_SWAP);
+    char * nombreArchivo = obtnerPathSwap(id);
+    
+    int desplazamiento = numeroPagina * TAM_PAGINA;
+    FILE * archivo = fopen(nombreArchivo, "r+");
+    fseek(archivo, desplazamiento, SEEK_SET);
+    fwrite(contenidoMarco, 1, TAM_PAGINA, archivo);
+    free(nombreArchivo);
+    fclose(archivo);
+    //mutex
+}
+
+void * leerPaginaSwap(uint32_t numeroPagina, uint32_t id) {
     sleep(RETARDO_SWAP);
     char * nombreArchivo =obtnerPathSwap(id);
     
     int desplazamiento = numeroPagina * TAM_PAGINA;
     FILE * archivo = fopen(nombreArchivo, "r+");
     fseek(archivo, desplazamiento, SEEK_SET);
-    fwrite(contenidoMarco, sizeof(char) , TAM_PAGINA, archivo);
+    void *contenidoPagina = malloc(TAM_PAGINA);
+    fread(contenidoPagina, sizeof(char) , TAM_PAGINA, archivo);
     free(nombreArchivo);
     fclose(archivo);
+    return contenidoPagina;
 }

@@ -11,6 +11,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
     bool seguirEjecutando = true;
     t_instruccion instruccion;
     uint32_t PC_inicial = pcb->PC;
+    PCB_ACTUAL=pcb->id;
     log_info(logger, "Inicia ciclo instruccion para pcb id:%d", pcb->id);
     tablaPaginasPrimerNivelPCB = pcb->tablaDePaginas;
 
@@ -96,7 +97,7 @@ bool execute(t_instruccion instruccion){
             return false;
         default:{
             log_error(logger, "IDENTIFICADOR INSTRUCCION NO CONTEMPLADO-> %d", instruccion.identificador);
-            exit(1);
+            exit(EXIT_FAILURE);
             return false; 
         }
     }

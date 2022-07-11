@@ -45,6 +45,7 @@
     char* asignar_bytes(int cant_frames);
     void iniciarEstructurasMemoria(void);
     void * leerMarco(uint32_t numeroMarco);
+    void escribirMarco(uint32_t numeroMarco, void * paginaSwap);
     uint32_t * leerDireccionFisica(uint32_t direccionFisica);
     t_estadoPCB * newEstadoPCB(uint32_t indexTablaPaginasPrimerNivel);
     t_entradaSegundoNivel * crearEntradaSegundoNivel();
