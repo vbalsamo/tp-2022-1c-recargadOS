@@ -13,11 +13,16 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
     uint32_t PC_inicial = pcb->PC;
     PCB_ACTUAL=pcb->id;
     log_info(logger, "Inicia ciclo instruccion para pcb id:%d", pcb->id);
+    log_info(logger, " ");
     tablaPaginasPrimerNivelPCB = pcb->tablaDePaginas;
 
     while(seguirEjecutando ){
         instruccion = fetch(pcb);
+        const char* identificador_instruccion = string_new();
+        identificador_instruccion = instruccion_idAString((instruccion).identificador);
+        log_info(logger, "Instrucción: %s", identificador_instruccion);
         seguirEjecutando = execute(instruccion);
+        log_info(logger, " ");
         pcb->PC++;
 
         pthread_mutex_lock(&mutex_interrupcion);
@@ -41,10 +46,10 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
             t_IO * io = malloc(sizeof(t_IO));
             io->pcb = pcb;
             io->tiempoBloqueo = instruccion.parametro1;
-            log_info(logger, "tiempo bloqueo:%d", instruccion.parametro1);
+            log_info(logger, "Ejecuto IO de: %d milisegundos", instruccion.parametro1);
             paquete = armarPaqueteCon(io, PCB_EJECUTADO_IO_CPU_KERNEL);
             free(io);
-            log_info(logger, "Ejecuto IO, devuelve el pcb id:%d", pcb->id);
+            //log_info(logger, "Ejecuto IO, devuelve el pcb id:%d", pcb->id);
             break;
         }
         case EXIT:{
@@ -71,20 +76,22 @@ bool execute(t_instruccion instruccion){
             sleep(RETARDO_NOOP);
             return true;
         case IO:
-            log_info(logger, "Ejecutado IO");
+            //log_info(logger, "Ejecutando IO");
             return false;
         case READ: {
-            uint32_t * dato = execute_read(instruccion.parametro1);
-            log_info(logger, "Ejecutado READ valor: %d", *dato);
+            execute_read(instruccion.parametro1);
+            log_info(logger, "Ejecutado READ");
+            //uint32_t * dato = execute_read(instruccion.parametro1);
+            //log_info(logger, "Ejecutado READ valor: %d", *dato);
             return true;
         }
         case COPY:{
+            //log_info(logger, "Ejecutando COPY");
             uint32_t * dato = execute_read(instruccion.parametro2);
-            
-            log_info(logger, "Ejecutado COPY, Lectura dato en memoria:%d", *dato);
+
             execute_write(instruccion.parametro1, *dato);
             
-            log_info(logger, "Ejecutado COPY, Escritura dato");
+            log_info(logger, "COPY finalizado");
             return true;
         }
         case WRITE:
@@ -106,7 +113,7 @@ uint32_t * execute_read(uint32_t direccion_logica){
 
     uint32_t direccionFisica = consultarDireccionFisica(tablaPaginasPrimerNivelPCB, direccion_logica, REQ_MARCO_LECTURA_CPU_MEMORIA);
     uint32_t * dato = memoria_read(direccionFisica);
-    log_info(logger, "READ dato: %d", *dato);
+    log_info(logger, "READ dato: %d en dirección física: %d", *dato, direccionFisica);
     //leer direccion fisica en memoria y loggear dato
     return dato;
 }
@@ -114,6 +121,7 @@ uint32_t * execute_read(uint32_t direccion_logica){
 void execute_write(uint32_t direccion_logica, uint32_t dato){
     uint32_t direccionFisica = consultarDireccionFisica(tablaPaginasPrimerNivelPCB, direccion_logica, REQ_MARCO_ESCRITURA_CPU_MEMORIA);
     memoria_write(direccionFisica, dato);
+    log_info(logger, "WRITE dato: %d en dirección física: %d", dato, direccionFisica);
 }
 
 uint32_t * memoria_read(uint32_t direccion_fisica) {
@@ -127,6 +135,7 @@ uint32_t * memoria_read(uint32_t direccion_fisica) {
         perror("respuesta inesperada");
         exit(EXIT_FAILURE);
     }
+    //TODO: ELIMINAR PAQUETE??
     return deserializarUINT32_T(paqueteRespuesta->buffer->stream);
 }
 
@@ -139,9 +148,13 @@ void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
     peticion->id = PCB_ACTUAL;
 
     t_paquete * paquete = armarPaqueteCon(peticion, REQ_WRITE_CPU_MEMORIA); // agregar el dato al paquete
-    //nueva serializacion ?
     enviarPaquete(paquete,socket_memoria);
-    t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
-    free(paqueteRespuesta);
+    // t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
+    // if(paqueteRespuesta->codigo_operacion != RES_WRITE_CPU_MEMORIA){
+    //     perror("respuesta inesperada");
+    //     exit(EXIT_FAILURE);
+    // }
+
+    //free(paqueteRespuesta);
     free(peticion);
 }

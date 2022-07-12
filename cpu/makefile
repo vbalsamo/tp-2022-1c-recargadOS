@@ -111,3 +111,13 @@ suspe: release
 memoria: release
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
 	./$(BIN) $(MEMORIA)
+
+.PHONY: tlb
+tlb: release
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(TLB)
+
+.PHONY: integral
+integral: release
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(INTEGRAL)

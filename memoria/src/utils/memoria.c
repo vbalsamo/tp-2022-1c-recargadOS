@@ -329,3 +329,8 @@ t_entradaSegundoNivel * reemplazarClockM(t_estadoPCB * estado,  t_list * entrada
     }
     return entradaRemplazar;
 }
+
+void retardoMemoria(){
+    log_info(logger, "esperando retardo memoria de %d milisegundos", RETARDO_MEMORIA);
+    sleep(RETARDO_MEMORIA);
+}

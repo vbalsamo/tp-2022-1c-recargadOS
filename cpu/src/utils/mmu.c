@@ -33,7 +33,7 @@ void agregarTLB(uint32_t pagina, uint32_t marco) {
             exit(-1);
         }
     }
-    imprimirEntradasTLB();
+    //imprimirEntradasTLB();
 }
 
 void imprimirEntradasTLB(){
@@ -69,7 +69,7 @@ void actualizarTLB(t_EntradaTLB * entrada) {
 void reemplazarTLB_FIFO(uint32_t pagina, uint32_t marco) {
     t_EntradaTLB * nuevaEntrada = newEntradaTLB(pagina, marco);
     t_EntradaTLB * viejaEntrada = list_replace(listaTLB, indiceFIFO, nuevaEntrada);
-    log_info(logger, "pagina viejaEntrada:%d - marco viejaEntrada:%d - pagina nuevaEntrada: %d - marco nuevaEntrada:%d", viejaEntrada->pagina, viejaEntrada->marco, nuevaEntrada->pagina, nuevaEntrada->marco);
+    //log_info(logger, "pagina viejaEntrada:%d - marco viejaEntrada:%d - pagina nuevaEntrada: %d - marco nuevaEntrada:%d", viejaEntrada->pagina, viejaEntrada->marco, nuevaEntrada->pagina, nuevaEntrada->marco);
     free(viejaEntrada);
     incrementarIndiceFIFO();
 }
@@ -83,7 +83,7 @@ void reemplazarTLB_LRU(uint32_t pagina, uint32_t marco) {
     list_sort(listaTLB, comparator);
     t_EntradaTLB * viejaEntrada = list_remove(listaTLB,0);
     list_add(listaTLB, nuevaEntrada);
-    log_info(logger, "pagina viejaEntrada:%d - marco viejaEntrada:%d - pagina nuevaEntrada: %d - marco nuevaEntrada:%d", viejaEntrada->pagina, viejaEntrada->marco, nuevaEntrada->pagina, nuevaEntrada->marco);
+    //log_info(logger, "pagina viejaEntrada:%d - marco viejaEntrada:%d - pagina nuevaEntrada: %d - marco nuevaEntrada:%d", viejaEntrada->pagina, viejaEntrada->marco, nuevaEntrada->pagina, nuevaEntrada->marco);
     free(viejaEntrada);
 }
 
@@ -143,7 +143,7 @@ uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t 
     uint32_t pagina = obtenerNumeroPagina(direccion_logica);
     t_EntradaTLB * entrada = obtenerEntradaTLB(pagina);
     uint32_t marco;
-
+    
     if(entrada==NULL) { //Si no esta en TLB
         uint32_t tablaDePaginasSegundoNivel = consultarTablaSegundoNivel(tablaPaginasPrimerNivelPCB, pagina);
         marco = consultarMarco(tablaDePaginasSegundoNivel, pagina, codOP);

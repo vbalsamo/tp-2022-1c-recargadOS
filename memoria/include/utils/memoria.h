@@ -66,5 +66,6 @@
     void swapearEntradaSegundoNivel(void * entrada);
     void suspenderProceso(t_pcb * pcb);
     void writeEnMemoria(uint32_t direccionFisica, uint32_t dato);
+    void retardoMemoria();
     
 #endif

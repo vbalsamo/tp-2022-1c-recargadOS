@@ -40,6 +40,7 @@ void deserializarSegun(t_paquete* paquete, int socket){
             traduccionDirecciones->tamanio_pagina = TAM_PAGINA;
             traduccionDirecciones->paginas_por_tabla = ENTRADAS_POR_TABLA;
             t_paquete* paqueteRespuesta = armarPaqueteCon(traduccionDirecciones, RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU);
+            //retardoMemoria();
             enviarPaquete(paqueteRespuesta,socket);
             log_info(logger, "se envia traducciones de direciones");
 			break;
@@ -48,6 +49,7 @@ void deserializarSegun(t_paquete* paquete, int socket){
             t_consultaTablaPagina * consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
             uint32_t tablaSegundoNivel = obtenerTablaSegundoNivel(consulta->tablaDePaginas, consulta->entradaPagina);
             t_paquete * paqueteRespuesta = armarPaqueteCon(&tablaSegundoNivel,RES_TABLA_SEGUNDO_NIVEL_MEMORIA_CPU);
+            //retardoMemoria();
             enviarPaquete(paqueteRespuesta, socket);
             eliminarPaquete(paqueteRespuesta);
             break;
@@ -56,6 +58,7 @@ void deserializarSegun(t_paquete* paquete, int socket){
             t_consultaTablaPagina * consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
             uint32_t marco = obtenerMarco(consulta->tablaDePaginas, consulta->entradaPagina, consulta->id,false);
             t_paquete * paqueteRespuesta = armarPaqueteCon(&marco,RES_MARCO_MEMORIA_CPU);
+            //retardoMemoria();
             enviarPaquete(paqueteRespuesta, socket);
             eliminarPaquete(paqueteRespuesta);
             
@@ -65,6 +68,7 @@ void deserializarSegun(t_paquete* paquete, int socket){
             t_consultaTablaPagina * consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
             uint32_t marco = obtenerMarco(consulta->tablaDePaginas, consulta->entradaPagina, consulta->id,true);
             t_paquete * paqueteRespuesta = armarPaqueteCon(&marco,RES_MARCO_MEMORIA_CPU);
+            //retardoMemoria();
             enviarPaquete(paqueteRespuesta, socket);
             eliminarPaquete(paqueteRespuesta);
             
@@ -75,6 +79,7 @@ void deserializarSegun(t_paquete* paquete, int socket){
             uint32_t * datoMemoria = leerDireccionFisica(*direccionFisica);
             log_info(logger, "se lee el dato: %d en el direccion Fisica: %d", *datoMemoria, *direccionFisica);
             t_paquete * paqueteRespuesta = armarPaqueteCon(datoMemoria,RES_READ_MEMORIA_CPU);
+            //retardoMemoria();
             enviarPaquete(paqueteRespuesta, socket);
             eliminarPaquete(paqueteRespuesta);
             free(direccionFisica);
@@ -84,7 +89,12 @@ void deserializarSegun(t_paquete* paquete, int socket){
         case REQ_WRITE_CPU_MEMORIA:{
             t_peticionEscritura * aEscribir = deserializarPeticionEscritura(paquete->buffer->stream);
             writeEnMemoria(aEscribir->direccionFisica, aEscribir->dato);
-            //responder ok escritura
+            // //responder ok escritura
+            // uint32_t* respuesta = (uint32_t*)1;
+            // t_paquete * paqueteRespuesta = armarPaqueteCon(respuesta ,RES_WRITE_CPU_MEMORIA);
+            // //retardoMemoria();
+            // enviarPaquete(paqueteRespuesta, socket);
+            // eliminarPaquete(paqueteRespuesta);
             break;
         }
 		default:{

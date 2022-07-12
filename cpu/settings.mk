@@ -16,6 +16,8 @@ BASE=/home/utnso/tp-2022-1c-recargadOS/pruebas/BASE_CPU.cfg
 PLANI=/home/utnso/tp-2022-1c-recargadOS/pruebas/PLANI_CPU.cfg
 SUSPE=/home/utnso/tp-2022-1c-recargadOS/pruebas/SUSPE_CPU.cfg
 MEMORIA=/home/utnso/tp-2022-1c-recargadOS/pruebas/MEMORIA_CPU.cfg
+TLB=/home/utnso/tp-2022-1c-recargadOS/pruebas/TLB_CPU.cfg
+INTEGRAL=/home/utnso/tp-2022-1c-recargadOS/pruebas/INTEGRAL_CPU.cfg
 # Valgrind flags
 MEMCHECK_FLAGS=--track-origins=yes --log-file="memcheck.log"
 HELGRIND_FLAGS=--log-file="helgrind.log"
