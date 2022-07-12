@@ -106,6 +106,7 @@ void readyAexec(){
         pthread_mutex_lock(&mutex_estado_ready);
         list_remove_by_condition(estado_ready, filtro);
         pthread_mutex_unlock(&mutex_estado_ready);
+        id_pcb_ejecutando = pcb->id;
         ejecutarPCB(pcb);
         
 
@@ -131,12 +132,16 @@ t_pcb* planificacionSRT(){
 	//itero por la lista de Ready
 	//sem_wait(&contadorReady);
 	pthread_mutex_lock(&mutex_estado_ready);
-    uint32_t index_ultimo_pcb = list_size(estado_ready)-1;
-    t_pcb* pcb_en_ejecucion = list_get(estado_ready, index_ultimo_pcb);
+
+    bool filtro(void* pcbAux){
+        return ((t_pcb*) pcbAux)->id == id_pcb_ejecutando;
+    };
+
+    t_pcb* pcb_en_ejecucion = list_find(estado_ready, filtro);
 
 	printf("PCBS EN READY: %d \n", list_size(estado_ready));
 
-    for(i=1;i<list_size(estado_ready)-2;i++){
+    for(i=1;i<list_size(estado_ready)-1;i++){
     	pcbAux = list_get(estado_ready,i);
     	
     	if(shortestJob > pcbAux->estimacionRafaga){
@@ -144,17 +149,23 @@ t_pcb* planificacionSRT(){
     		indexAPlanificar = i;
     	}
     }
-    
-    if(shortestJob < pcb_en_ejecucion->estimacionRafaga){
+    if(pcb_en_ejecucion == NULL){
         pcbPlanificado = list_get(estado_ready, indexAPlanificar);
         pthread_mutex_unlock(&mutex_estado_ready);
 	    return pcbPlanificado;
     }
     else{
-        pcbPlanificado = list_get(estado_ready, index_ultimo_pcb);
-        pthread_mutex_unlock(&mutex_estado_ready);
-	    return pcbPlanificado;
+        if(shortestJob < pcb_en_ejecucion->estimacionRafaga){
+            pcbPlanificado = list_get(estado_ready, indexAPlanificar);
+            pthread_mutex_unlock(&mutex_estado_ready);
+	        return pcbPlanificado;
+        }
+        else{
+            pthread_mutex_unlock(&mutex_estado_ready);
+	        return pcb_en_ejecucion;
+        }
     }
+    
     
 }
 
