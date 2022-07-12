@@ -9,7 +9,7 @@ t_instruccion * obtenerInstruccion(char* instruccionTexto){
         instruccion->identificador=NO_OP;
         instruccion->parametro1=atoi(instruccionSeparada[1]);
     }
-    else if(string_contains(instruccionSeparada[0],"I/O")){
+    else if(string_contains(instruccionSeparada[0],"I/O") || string_contains(instruccionSeparada[0], "IO")){
         instruccion->identificador=IO;
         instruccion->parametro1=atoi(instruccionSeparada[1]);
         instruccion->parametro2=0;

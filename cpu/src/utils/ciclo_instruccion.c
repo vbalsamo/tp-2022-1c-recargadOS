@@ -149,11 +149,11 @@ void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
 
     t_paquete * paquete = armarPaqueteCon(peticion, REQ_WRITE_CPU_MEMORIA); // agregar el dato al paquete
     enviarPaquete(paquete,socket_memoria);
-    // t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
-    // if(paqueteRespuesta->codigo_operacion != RES_WRITE_CPU_MEMORIA){
-    //     perror("respuesta inesperada");
-    //     exit(EXIT_FAILURE);
-    // }
+    t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
+    if(paqueteRespuesta->codigo_operacion != RES_WRITE_CPU_MEMORIA){
+        perror("respuesta inesperada");
+        exit(EXIT_FAILURE);
+    }
 
     //free(paqueteRespuesta);
     free(peticion);

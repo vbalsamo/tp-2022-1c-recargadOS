@@ -467,8 +467,11 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 		case RES_READ_MEMORIA_CPU:{
 			return sizeof(uint32_t);
 		}
-		case REQ_WRITE_CPU_MEMORIA :{
+		case REQ_WRITE_CPU_MEMORIA:{
 			return sizeof(uint32_t)*3;
+		}
+		case RES_WRITE_CPU_MEMORIA:{
+			return sizeof(uint32_t);
 		}
 		default: {
 			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
