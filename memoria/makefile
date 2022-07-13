@@ -85,12 +85,12 @@ daemon:
 .PHONY: memcheck
 memcheck: all
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
-	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(BASE)
+	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(INTEGRAL)
 
 .PHONY: helgrind
 helgrind: all
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
-	valgrind --tool=helgrind $(HELGRIND_FLAGS) ./$(BIN) $(BASE)
+	valgrind --tool=helgrind $(HELGRIND_FLAGS) ./$(BIN) $(INTEGRAL)
 
 .PHONY: base
 base: release

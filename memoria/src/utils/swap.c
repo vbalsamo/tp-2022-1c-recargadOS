@@ -12,6 +12,7 @@ void crearArchivoSwap(uint32_t id, uint32_t tamanioProceso){
     FILE * archivo = fopen(nombreArchivo, "w+");
     fwrite(contenidoSwap, sizeof(char) , tamanioSwap, archivo);
     free(nombreArchivo);
+    free(contenidoSwap);
     fclose(archivo);
 }
 
