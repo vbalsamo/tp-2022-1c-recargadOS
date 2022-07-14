@@ -38,13 +38,13 @@ void escribirMarcoSwap(void * contenidoMarco, uint32_t numeroPagina, uint32_t id
 
 void * leerPaginaSwap(uint32_t numeroPagina, uint32_t id) {
     sleep(RETARDO_SWAP);
-    char * nombreArchivo =obtnerPathSwap(id);
+    char * nombreArchivo = obtnerPathSwap(id);
     
     int desplazamiento = numeroPagina * TAM_PAGINA;
     FILE * archivo = fopen(nombreArchivo, "r+");
     fseek(archivo, desplazamiento, SEEK_SET);
     void *contenidoPagina = malloc(TAM_PAGINA);
-    fread(contenidoPagina, sizeof(char) , TAM_PAGINA, archivo);
+    fread(contenidoPagina, 1 , TAM_PAGINA, archivo);
     free(nombreArchivo);
     fclose(archivo);
     return contenidoPagina;

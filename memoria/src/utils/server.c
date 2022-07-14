@@ -69,6 +69,7 @@ void deserializarSegun(t_paquete *paquete, int socket)
             t_consultaTablaPagina *consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
             uint32_t marco = obtenerMarco(consulta->tablaDePaginas, consulta->entradaPagina, consulta->id, false);
             t_paquete *paqueteRespuesta = armarPaqueteCon(&marco, RES_MARCO_MEMORIA_CPU);
+            log_info(logger, "se agigna el marco: %d al pcb: %d. LECTURA", marco, consulta->id);
             retardoMemoria();
             enviarPaquete(paqueteRespuesta, socket);
             eliminarPaquete(paqueteRespuesta);
@@ -80,6 +81,7 @@ void deserializarSegun(t_paquete *paquete, int socket)
             t_consultaTablaPagina *consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
             uint32_t marco = obtenerMarco(consulta->tablaDePaginas, consulta->entradaPagina, consulta->id, true);
             t_paquete *paqueteRespuesta = armarPaqueteCon(&marco, RES_MARCO_MEMORIA_CPU);
+            log_info(logger, "se asigna el marco: %d al pcb: %d. ESCRITURA", marco, consulta->id);
             retardoMemoria();
             enviarPaquete(paqueteRespuesta, socket);
             eliminarPaquete(paqueteRespuesta);

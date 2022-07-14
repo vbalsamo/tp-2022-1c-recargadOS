@@ -136,7 +136,9 @@ uint32_t * memoria_read(uint32_t direccion_fisica) {
         exit(EXIT_FAILURE);
     }
     //TODO: ELIMINAR PAQUETE??
-    return deserializarUINT32_T(paqueteRespuesta->buffer->stream);
+    uint32_t * dato = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
+    eliminarPaquete(paqueteRespuesta);
+    return dato;
 }
 
 void memoria_write(uint32_t direccion_fisica, uint32_t dato) {

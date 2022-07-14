@@ -88,14 +88,14 @@ uint32_t inicializarEstructurasProceso(t_pcb *pcb)
     {
         for (int i = 0; i < paginasDeSegundoNivelCompletas; i++)
         {
-            t_entradaPrimerNivel *entrada = crearEntradaPrimerNivel(ENTRADAS_POR_TABLA);
+            t_entradaPrimerNivel *entrada = crearEntradaPrimerNivel(ENTRADAS_POR_TABLA, pcb->id);
             list_add(tablaPrimerNivel, entrada);
             log_info(logger, "creada tabla de primer nivel");
         }
     }
     if (entradasUltimaPaginaSegundoNivel > 0)
     {
-        t_entradaPrimerNivel *entrada = crearEntradaPrimerNivel(entradasUltimaPaginaSegundoNivel);
+        t_entradaPrimerNivel *entrada = crearEntradaPrimerNivel(entradasUltimaPaginaSegundoNivel, pcb->id);
         list_add(tablaPrimerNivel, entrada);
         log_info(logger, "creada tabla de primer nivel incompleta");
     }
@@ -118,7 +118,7 @@ char *stringID(uint32_t _id)
     return id;
 }
 
-t_entradaSegundoNivel *crearEntradaSegundoNivel()
+t_entradaSegundoNivel *crearEntradaSegundoNivel(uint32_t id)
 {
     t_entradaSegundoNivel *entrada = malloc(sizeof(t_entradaSegundoNivel));
     entrada->marco = TAM_MEMORIA;
@@ -126,28 +126,30 @@ t_entradaSegundoNivel *crearEntradaSegundoNivel()
     entrada->presencia = false;
     entrada->uso = false;
     entrada->paginaSwap = ID_EN_SWAP;
+    entrada->id = id;
     log_info(logger, "id_en_swap: %d", ID_EN_SWAP);
     ID_EN_SWAP++;
     return entrada;
 }
 
-t_list *crearTablaSegundoNivel(int entradas)
+t_list *crearTablaSegundoNivel(int entradas, uint32_t id)
 {
     t_list *tabla = list_create();
     for (int j = 0; j < entradas; j++)
     {
-        t_entradaSegundoNivel *entrada = crearEntradaSegundoNivel();
+        t_entradaSegundoNivel *entrada = crearEntradaSegundoNivel(id);
         list_add(tabla, entrada);
     }
     log_info(logger, "creada tabla de 2do nivel");
     return tabla;
 }
 
-t_entradaPrimerNivel *crearEntradaPrimerNivel(int entradasSegundoNivel)
+t_entradaPrimerNivel *crearEntradaPrimerNivel(int entradasSegundoNivel, uint32_t id)
 {
-    t_list *tablaSegundoNivel = crearTablaSegundoNivel(entradasSegundoNivel);
+    t_list *tablaSegundoNivel = crearTablaSegundoNivel(entradasSegundoNivel, id);
     t_entradaPrimerNivel *entrada = malloc(sizeof(t_entradaPrimerNivel));
     entrada->tablaSegundoNivel = list_add(tablasSegundoNivel, tablaSegundoNivel);
+    entrada->id = id;
 
     return entrada;
 }
@@ -193,9 +195,16 @@ uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, u
                 free(contenidoMarco);
                 victima->modificado = false;
                 victima->presencia = false;
+                char *_idVictima = stringID(victima->id);
+                t_estadoPCB * estadoVictima = dictionary_get(estadosPCBS, _idVictima);
+                estadoVictima->marcosOcupados--;
+                free(_idVictima);
             }
 
             entrada->marco = victima->marco;
+            void *contenidoPaginaSwap = leerPaginaSwap(entrada->paginaSwap, id);
+            escribirMarco(entrada->marco, contenidoPaginaSwap);
+            free(contenidoPaginaSwap);
         }
         entrada->presencia = true;
     }
@@ -238,9 +247,8 @@ void swapearEntradaSegundoNivel(void *entrada)
     if (entradaSegundoNivel->presencia && entradaSegundoNivel->modificado)
     {
         void *marco = leerMarco(entradaSegundoNivel->marco);
-        // chequear que el PCB_ID global en memoria funcione bien
         log_info(logger, "se lee el marco:%d", entradaSegundoNivel->marco);
-        escribirMarcoSwap(marco, entradaSegundoNivel->paginaSwap, PCB_ID);
+        escribirMarcoSwap(marco, entradaSegundoNivel->paginaSwap, entradaSegundoNivel->id);
         bitarray_clean_bit(bitarray, entradaSegundoNivel->marco);
         free(marco);
     }
@@ -256,10 +264,13 @@ void swapearEntradaPrimerNivel(void *entrada)
 
 void suspenderProceso(t_pcb *pcb)
 {
-    PCB_ID = pcb->id; // TODO: Problema de concurrencia
     t_list *tablaPrimerNivel = list_get(tablasPrimerNivel, pcb->tablaDePaginas);
     log_info(logger, "swapeando tabla de primerNivel nivel index:%d", pcb->tablaDePaginas);
     list_iterate(tablaPrimerNivel, swapearEntradaPrimerNivel);
+    char *_id = stringID(pcb->id);
+    t_estadoPCB * estado = dictionary_get(estadosPCBS, _id);
+    estado->marcosOcupados=0;
+    free(_id);
 }
 
 t_entradaSegundoNivel *reemplazar(t_estadoPCB *estado, t_entradaSegundoNivel *entrada)

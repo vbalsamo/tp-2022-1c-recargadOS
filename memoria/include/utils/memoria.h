@@ -31,10 +31,12 @@
     }t_estadoPCB;
 
     typedef struct{
+        uint32_t id;
         uint32_t tablaSegundoNivel;
     }t_entradaPrimerNivel;
 
     typedef struct{
+        uint32_t id;
         uint32_t marco;
         bool presencia;
         bool uso;
@@ -49,8 +51,8 @@
     uint32_t * leerDireccionFisica(uint32_t direccionFisica);
     t_estadoPCB * newEstadoPCB(uint32_t indexTablaPaginasPrimerNivel);
     t_entradaSegundoNivel * crearEntradaSegundoNivel();
-    t_entradaPrimerNivel * crearEntradaPrimerNivel(int entradasSegundoNivel);
-    t_list * crearTablaSegundoNivel(int entradas);
+    t_entradaPrimerNivel * crearEntradaPrimerNivel(int entradasSegundoNivel, uint32_t id);
+    t_list * crearTablaSegundoNivel(int entradas, uint32_t id);
     uint32_t marcosProceso(uint32_t tamanioProceso);
     uint32_t inicializarEstructurasProceso(t_pcb* pcb);
     t_entradaSegundoNivel * reemplazar(t_estadoPCB * estado, t_entradaSegundoNivel* entrada);
