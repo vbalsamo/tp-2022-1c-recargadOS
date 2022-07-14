@@ -249,6 +249,9 @@ void swapearEntradaSegundoNivel(void *entrada)
         void *marco = leerMarco(entradaSegundoNivel->marco);
         log_info(logger, "se lee el marco:%d", entradaSegundoNivel->marco);
         escribirMarcoSwap(marco, entradaSegundoNivel->paginaSwap, entradaSegundoNivel->id);
+        entradaSegundoNivel->presencia = 0;
+        entradaSegundoNivel->modificado = 0;
+        entradaSegundoNivel->uso = 0;
         bitarray_clean_bit(bitarray, entradaSegundoNivel->marco);
         free(marco);
     }

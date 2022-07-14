@@ -17,7 +17,7 @@
         },
         {
             "label": "run",
-            "command": "${workspaceFolder}/bin/memoria.out ${workspaceFolder}/config/memoria.cfg",
+            "command": "${workspaceFolder}/bin/memoria.out ${workspaceFolder}/pruebas/INTEGRAL_MEMORIA.cfg",
             "type": "shell",
             "group": {
                 "kind": "none",
