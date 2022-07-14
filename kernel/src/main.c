@@ -5,7 +5,6 @@
 t_proceso * deserializarSegunProceso(t_paquete * paquete, int socket){
     t_proceso * proceso = deserializarProceso(paquete->buffer->stream);
     eliminarPaquete(paquete);
-    log_info(logger, "se liberó el paquete");
     //close(socket);
     return proceso;
 }
@@ -71,7 +70,7 @@ int main(int argc, char* argv[]) {
         int * socket_consola = malloc(sizeof(int));
         * socket_consola = esperar_cliente(*socket);
 
-        log_info(logger, "se conecto cliente");
+        //log_info(logger, "Se conecto cliente");
         manejarProceso(socket_consola);
     }
     

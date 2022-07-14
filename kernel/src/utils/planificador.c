@@ -30,37 +30,28 @@ void ingresarANew(t_pcb * pcb){
     pthread_mutex_lock(&mutex_estado_new);
     queue_push(estado_new, (void*) pcb);
     pthread_mutex_unlock(&mutex_estado_new);
-    log_info(logger, "se agrega proceso id:%d a cola new", pcb->id);
+    log_info(logger, "Se agrega el proceso:%d a new", pcb->id);
     //sem_post(&sem_hay_pcb_en_new);
     sem_post(&sem_hay_pcb_esperando_ready);
 }
 
 void Aready(){
     while(1){
-        log_info(logger, "entró a Aready");
-       //sem_wait(hay_pcb_em_new)
+
         sem_wait(&sem_hay_pcb_esperando_ready);
-        log_info(logger, "pasó sem_hay_pcb_en_new");
 
         sem_wait(&sem_multiprogramacion);
-        log_info(logger, "pasa multiprogramación");
-        // t_pcb * pcb = (t_pcb *) queue_pop(estado_new); //tomo y elimino el primero de la queue_pop
-        t_pcb * pcb = obtenerSiguienteAready();
+        log_info(logger, "Grado de multiprogramación permite agregar proceso a eady\n");
 
-        log_info(logger, "se eliminó el proceso %d de la cola de new", pcb->id);
+        t_pcb * pcb = obtenerSiguienteAready();
         
         addEstadoReady(pcb);
-        log_info(logger, "se agregó el proceso %d a la lista de ready", pcb->id);
-
-        log_info(logger, "solicitando interrumpir proceso");
+        log_info(logger, "Se elimino el proceso %d de New y se agrego a Ready", pcb->id);
         
         if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"SRT")){
             interrumpirPCB();
         }
         sem_post(&sem_ready);
-        
-        
-        
     }
 }
 
@@ -68,8 +59,8 @@ t_pcb * obtenerSiguienteAready(){
 
     t_pcb* pcb = NULL;
 
-	log_info(logger, "PCBS EN READY: %d \n", list_size(estado_ready));
-    log_info(logger, "PCBS EN SUSP_READY: %d \n", queue_size(estado_susp_ready));
+	log_info(logger, "PCBS EN READY: %d", list_size(estado_ready));
+    log_info(logger, "PCBS EN SUSP_READY: %d\n", queue_size(estado_susp_ready));
     
     	if(!queue_is_empty(estado_susp_ready)){
             
@@ -139,8 +130,6 @@ t_pcb* planificacionSRT(){
 
     t_pcb* pcb_en_ejecucion = list_find(estado_ready, filtro);
 
-	printf("PCBS EN READY: %d \n", list_size(estado_ready));
-
     for(i=1;i<list_size(estado_ready)-1;i++){
     	pcbAux = list_get(estado_ready,i);
     	
@@ -200,21 +189,18 @@ void hilo_block(){
         pthread_mutex_unlock(&mutex_estado_blocked);        
         
         uint32_t ultimoIOenSegundos = ultimoIO->tiempoBloqueo/1000;
-        
+        log_info(logger, "pcb: %d ejecutando IO de: %d segundos", ultimoIO->pcb->id, ultimoIOenSegundos);
         if(ultimoIOenSegundos > TIEMPO_MAXIMO_BLOQUEADO){
-            log_info(logger, "pcb: %d ejecutando IO de TIEMPO_MAXIMO_BLOQUEADO: %d segundos", ultimoIO->pcb->id, TIEMPO_MAXIMO_BLOQUEADO);
+            log_info(logger, "pcb: %d excedió el tiempo maximo de IO permitido de %d segundos", ultimoIO->pcb->id, TIEMPO_MAXIMO_BLOQUEADO);
+            log_info(logger, "Se suspende el pcb");
             sleep(TIEMPO_MAXIMO_BLOQUEADO);
-            // Hablar memoria, lo swapeamos
-            //addEstadoSuspBlocked(ultimoIO->pcb);
             comunicacionMemoriaSuspender(ultimoIO->pcb);
             sem_post(&sem_multiprogramacion);
-            log_info(logger, "pcb: %d ejecutando IO restante de: %d segundos", ultimoIO->pcb->id, (ultimoIOenSegundos - TIEMPO_MAXIMO_BLOQUEADO));
+            log_info(logger, "pcb: %d ejecutando IO restante de %d segundos", ultimoIO->pcb->id, (ultimoIOenSegundos - TIEMPO_MAXIMO_BLOQUEADO));
             sleep(ultimoIOenSegundos - TIEMPO_MAXIMO_BLOQUEADO);
             addEstadoSuspReady(ultimoIO->pcb);
-            //sem_post(&sem_susp_ready);
             sem_post(&sem_hay_pcb_esperando_ready);
         } else{
-            log_info(logger, "pcb: %d ejecutando IO de: %d segundos", ultimoIO->pcb->id, ultimoIOenSegundos);
             sleep(ultimoIOenSegundos);
             addEstadoReady(ultimoIO->pcb);
             sem_post(&sem_ready);
@@ -241,7 +227,7 @@ void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
     t_paquete * paqueteRespuesta = recibirPaquete(socketMemoria);
     uint32_t * tablaPaginas1erNivel = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
     pcb->tablaDePaginas = *tablaPaginas1erNivel;
-    log_info(logger, "pcbid: %d se le asigna tabla de paginas primer nivel: %d", pcb->id, *tablaPaginas1erNivel);
+    log_info(logger, "Se le asigna tabla de paginas primer nivel con index: %d al pcb: %d",*tablaPaginas1erNivel, pcb->id);
     free(tablaPaginas1erNivel);
 
 }
@@ -256,15 +242,15 @@ void comunicacionMemoriaFinalizar(t_pcb * pcb) {
 
 t_pcb * algoritmoPlanificacion(){
     if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"FIFO")){
-        log_info(logger, "se planifica fifo");
+        log_info(logger, "Se planifica FIFO");
         t_pcb * pcb = planificacionFIFO();
-        log_info(logger, "se obtiene pcb->id:%d",pcb->id);
+        log_info(logger, "FIFO elige el pcb: %d y se pasa a exec",pcb->id);
         return pcb;
     }
     else if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"SRT")){
-        log_info(logger, "se planifica srt");
+        log_info(logger, "Se planifica SRT");
         t_pcb * pcb = planificacionSRT();
-        log_info(logger, "se obtiene pcb->id:%d",pcb->id);
+        log_info(logger, "SRT elige el pcb: %d y se pasa a exec",pcb->id);
         return pcb;
     }
     else{
@@ -317,7 +303,7 @@ t_pcb * planificacionFIFO(){
 //     return pcb;
 // }
 void interrumpirPCB(){
-    log_info(logger, "interrumpiendo proceso");
+    log_info(logger, "Interrumpiendo proceso");
     int socketInterrupt = crear_conexion(IP_CPU, PUERTO_CPU_INTERRUPT);
     int numero = 1;
     t_paquete * paquete = armarPaqueteCon(&numero, REQ_INTERRUPCION_KERNEL_CPU);
@@ -341,9 +327,9 @@ void ejecutarPCB(t_pcb * pcb){
             t_IO * io = deserializarIO(paqueteRespuesta->buffer->stream);
             io->pcb->estimacionRafaga = ALFA*(io->pcb->lengthUltimaRafaga) + (1-ALFA)*(io->pcb->estimacionRafaga);
             
-            log_info(logger, "tiempo bloqueo:%d", io->tiempoBloqueo);
-            log_info(logger, "estimacionRafaga: %d, id: %d, lengthUltimaRafaga: %d,PC: %d, sizeInstrucciones: %d, tablaDePaginas: %d, tamanioProceso: %d", 
-                    io->pcb->estimacionRafaga, io->pcb->id, io->pcb->lengthUltimaRafaga, io->pcb->PC, io->pcb->sizeInstrucciones, io->pcb->tablaDePaginas, io->pcb->tamanioProceso);
+            // log_info(logger, "Tiempo bloqueo:%d", io->tiempoBloqueo);
+            // log_info(logger, "EstimacionRafaga: %d, id: %d, lengthUltimaRafaga: %d,PC: %d, sizeInstrucciones: %d, tablaDePaginas: %d, tamanioProceso: %d", 
+            //         io->pcb->estimacionRafaga, io->pcb->id, io->pcb->lengthUltimaRafaga, io->pcb->PC, io->pcb->sizeInstrucciones, io->pcb->tablaDePaginas, io->pcb->tamanioProceso);
             addEstadoBlocked(io);  
             sem_post(&sem_block);  
             //t_pcb * pcbActualizado = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
@@ -358,7 +344,7 @@ void ejecutarPCB(t_pcb * pcb){
             break;
         }
         case PCB_EJECUTADO_EXIT_CPU_KERNEL:{
-            log_info(logger, "entró un pcb a exit");
+            log_info(logger, "Entró un pcb a exit");
             t_pcb * pcbActualizado = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
             execAexit(pcbActualizado);
           
@@ -385,7 +371,7 @@ void ejecutarPCB(t_pcb * pcb){
         }
         
     }
-    log_info(logger, "CPU ejecutó y devolvió el pcb");  
+    log_info(logger, "CPU devuelve pcb en ejecucion");
 }
 
 
