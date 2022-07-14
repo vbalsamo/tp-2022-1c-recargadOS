@@ -1,4 +1,9 @@
 #include <utils/swap.h>
+
+void iniciarEstructurasSwap() {
+    pthread_mutex_init(&mutex_swap, (void *)NULL);
+}
+
 char * obtnerPathSwap(uint32_t id) {
     char * nombreArchivo = string_new();
     string_append_with_format(&nombreArchivo, "%s/%d.swap", PATH_SWAP ,id);
@@ -23,8 +28,8 @@ void eliminarArchivoSwap(uint32_t id){
 }
 
 void escribirMarcoSwap(void * contenidoMarco, uint32_t numeroPagina, uint32_t id) {
-    //mutex_lock
-    sleep(RETARDO_SWAP);
+    pthread_mutex_lock(&mutex_swap);
+    usleep(RETARDO_SWAP);
     char * nombreArchivo = obtnerPathSwap(id);
     
     int desplazamiento = numeroPagina * TAM_PAGINA;
@@ -33,11 +38,12 @@ void escribirMarcoSwap(void * contenidoMarco, uint32_t numeroPagina, uint32_t id
     fwrite(contenidoMarco, 1, TAM_PAGINA, archivo);
     free(nombreArchivo);
     fclose(archivo);
-    //mutex
+    pthread_mutex_unlock(&mutex_swap);
 }
 
 void * leerPaginaSwap(uint32_t numeroPagina, uint32_t id) {
-    sleep(RETARDO_SWAP);
+    pthread_mutex_lock(&mutex_swap);
+    usleep(RETARDO_SWAP);
     char * nombreArchivo = obtnerPathSwap(id);
     
     int desplazamiento = numeroPagina * TAM_PAGINA;
@@ -47,5 +53,6 @@ void * leerPaginaSwap(uint32_t numeroPagina, uint32_t id) {
     fread(contenidoPagina, 1 , TAM_PAGINA, archivo);
     free(nombreArchivo);
     fclose(archivo);
+    pthread_mutex_unlock(&mutex_swap);
     return contenidoPagina;
 }

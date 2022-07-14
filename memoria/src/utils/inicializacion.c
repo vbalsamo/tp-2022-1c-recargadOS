@@ -13,13 +13,21 @@ void incializarVariablesGlobales(char * pathConfig) {
     TAM_PAGINA = config_get_int_value(config, "TAM_PAGINA");
     TAM_MEMORIA = config_get_int_value(config, "TAM_MEMORIA");
     ENTRADAS_POR_TABLA = config_get_int_value(config, "ENTRADAS_POR_TABLA");
-    RETARDO_MEMORIA = config_get_int_value(config, "RETARDO_MEMORIA")/1000;
+    RETARDO_MEMORIA = config_get_int_value(config, "RETARDO_MEMORIA")*1000;
     ALGORITMO_REEMPLAZO = config_get_string_value(config, "ALGORITMO_REEMPLAZO");
     MARCOS_POR_PROCESO = config_get_int_value(config, "MARCOS_POR_PROCESO");
-    RETARDO_SWAP = config_get_int_value(config, "RETARDO_SWAP")/1000;
+    RETARDO_SWAP = config_get_int_value(config, "RETARDO_SWAP")*1000;
     PATH_SWAP = config_get_string_value(config, "PATH_SWAP");
     CANTIDAD_FRAMES = TAM_MEMORIA/TAM_PAGINA;
 }
+
+void inicializarMemoria(){
+
+
+   
+}
+
+
 
 void eliminarVariablesGlobales(char * pathConfig) {
     config_destroy(config);

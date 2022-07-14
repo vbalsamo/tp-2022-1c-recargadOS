@@ -4,6 +4,7 @@
     #include <stdlib.h>
     #include <stdio.h>
     #include <stdlib.h>
+    #include <pthread.h>
     #include <utils/variables_globales.h>
     #include <utils/swap.h>
     #include <serializacion/estructuras.h>
@@ -14,7 +15,16 @@
     #include <math.h>
     #include <string.h>
     #define ID_SIZE 3
-    uint32_t ID_EN_SWAP;
+
+
+
+    pthread_mutex_t mutex_tablas_segundo_nivel;
+    pthread_mutex_t mutex_tablas_primer_nivel;
+    pthread_mutex_t mutex_entrada_segundo_nivel;
+    pthread_mutex_t mutex_estados_pcb;
+    pthread_mutex_t mutex_id_en_swap;
+    pthread_mutex_t mutex_memoria;
+    pthread_mutex_t mutex_bitarray;
 
     t_bitarray * bitarray;
     int numeroMarco;
@@ -50,9 +60,9 @@
     void escribirMarco(uint32_t numeroMarco, void * paginaSwap);
     uint32_t * leerDireccionFisica(uint32_t direccionFisica);
     t_estadoPCB * newEstadoPCB(uint32_t indexTablaPaginasPrimerNivel);
-    t_entradaSegundoNivel * crearEntradaSegundoNivel();
-    t_entradaPrimerNivel * crearEntradaPrimerNivel(int entradasSegundoNivel, uint32_t id);
-    t_list * crearTablaSegundoNivel(int entradas, uint32_t id);
+    t_entradaSegundoNivel * crearEntradaSegundoNivel(uint32_t id, uint32_t * ID_EN_SWAP);
+    t_entradaPrimerNivel * crearEntradaPrimerNivel(int entradasSegundoNivel, uint32_t id, uint32_t * ID_EN_SWAP);
+    t_list * crearTablaSegundoNivel(int entradas, uint32_t id, uint32_t * ID_EN_SWAP);
     uint32_t marcosProceso(uint32_t tamanioProceso);
     uint32_t inicializarEstructurasProceso(t_pcb* pcb);
     t_entradaSegundoNivel * reemplazar(t_estadoPCB * estado, t_entradaSegundoNivel* entrada);

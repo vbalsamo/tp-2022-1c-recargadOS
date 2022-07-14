@@ -12,6 +12,8 @@
 #include <string.h>
 #include <utils/memoria.h>
 
+pthread_mutex_t mutex_swap;
+void iniciarEstructurasSwap();
 char * obtnerPathSwap(uint32_t id);
 void crearArchivoSwap(uint32_t id, uint32_t tamanioProceso);
 void escribirMarcoSwap(void * contenidoMarco, uint32_t numeroMarco, uint32_t id);

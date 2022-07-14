@@ -50,7 +50,7 @@
     void comunicacionMemoriaSuspender(t_pcb * pcb);
     t_pcb * planificacionFIFO();
     t_pcb * planificacionSRT();
-    void newAready();
+    void Aready();
     void readyAexec();
     void suspReadyAready();
     void ingresarANew(t_pcb * pcb);

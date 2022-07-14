@@ -1,13 +1,75 @@
 #include <utils/server.h>
 
-void deserializarSegun(t_paquete *paquete, int socket)
+void iniciarEstructurasServer(){
+
+    pthread_mutex_init(&mutex_colaKernel, (void *)NULL);
+    pthread_mutex_init(&mutex_colaCPU, (void *)NULL);
+
+    sem_init(&sem_kernel, 0, 0);
+    sem_init(&sem_CPU, 0, 0);
+
+    colaKernel = queue_create();
+    colaCPU = queue_create();
+
+    
+    pthread_t hilo_Kernel;
+    pthread_create(&hilo_Kernel, NULL, (void*)hiloKernel, NULL);
+    pthread_detach(hilo_Kernel);
+
+    pthread_t hilo_CPU;
+    pthread_create(&hilo_CPU, NULL, (void*) hiloCPU, NULL);
+    pthread_detach(hilo_CPU);
+}
+void atenderPeticion(int* socket_cliente){
+    t_paquete * paquete = recibirPaquete(*socket_cliente);
+
+    t_operacion * operacion = malloc(sizeof(t_operacion));
+    operacion->paquete = paquete;
+    operacion->socket = socket_cliente;
+    if(paqueteDeKernel(paquete)) {
+        pthread_mutex_lock(&mutex_colaKernel);
+        queue_push(colaKernel, operacion);
+        pthread_mutex_unlock(&mutex_colaKernel);
+        sem_post(&sem_kernel);
+    }
+    else {
+        pthread_mutex_lock(&mutex_colaCPU);
+        queue_push(colaCPU, operacion);
+        pthread_mutex_unlock(&mutex_colaCPU);
+        sem_post(&sem_CPU);
+    }
+}
+bool paqueteDeKernel(t_paquete * paquete) {
+    t_cod_op codigo = paquete->codigo_operacion;
+    return codigo==REQ_CREAR_PROCESO_KERNEL_MEMORIA || codigo==REQ_SUSP_PROCESO_KERNEL_MEMORIA || codigo==REQ_FIN_PROCESO_KERNEL_MEMORIA;
+}
+void hiloKernel(){
+    while(true){
+        sem_wait(&sem_kernel);
+        pthread_mutex_lock(&mutex_colaKernel);
+        t_operacion* operacion = queue_pop(colaKernel);
+        pthread_mutex_unlock(&mutex_colaKernel);
+        deserializarPeticionKernel(operacion->paquete,*operacion->socket);
+        free(operacion);
+    }
+}
+void hiloCPU(){
+    while(true){
+        sem_wait(&sem_CPU);
+        pthread_mutex_lock(&mutex_colaCPU);
+        t_operacion* operacion = queue_pop(colaCPU);
+        pthread_mutex_unlock(&mutex_colaCPU);
+        deserializarPeticionCPU(operacion->paquete,*operacion->socket);
+        free(operacion);
+    }
+}
+void deserializarPeticionKernel(t_paquete *paquete, int socket)
 {
     switch (paquete->codigo_operacion)
     {
         case REQ_CREAR_PROCESO_KERNEL_MEMORIA:
         {
             log_info(logger, "se solicita crear proceso");
-
             t_pcb *pcb = deserializarPCB(paquete->buffer->stream, 0);
             uint32_t *tablaPaginas1erNivel = malloc(sizeof(uint32_t));
             *tablaPaginas1erNivel = inicializarEstructurasProceso(pcb);
@@ -40,14 +102,25 @@ void deserializarSegun(t_paquete *paquete, int socket)
             freePCB(pcb);
             break;
         }
+        default:{
+            perror("codigo de operacion no valido para KERNEL");
+            exit(EXIT_FAILURE);
+        }
+        eliminarPaquete(paquete);
+        close(socket);
+    }
+    
+}    
+void deserializarPeticionCPU(t_paquete *paquete, int socket)
+{
+    retardoMemoria();
+    switch (paquete->codigo_operacion)
+    {
         case REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA:
         {
-            log_info(logger, "se solicita traducciones de direciones");
             t_traduccion_direcciones *traduccionDirecciones = malloc(sizeof(t_traduccion_direcciones));
-
             traduccionDirecciones->tamanio_pagina = TAM_PAGINA;
             traduccionDirecciones->paginas_por_tabla = ENTRADAS_POR_TABLA;
-            retardoMemoria();
             t_paquete *paqueteRespuesta = armarPaqueteCon(traduccionDirecciones, RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU);
             enviarPaquete(paqueteRespuesta, socket);
             log_info(logger, "se envia traducciones de direciones");
@@ -59,7 +132,6 @@ void deserializarSegun(t_paquete *paquete, int socket)
         {
             t_consultaTablaPagina *consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
             uint32_t tablaSegundoNivel = obtenerTablaSegundoNivel(consulta->tablaDePaginas, consulta->entradaPagina);
-            retardoMemoria();
             t_paquete *paqueteRespuesta = armarPaqueteCon(&tablaSegundoNivel, RES_TABLA_SEGUNDO_NIVEL_MEMORIA_CPU);
             enviarPaquete(paqueteRespuesta, socket);
             eliminarPaquete(paqueteRespuesta);
@@ -70,7 +142,6 @@ void deserializarSegun(t_paquete *paquete, int socket)
         {
             t_consultaTablaPagina *consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
             uint32_t marco = obtenerMarco(consulta->tablaDePaginas, consulta->entradaPagina, consulta->id, false);
-            retardoMemoria();
             t_paquete *paqueteRespuesta = armarPaqueteCon(&marco, RES_MARCO_MEMORIA_CPU);
             log_info(logger, "se agigna el marco: %d al pcb: %d. LECTURA", marco, consulta->id);
             enviarPaquete(paqueteRespuesta, socket);
@@ -83,7 +154,6 @@ void deserializarSegun(t_paquete *paquete, int socket)
             t_consultaTablaPagina *consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
             uint32_t marco = obtenerMarco(consulta->tablaDePaginas, consulta->entradaPagina, consulta->id, true);
             log_info(logger, "se asigna el marco: %d al pcb: %d. ESCRITURA", marco, consulta->id);
-            retardoMemoria();
             t_paquete *paqueteRespuesta = armarPaqueteCon(&marco, RES_MARCO_MEMORIA_CPU);
             enviarPaquete(paqueteRespuesta, socket);
             eliminarPaquete(paqueteRespuesta);
@@ -94,8 +164,6 @@ void deserializarSegun(t_paquete *paquete, int socket)
         {
             uint32_t *direccionFisica = deserializarUINT32_T(paquete->buffer->stream);
             uint32_t *datoMemoria = leerDireccionFisica(*direccionFisica);
-            log_info(logger, "se lee el dato: %d en el direccion Fisica: %d", *datoMemoria, *direccionFisica);
-            retardoMemoria();
             t_paquete *paqueteRespuesta = armarPaqueteCon(datoMemoria, RES_READ_MEMORIA_CPU);
             enviarPaquete(paqueteRespuesta, socket);
             eliminarPaquete(paqueteRespuesta);
@@ -108,7 +176,6 @@ void deserializarSegun(t_paquete *paquete, int socket)
             t_peticionEscritura *aEscribir = deserializarPeticionEscritura(paquete->buffer->stream);
             writeEnMemoria(aEscribir->direccionFisica, aEscribir->dato);
             // responder ok escritura
-            retardoMemoria();
             uint32_t respuesta = 1;
             t_paquete *paqueteRespuesta = armarPaqueteCon(&respuesta, RES_WRITE_CPU_MEMORIA);
             enviarPaquete(paqueteRespuesta, socket);
@@ -116,9 +183,9 @@ void deserializarSegun(t_paquete *paquete, int socket)
             free(aEscribir);
             break;
         }
-        default:
-        {
-            break;
+        default:{
+            perror("codigo de operacion no valido para CPU");
+            exit(EXIT_FAILURE);
         }
     }
     eliminarPaquete(paquete);

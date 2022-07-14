@@ -27,10 +27,18 @@ void iniciarEstructurasMemoria(void)
     {
         bitarray_clean_bit(bitarray, i);
     }
-
+    
     tablasPrimerNivel = list_create();
     tablasSegundoNivel = list_create();
     estadosPCBS = dictionary_create();
+        
+    pthread_mutex_init(&mutex_tablas_primer_nivel, (void *)NULL);
+    pthread_mutex_init(&mutex_tablas_segundo_nivel, (void *)NULL);
+    pthread_mutex_init(&mutex_estados_pcb, (void *)NULL);
+    pthread_mutex_init(&mutex_id_en_swap, (void *)NULL);
+    pthread_mutex_init(&mutex_memoria, (void*)NULL);
+    pthread_mutex_init(&mutex_bitarray, (void*)NULL);
+    pthread_mutex_init(&mutex_entrada_segundo_nivel, (void*)NULL);
 }
 
 t_estadoPCB *newEstadoPCB(uint32_t indexTablaPaginasPrimerNivel)
@@ -46,27 +54,35 @@ void *leerMarco(uint32_t numeroMarco)
 {
     void *marco = malloc(TAM_PAGINA);
     int desplazamiento = numeroMarco * TAM_PAGINA;
+    pthread_mutex_lock(&mutex_memoria);
     memcpy(marco, memoria + desplazamiento, TAM_PAGINA);
+    pthread_mutex_unlock(&mutex_memoria);
     return marco;
 }
 
 void escribirMarco(uint32_t numeroMarco, void *paginaSwap)
 {
     int desplazamiento = numeroMarco * TAM_PAGINA;
+    pthread_mutex_lock(&mutex_memoria);
     memcpy(memoria + desplazamiento, paginaSwap, TAM_PAGINA);
+    pthread_mutex_unlock(&mutex_memoria);
 }
 
 uint32_t *leerDireccionFisica(uint32_t direccionFisica)
 {
     uint32_t *dato = malloc(sizeof(uint32_t));
+    pthread_mutex_lock(&mutex_memoria);
     memcpy(dato, memoria + direccionFisica, sizeof(uint32_t));
+    pthread_mutex_unlock(&mutex_memoria);
     log_info(logger, "dato leido: %d en direccion fisica:%d", *dato, direccionFisica);
     return dato;
 }
 
 void writeEnMemoria(uint32_t direccionFisica, uint32_t dato)
-{
+{   
+    pthread_mutex_lock(&mutex_memoria);
     memcpy(memoria + direccionFisica, &dato, sizeof(uint32_t));
+    pthread_mutex_unlock(&mutex_memoria);
     log_info(logger, "dato escrito: %d en direccion fisica:%d", dato, direccionFisica);
 }
 
@@ -77,7 +93,7 @@ uint32_t marcosProceso(uint32_t tamanioProceso)
 
 uint32_t inicializarEstructurasProceso(t_pcb *pcb)
 {
-    ID_EN_SWAP = 0;
+    uint32_t ID_EN_SWAP = 0;
     uint32_t marcosQueOcupa = marcosProceso(pcb->tamanioProceso);
     // CANTIDAD DE ENTRADAS DE SEGUNDO NIVEL QUE NECESITA
     uint32_t paginasDeSegundoNivelCompletas = (uint32_t)floor((double)marcosQueOcupa / (double)ENTRADAS_POR_TABLA);
@@ -88,25 +104,29 @@ uint32_t inicializarEstructurasProceso(t_pcb *pcb)
     {
         for (int i = 0; i < paginasDeSegundoNivelCompletas; i++)
         {
-            t_entradaPrimerNivel *entrada = crearEntradaPrimerNivel(ENTRADAS_POR_TABLA, pcb->id);
+            t_entradaPrimerNivel *entrada = crearEntradaPrimerNivel(ENTRADAS_POR_TABLA, pcb->id, &ID_EN_SWAP);
             list_add(tablaPrimerNivel, entrada);
             log_info(logger, "creada tabla de primer nivel");
         }
     }
     if (entradasUltimaPaginaSegundoNivel > 0)
     {
-        t_entradaPrimerNivel *entrada = crearEntradaPrimerNivel(entradasUltimaPaginaSegundoNivel, pcb->id);
+        t_entradaPrimerNivel *entrada = crearEntradaPrimerNivel(entradasUltimaPaginaSegundoNivel, pcb->id, &ID_EN_SWAP);
         list_add(tablaPrimerNivel, entrada);
         log_info(logger, "creada tabla de primer nivel incompleta");
     }
+    pthread_mutex_lock(&mutex_tablas_primer_nivel);
     uint32_t indexTablaPrimerNivel = list_add(tablasPrimerNivel, tablaPrimerNivel);
+    pthread_mutex_unlock(&mutex_tablas_primer_nivel);
 
     log_info(logger, "creada la tabla de paginas de primer nivel de indice: %d, para el pcb->id>:%d", indexTablaPrimerNivel, pcb->id);
     t_estadoPCB *estado = newEstadoPCB(indexTablaPrimerNivel);
 
     // ver si esto anda y pasar a funcion
     char *_id = stringID(pcb->id);
+    pthread_mutex_lock(&mutex_estados_pcb);
     dictionary_put(estadosPCBS, _id, estado);
+    pthread_mutex_unlock(&mutex_estados_pcb);
     free(_id);
     return indexTablaPrimerNivel;
 }
@@ -118,66 +138,77 @@ char *stringID(uint32_t _id)
     return id;
 }
 
-t_entradaSegundoNivel *crearEntradaSegundoNivel(uint32_t id)
+t_entradaSegundoNivel *crearEntradaSegundoNivel(uint32_t id, uint32_t * ID_EN_SWAP)
 {
     t_entradaSegundoNivel *entrada = malloc(sizeof(t_entradaSegundoNivel));
     entrada->marco = TAM_MEMORIA;
     entrada->modificado = false;
     entrada->presencia = false;
     entrada->uso = false;
-    entrada->paginaSwap = ID_EN_SWAP;
     entrada->id = id;
-    log_info(logger, "id_en_swap: %d", ID_EN_SWAP);
-    ID_EN_SWAP++;
+    entrada->paginaSwap = *ID_EN_SWAP;
+    log_info(logger, "id_en_swap: %d", *ID_EN_SWAP);
+    (*ID_EN_SWAP)++;
     return entrada;
 }
 
-t_list *crearTablaSegundoNivel(int entradas, uint32_t id)
+t_list *crearTablaSegundoNivel(int entradas, uint32_t id, uint32_t * ID_EN_SWAP)
 {
     t_list *tabla = list_create();
     for (int j = 0; j < entradas; j++)
     {
-        t_entradaSegundoNivel *entrada = crearEntradaSegundoNivel(id);
+        t_entradaSegundoNivel *entrada = crearEntradaSegundoNivel(id, ID_EN_SWAP);
         list_add(tabla, entrada);
     }
     log_info(logger, "creada tabla de 2do nivel");
     return tabla;
 }
 
-t_entradaPrimerNivel *crearEntradaPrimerNivel(int entradasSegundoNivel, uint32_t id)
+t_entradaPrimerNivel *crearEntradaPrimerNivel(int entradasSegundoNivel, uint32_t id, uint32_t * ID_EN_SWAP)
 {
-    t_list *tablaSegundoNivel = crearTablaSegundoNivel(entradasSegundoNivel, id);
+    t_list *tablaSegundoNivel = crearTablaSegundoNivel(entradasSegundoNivel, id, ID_EN_SWAP);
     t_entradaPrimerNivel *entrada = malloc(sizeof(t_entradaPrimerNivel));
+    pthread_mutex_lock(&mutex_tablas_segundo_nivel);
     entrada->tablaSegundoNivel = list_add(tablasSegundoNivel, tablaSegundoNivel);
+    pthread_mutex_unlock(&mutex_tablas_segundo_nivel);
     entrada->id = id;
-
+ 
     return entrada;
 }
 
 uint32_t obtenerTablaSegundoNivel(uint32_t indexTablaPrimerNivel, uint32_t entradaPagina)
-{
+{   
+    pthread_mutex_lock(&mutex_tablas_primer_nivel);
     t_list *tablaPrimerNivel = list_get(tablasPrimerNivel, indexTablaPrimerNivel);
+    pthread_mutex_unlock(&mutex_tablas_primer_nivel);
     t_entradaPrimerNivel *entrada = list_get(tablaPrimerNivel, entradaPagina);
     return entrada->tablaSegundoNivel;
 }
 
 uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, uint32_t id, bool esWrite)
 {
+    pthread_mutex_lock(&mutex_entrada_segundo_nivel);
+    pthread_mutex_lock(&mutex_tablas_segundo_nivel);
     t_list *tablaSegundoNivel = list_get(tablasSegundoNivel, indexTablaSegundoNivel);
+    pthread_mutex_unlock(&mutex_tablas_segundo_nivel);
+    
     t_entradaSegundoNivel *entrada = list_get(tablaSegundoNivel, entradaPagina);
     char *_id = stringID(id);
+    pthread_mutex_lock(&mutex_estados_pcb);
     t_estadoPCB *estado = dictionary_get(estadosPCBS, _id);
+    pthread_mutex_unlock(&mutex_estados_pcb);
     if (!entrada->presencia)
     {
         if (estado->marcosOcupados < MARCOS_POR_PROCESO)
         {
             int marco = -1;
+            pthread_mutex_lock(&mutex_bitarray);
             do
             {
                 marco++;
             } while (bitarray_test_bit(bitarray, marco));
-
             bitarray_set_bit(bitarray, marco);
+            pthread_mutex_unlock(&mutex_bitarray);
             entrada->marco = marco;
             estado->marcosOcupados++;
 
@@ -196,7 +227,9 @@ uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, u
                 victima->modificado = false;
                 victima->presencia = false;
                 char *_idVictima = stringID(victima->id);
+                pthread_mutex_lock(&mutex_estados_pcb);
                 t_estadoPCB * estadoVictima = dictionary_get(estadosPCBS, _idVictima);
+                pthread_mutex_unlock(&mutex_estados_pcb);
                 estadoVictima->marcosOcupados--;
                 free(_idVictima);
             }
@@ -214,6 +247,7 @@ uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, u
     }
     entrada->uso = true;
     free(_id);
+    pthread_mutex_unlock(&mutex_entrada_segundo_nivel);
     return entrada->marco;
 }
 
@@ -222,7 +256,9 @@ void eliminarEntradaSegundoNivel(void *entrada)
     if (((t_entradaSegundoNivel *)entrada)->presencia)
     {
         // log_info(logger, "bit:%d valor:%d",((t_entradaSegundoNivel *)entrada)->marco, bitarray_test_bit(bitarray, ((t_entradaSegundoNivel *)entrada)->marco));
+        pthread_mutex_lock(&mutex_bitarray);
         bitarray_clean_bit(bitarray, ((t_entradaSegundoNivel *)entrada)->marco);
+        pthread_mutex_unlock(&mutex_bitarray);
         // log_info(logger, "bit:%d valor:%d",((t_entradaSegundoNivel *)entrada)->marco, bitarray_test_bit(bitarray, ((t_entradaSegundoNivel *)entrada)->marco));
     }
 }
@@ -230,15 +266,21 @@ void eliminarEntradaSegundoNivel(void *entrada)
 void eliminarEntradaPrimerNivel(void *entrada)
 {
     log_info(logger, "eliminado tabla de segundo nivel index:%d", ((t_entradaPrimerNivel *)entrada)->tablaSegundoNivel);
+    pthread_mutex_lock(&mutex_tablas_segundo_nivel);
     t_list *tablaSegundoNivel = list_get(tablasSegundoNivel, ((t_entradaPrimerNivel *)entrada)->tablaSegundoNivel);
+    pthread_mutex_unlock(&mutex_tablas_segundo_nivel);
     list_iterate(tablaSegundoNivel, eliminarEntradaSegundoNivel);
 }
 
 void eliminarMarcos(int indexTablaPrimerNivel)
 {
     log_info(logger, "eliminando tablas de primer nivel index: %d", indexTablaPrimerNivel);
+    pthread_mutex_lock(&mutex_tablas_primer_nivel);
     t_list *tablaPrimerNivel = list_get(tablasPrimerNivel, indexTablaPrimerNivel);
+    pthread_mutex_unlock(&mutex_tablas_primer_nivel);
+    pthread_mutex_lock(&mutex_entrada_segundo_nivel);
     list_iterate(tablaPrimerNivel, eliminarEntradaPrimerNivel);
+    pthread_mutex_unlock(&mutex_entrada_segundo_nivel);
 }
 
 void swapearEntradaSegundoNivel(void *entrada)
@@ -252,7 +294,9 @@ void swapearEntradaSegundoNivel(void *entrada)
         entradaSegundoNivel->presencia = 0;
         entradaSegundoNivel->modificado = 0;
         entradaSegundoNivel->uso = 0;
+        pthread_mutex_lock(&mutex_bitarray);
         bitarray_clean_bit(bitarray, entradaSegundoNivel->marco);
+        pthread_mutex_unlock(&mutex_bitarray);
         free(marco);
     }
 }
@@ -261,17 +305,23 @@ void swapearEntradaPrimerNivel(void *entrada)
 {
     t_entradaPrimerNivel *entradaPrimerNivel = (t_entradaPrimerNivel *)entrada;
     log_info(logger, "swapeando tabla de segundo nivel index:%d", entradaPrimerNivel->tablaSegundoNivel);
+    pthread_mutex_lock(&mutex_tablas_segundo_nivel);
     t_list *tablaSegundoNivel = list_get(tablasSegundoNivel, entradaPrimerNivel->tablaSegundoNivel);
+    pthread_mutex_unlock(&mutex_tablas_segundo_nivel);
     list_iterate(tablaSegundoNivel, swapearEntradaSegundoNivel);
 }
 
 void suspenderProceso(t_pcb *pcb)
 {
+    pthread_mutex_lock(&mutex_tablas_primer_nivel);
     t_list *tablaPrimerNivel = list_get(tablasPrimerNivel, pcb->tablaDePaginas);
+    pthread_mutex_unlock(&mutex_tablas_primer_nivel);
     log_info(logger, "swapeando tabla de primerNivel nivel index:%d", pcb->tablaDePaginas);
     list_iterate(tablaPrimerNivel, swapearEntradaPrimerNivel);
     char *_id = stringID(pcb->id);
+    pthread_mutex_lock(&mutex_estados_pcb);
     t_estadoPCB * estado = dictionary_get(estadosPCBS, _id);
+    pthread_mutex_unlock(&mutex_estados_pcb);
     estado->marcosOcupados=0;
     free(_id);
 }
@@ -298,14 +348,17 @@ t_entradaSegundoNivel *reemplazar(t_estadoPCB *estado, t_entradaSegundoNivel *en
 }
 
 t_list *obtenerEntradasSegundoNivel(uint32_t indexTablaPaginasPrimerNivel)
-{
+{   
+    pthread_mutex_lock(&mutex_tablas_primer_nivel);
     t_list *tablaPrimerNivel = list_get(tablasPrimerNivel, indexTablaPaginasPrimerNivel);
+    pthread_mutex_unlock(&mutex_tablas_primer_nivel);
     t_list *entradasSegundoNivel = list_create();
 
     void iterarPrimerNivel(t_entradaPrimerNivel * entrada)
     {
+        pthread_mutex_lock(&mutex_tablas_segundo_nivel);
         t_list *tablaSegundoNivel = list_get(tablasSegundoNivel, entrada->tablaSegundoNivel);
-
+        pthread_mutex_unlock(&mutex_tablas_segundo_nivel);
         void iterarSegundoNivel(t_entradaSegundoNivel * entrada)
         {
             list_add(entradasSegundoNivel, entrada);
@@ -402,6 +455,6 @@ t_entradaSegundoNivel *reemplazarClockM(t_estadoPCB *estado, t_list *entradasSeg
 
 void retardoMemoria()
 {
-    log_info(logger, "esperando retardo memoria de %d milisegundos", RETARDO_MEMORIA);
-    sleep(RETARDO_MEMORIA);
+    log_info(logger, "Esperando retardo memoria de %d milisegundos", RETARDO_MEMORIA/1000);
+    usleep(RETARDO_MEMORIA);
 }

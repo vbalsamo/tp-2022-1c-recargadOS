@@ -41,7 +41,7 @@ void Aready(){
         sem_wait(&sem_hay_pcb_esperando_ready);
 
         sem_wait(&sem_multiprogramacion);
-        log_info(logger, "Grado de multiprogramación permite agregar proceso a eady\n");
+        log_info(logger, "Grado de multiprogramación permite agregar proceso a ready\n");
 
         t_pcb * pcb = obtenerSiguienteAready();
         
@@ -58,7 +58,7 @@ void Aready(){
 t_pcb * obtenerSiguienteAready(){
 
     t_pcb* pcb = NULL;
-
+    
 	log_info(logger, "PCBS EN READY: %d", list_size(estado_ready));
     log_info(logger, "PCBS EN SUSP_READY: %d\n", queue_size(estado_susp_ready));
     

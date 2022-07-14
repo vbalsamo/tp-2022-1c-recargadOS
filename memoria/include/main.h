@@ -3,6 +3,7 @@
 
     #include <stdlib.h>
     #include <stdio.h>
+    #include <pthread.h>
     #include <sockets/socket.h>
     #include <commons/config.h>
     #include <commons/log.h>
@@ -12,5 +13,6 @@
     #include <utils/server.h>
     #include <utils/memoria.h>
     #include <utils/swap.h>
+    
     
 #endif
