@@ -123,12 +123,18 @@ t_pcb* planificacionSRT(){
 	//itero por la lista de Ready
 	//sem_wait(&contadorReady);
 	pthread_mutex_lock(&mutex_estado_ready);
-
-    bool filtro(void* pcbAux){
-        return ((t_pcb*) pcbAux)->id == id_pcb_ejecutando;
+    uint32_t _id_pcb_ejecutando = id_pcb_ejecutando;
+    bool filtro(void* pcbFiltro){
+        return ((t_pcb*) pcbFiltro)->id == _id_pcb_ejecutando;
     };
 
     t_pcb* pcb_en_ejecucion = list_find(estado_ready, filtro);
+    if(pcb_en_ejecucion == NULL){
+        log_info(logger, "SRT: no hay pcb en exec");
+        pcbPlanificado = list_get(estado_ready, indexAPlanificar);
+        pthread_mutex_unlock(&mutex_estado_ready);
+	    return pcbPlanificado;
+    }
 
     for(i=1;i<list_size(estado_ready)-1;i++){
     	pcbAux = list_get(estado_ready,i);
@@ -138,24 +144,19 @@ t_pcb* planificacionSRT(){
     		indexAPlanificar = i;
     	}
     }
-    if(pcb_en_ejecucion == NULL){
+    
+    if(shortestJob < pcb_en_ejecucion->estimacionRafaga){
+        log_info(logger, "SRT: pcb en ready es mas prioritario que el de exec");
         pcbPlanificado = list_get(estado_ready, indexAPlanificar);
         pthread_mutex_unlock(&mutex_estado_ready);
-	    return pcbPlanificado;
+        return pcbPlanificado;
     }
     else{
-        if(shortestJob < pcb_en_ejecucion->estimacionRafaga){
-            pcbPlanificado = list_get(estado_ready, indexAPlanificar);
-            pthread_mutex_unlock(&mutex_estado_ready);
-	        return pcbPlanificado;
-        }
-        else{
-            pthread_mutex_unlock(&mutex_estado_ready);
-	        return pcb_en_ejecucion;
-        }
+        log_info(logger, "SRT: hubo empate de ráfaga");
+        pthread_mutex_unlock(&mutex_estado_ready);
+        return pcb_en_ejecucion;
     }
-    
-    
+
 }
 
 void execAexit(t_pcb * pcb){
@@ -203,6 +204,11 @@ void hilo_block(){
         } else{
             sleep(ultimoIOenSegundos);
             addEstadoReady(ultimoIO->pcb);
+            log_info(logger, "terminó la io del proceso: %d", ultimoIO->pcb->id);
+
+            if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"SRT")){
+                interrumpirPCB();
+            }
             sem_post(&sem_ready);
         }
         free(ultimoIO);
