@@ -9,6 +9,7 @@ void validarParametros(int argc, char* argv[]){
 }
 
 void inicializarEstados(){
+    log_info(logger, "Inicializando estructuras de kernel");
     estado_ready = list_create();
     estado_new = queue_create();
     estado_susp_ready = queue_create();

@@ -19,5 +19,5 @@ MEMORIA=/home/utnso/tp-2022-1c-recargadOS/pruebas/MEMORIA_KERNEL.cfg
 TLB=/home/utnso/tp-2022-1c-recargadOS/pruebas/TLB_KERNEL.cfg
 INTEGRAL=/home/utnso/tp-2022-1c-recargadOS/pruebas/INTEGRAL_KERNEL.cfg
 # Valgrind flags
-MEMCHECK_FLAGS=--track-origins=yes --log-file="memcheck.txt"
+MEMCHECK_FLAGS=--track-origins=yes --log-file="memcheck.log"
 HELGRIND_FLAGS=--log-file="helgrind.txt"
