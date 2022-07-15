@@ -21,7 +21,7 @@ t_pcb * iniciarPcb(t_proceso * proceso){
     pcb->lengthUltimaRafaga = 0;
     pcb->PC = 0;
     pcb->tablaDePaginas = 0; //¿iniciar conexion con memomoria para solicitar tabla de paginas?
-    pcb->estimacionRafaga = 0;
+    pcb->estimacionRafaga = ESTIMACION_INICIAL;
 
     return pcb;
 }
@@ -58,10 +58,7 @@ void Aready(){
 t_pcb * obtenerSiguienteAready(){
 
     t_pcb* pcb = NULL;
-    
-	log_info(logger, "PCBS EN READY: %d", list_size(estado_ready));
-    log_info(logger, "PCBS EN SUSP_READY: %d\n", queue_size(estado_susp_ready));
-    
+        
     	if(!queue_is_empty(estado_susp_ready)){
             
             pthread_mutex_lock(&mutex_estado_susp_ready);
@@ -86,10 +83,8 @@ t_pcb * obtenerSiguienteAready(){
 void readyAexec(){
     //hilo de ejecucion
     while(1){
-        
         sem_wait(&sem_ready);
         t_pcb * pcb;
- 
         pcb = algoritmoPlanificacion();
         bool filtro(void* pcbAux){
         return ((t_pcb*) pcbAux)->id == pcb->id;
@@ -99,8 +94,6 @@ void readyAexec(){
         pthread_mutex_unlock(&mutex_estado_ready);
         id_pcb_ejecutando = pcb->id;
         ejecutarPCB(pcb);
-        
-
     }
 }
 //pcb->estimacionRafaga = alfa*pcb->lengthUltimaRafaga + (1-alfa)*pcb->estimacionRafaga
@@ -119,10 +112,20 @@ t_pcb* planificacionSRT(){
 
 	indexAPlanificar = 0;
 	shortestJob = pcbAux->estimacionRafaga;
-
-	//itero por la lista de Ready
-	//sem_wait(&contadorReady);
+    
 	pthread_mutex_lock(&mutex_estado_ready);
+
+    log_info(logger, "PCBS EN READY: %d", list_size(estado_ready));
+
+    t_pcb* pcbFor = NULL;
+    for(i=0; i<list_size(estado_ready); i++){
+        pcbFor = list_get(estado_ready,i);
+        log_info(logger, "id: %d | estimacionRafaga: %d | lenghtUltimaRafaga: %d", pcbFor->id, pcbFor->estimacionRafaga, pcbFor->lengthUltimaRafaga); 
+    }
+    
+
+    log_info(logger, "PCBS EN SUSP_READY: %d\n", queue_size(estado_susp_ready));
+    
     uint32_t _id_pcb_ejecutando = id_pcb_ejecutando;
     bool filtro(void* pcbFiltro){
         return ((t_pcb*) pcbFiltro)->id == _id_pcb_ejecutando;
@@ -135,8 +138,8 @@ t_pcb* planificacionSRT(){
         pthread_mutex_unlock(&mutex_estado_ready);
 	    return pcbPlanificado;
     }
-
-    for(i=1;i<list_size(estado_ready)-1;i++){
+    
+    for(i=1;i<list_size(estado_ready);i++){
     	pcbAux = list_get(estado_ready,i);
     	
     	if(shortestJob > pcbAux->estimacionRafaga){
@@ -144,8 +147,8 @@ t_pcb* planificacionSRT(){
     		indexAPlanificar = i;
     	}
     }
-    
-    if(shortestJob < pcb_en_ejecucion->estimacionRafaga){
+        
+    if(shortestJob < (pcb_en_ejecucion->estimacionRafaga)){
         log_info(logger, "SRT: pcb en ready es mas prioritario que el de exec");
         pcbPlanificado = list_get(estado_ready, indexAPlanificar);
         pthread_mutex_unlock(&mutex_estado_ready);
@@ -157,7 +160,11 @@ t_pcb* planificacionSRT(){
         return pcb_en_ejecucion;
     }
 
+    pcbPlanificado = list_get(estado_ready, indexAPlanificar);
+    pthread_mutex_unlock(&mutex_estado_ready);
+    return pcbPlanificado;
 }
+
 
 void execAexit(t_pcb * pcb){
     bool filtro(void* consola){
@@ -186,7 +193,7 @@ void hilo_block(){
     while(1){
         sem_wait(&sem_block);
         pthread_mutex_lock(&mutex_estado_blocked);
-               t_IO * ultimoIO = queue_pop(estado_blocked);
+            t_IO * ultimoIO = queue_pop(estado_blocked);
         pthread_mutex_unlock(&mutex_estado_blocked);        
         
         uint32_t ultimoIOenSegundos = ultimoIO->tiempoBloqueo/1000;
@@ -332,10 +339,7 @@ void ejecutarPCB(t_pcb * pcb){
             
             t_IO * io = deserializarIO(paqueteRespuesta->buffer->stream);
             io->pcb->estimacionRafaga = ALFA*(io->pcb->lengthUltimaRafaga) + (1-ALFA)*(io->pcb->estimacionRafaga);
-            
-            // log_info(logger, "Tiempo bloqueo:%d", io->tiempoBloqueo);
-            // log_info(logger, "EstimacionRafaga: %d, id: %d, lengthUltimaRafaga: %d,PC: %d, sizeInstrucciones: %d, tablaDePaginas: %d, tamanioProceso: %d", 
-            //         io->pcb->estimacionRafaga, io->pcb->id, io->pcb->lengthUltimaRafaga, io->pcb->PC, io->pcb->sizeInstrucciones, io->pcb->tablaDePaginas, io->pcb->tamanioProceso);
+            log_info(logger, "vuelve para hacer su IO: id: %d | estimacionRafaga: %d | lenghtUltimaRafaga: %d", io->pcb->id, io->pcb->estimacionRafaga, io->pcb->lengthUltimaRafaga);             
             addEstadoBlocked(io);  
             sem_post(&sem_block);  
             //t_pcb * pcbActualizado = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
@@ -358,7 +362,9 @@ void ejecutarPCB(t_pcb * pcb){
         }
         case PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL:{
             t_pcb * pcbActualizado = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
-            pcbActualizado->estimacionRafaga = ALFA*pcbActualizado->lengthUltimaRafaga + (1-ALFA)*pcbActualizado->estimacionRafaga;
+            pcbActualizado->estimacionRafaga -= pcbActualizado->lengthUltimaRafaga; 
+            log_info(logger, "vuelve para hacer su IO: id: %d | estimacionRafaga: %d | lenghtUltimaRafaga: %d", pcbActualizado->id, pcbActualizado->estimacionRafaga, pcbActualizado->lengthUltimaRafaga);             
+            log_info(logger, "Entró un pcb desalojado por interrupción ID: %d", pcbActualizado->id);
             addEstadoReady(pcbActualizado);
             sem_post(&sem_ready);
             // pthread_mutex_lock(&mutex_pcb_ejecutando);
@@ -377,24 +383,26 @@ void ejecutarPCB(t_pcb * pcb){
         }
         
     }
-    log_info(logger, "CPU devuelve pcb en ejecucion");
 }
 
 
 void addEstadoReady(t_pcb * pcb){
     pthread_mutex_lock(&mutex_estado_ready);
+    log_info(logger, "se agrega pcb: %d a ready",pcb->id);
     list_add(estado_ready, (void *) pcb);
     pthread_mutex_unlock(&mutex_estado_ready); 
 }
 
 void addEstadoBlocked(t_IO * io){
     pthread_mutex_lock(&mutex_estado_blocked);
+    log_info(logger, "se agrega pcb: %d a blocked",io->pcb->id);
     queue_push(estado_blocked, (void *) io);
     pthread_mutex_unlock(&mutex_estado_blocked);
 }
 
 void addEstadoSuspReady(t_pcb * pcb){
     pthread_mutex_lock(&mutex_estado_susp_ready);
+    log_info(logger, "se agrega pcb: %d a susp-ready",pcb->id);
     queue_push(estado_susp_ready, (void *) pcb);
     pthread_mutex_unlock(&mutex_estado_susp_ready); 
 }/*

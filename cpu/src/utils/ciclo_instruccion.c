@@ -29,6 +29,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
         if (hayInterrupcion){
             hayInterrupcion=false;
             pthread_mutex_unlock(&mutex_interrupcion);
+            pcb->lengthUltimaRafaga = pcb->PC - PC_inicial;
             log_info(logger, "Hay interrupcion, devulve el pcb");
             paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL);
             return paquete;
