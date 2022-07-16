@@ -26,6 +26,7 @@
     sem_t sem_block;
     sem_t sem_susp_ready;
     sem_t sem_hay_pcb_esperando_ready;
+    sem_t pcb_en_ready;
    
     uint32_t id_pcb_ejecutando;
 	t_queue * estado_new;

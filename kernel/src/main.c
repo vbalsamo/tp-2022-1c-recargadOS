@@ -48,6 +48,7 @@ int main(int argc, char* argv[]) {
     sem_init(&sem_block, 0, 0);
     sem_init(&sem_susp_ready, 0, 0);
     sem_init(&sem_hay_pcb_esperando_ready, 0, 0);
+    sem_init(&pcb_en_ready, 0, 0);
     
     int * socket = malloc(sizeof(int));
     *socket = iniciar_servidor(IP, PUERTO_ESCUCHA);

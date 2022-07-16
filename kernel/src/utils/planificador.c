@@ -51,6 +51,7 @@ void Aready(){
         if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"SRT")){
             interrumpirPCB();
         }
+        sem_post(&pcb_en_ready);
         sem_post(&sem_ready);
     }
 }
@@ -99,7 +100,7 @@ void readyAexec(){
 //pcb->estimacionRafaga = alfa*pcb->lengthUltimaRafaga + (1-alfa)*pcb->estimacionRafaga
 
 t_pcb* planificacionSRT(){
-
+    sem_wait(&pcb_en_ready);
 	t_pcb* pcbPlanificado = NULL;
 	t_pcb* pcbAux = NULL;
     int i;
@@ -211,6 +212,7 @@ void hilo_block(){
         } else{
             usleep(ultimoIOenUseconds);
             addEstadoReady(ultimoIO->pcb);
+            sem_post(&pcb_en_ready);
             log_info(logger, "terminó la io del proceso: %d", ultimoIO->pcb->id);
 
             if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"SRT")){
@@ -368,6 +370,7 @@ void ejecutarPCB(t_pcb * pcb){
             log_info(logger, "Entró un pcb desalojado por interrupción ID: id: %d | estimacionRafaga: %d | lenghtUltimaRafaga: %d", pcbActualizado->id, pcbActualizado->estimacionRafaga, pcbActualizado->lengthUltimaRafaga);
             addEstadoReady(pcbActualizado);
             sem_post(&sem_ready);
+            sem_post(&pcb_en_ready);
             // pthread_mutex_lock(&mutex_pcb_ejecutando);
             // pcbEjecutando = pcbActualizado;
             // pthread_mutex_unlock(&mutex_pcb_ejecutando)            
