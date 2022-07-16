@@ -133,7 +133,6 @@ t_pcb* planificacionSRT(){
 
     t_pcb* pcb_en_ejecucion = list_find(estado_ready, filtro);
     if(pcb_en_ejecucion == NULL){
-        log_info(logger, "SRT: no hay pcb en exec");
         pcbPlanificado = list_get(estado_ready, indexAPlanificar);
         pthread_mutex_unlock(&mutex_estado_ready);
 	    return pcbPlanificado;
