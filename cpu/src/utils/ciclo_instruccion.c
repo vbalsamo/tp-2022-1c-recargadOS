@@ -7,6 +7,9 @@ t_instruccion fetch(t_pcb *  pcb){
 }
 
 t_paquete * cicloInstruccion(t_pcb * pcb) {
+    pthread_mutex_lock(&mutex_interrupcion);
+    hayInterrupcion=false;
+    pthread_mutex_unlock(&mutex_interrupcion);
     t_paquete * paquete;
     bool seguirEjecutando = true;
     t_instruccion instruccion;
@@ -74,7 +77,7 @@ bool execute(t_instruccion instruccion){
     switch (instruccion.identificador){
         case NO_OP:
             log_info(logger, "Ejecutado NO_OP");
-            sleep(RETARDO_NOOP);
+            usleep(RETARDO_NOOP*1000);
             return true;
         case IO:
             //log_info(logger, "Ejecutando IO");
