@@ -155,7 +155,6 @@ t_pcb* planificacionSRT(){
         return pcbPlanificado;
     }
     else{
-        log_info(logger, "SRT: hubo empate de ráfaga");
         pthread_mutex_unlock(&mutex_estado_ready);
         return pcb_en_ejecucion;
     }

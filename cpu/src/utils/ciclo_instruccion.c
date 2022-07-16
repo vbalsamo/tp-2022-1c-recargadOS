@@ -18,7 +18,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
 
     while(seguirEjecutando ){
         instruccion = fetch(pcb);
-        const char* identificador_instruccion = string_new();
+        const char* identificador_instruccion;
         identificador_instruccion = instruccion_idAString((instruccion).identificador);
         log_info(logger, "Instrucción: %s", identificador_instruccion);
         seguirEjecutando = execute(instruccion);
@@ -80,8 +80,9 @@ bool execute(t_instruccion instruccion){
             //log_info(logger, "Ejecutando IO");
             return false;
         case READ: {
-            execute_read(instruccion.parametro1);
+            uint32_t * dato = execute_read(instruccion.parametro1);
             log_info(logger, "Ejecutado READ");
+            free(dato);
             //uint32_t * dato = execute_read(instruccion.parametro1);
             //log_info(logger, "Ejecutado READ valor: %d", *dato);
             return true;
@@ -91,7 +92,7 @@ bool execute(t_instruccion instruccion){
             uint32_t * dato = execute_read(instruccion.parametro2);
 
             execute_write(instruccion.parametro1, *dato);
-            
+            free(dato);
             log_info(logger, "COPY finalizado");
             return true;
         }
@@ -152,12 +153,13 @@ void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
 
     t_paquete * paquete = armarPaqueteCon(peticion, REQ_WRITE_CPU_MEMORIA); // agregar el dato al paquete
     enviarPaquete(paquete,socket_memoria);
+    eliminarPaquete(paquete);
     t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
     if(paqueteRespuesta->codigo_operacion != RES_WRITE_CPU_MEMORIA){
         perror("respuesta inesperada");
+        eliminarPaquete(paqueteRespuesta);
         exit(EXIT_FAILURE);
     }
-
-    //free(paqueteRespuesta);
+    eliminarPaquete(paqueteRespuesta);
     free(peticion);
 }

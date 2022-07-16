@@ -10,7 +10,7 @@ CDEBUG=-g -Wall -DDEBUG
 CRELEASE=-O3 -Wall -DNDEBUG
 
 # Arguments when executing with start, memcheck or helgrind
-ARGS=/home/juan-dell/git/tp-2022-1c-recargadOS/cpu/config/cpu.cfg /home/utnso/tp-2022-1c-recargadOS/pruebas/IP.cfg
+ARGS=/home/utnso/tp-2022-1c-recargadOS/pruebas/INTEGRAL_CPU.cfg /home/utnso/tp-2022-1c-recargadOS/pruebas/IP.cfg
 # Argumentos Pruebas
 BASE=/home/utnso/tp-2022-1c-recargadOS/pruebas/BASE_CPU.cfg /home/utnso/tp-2022-1c-recargadOS/pruebas/IP.cfg
 PLANI=/home/utnso/tp-2022-1c-recargadOS/pruebas/PLANI_CPU.cfg /home/utnso/tp-2022-1c-recargadOS/pruebas/IP.cfg

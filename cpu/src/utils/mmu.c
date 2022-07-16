@@ -51,8 +51,11 @@ void imprimirEntradaTLB(t_EntradaTLB* entrada){
 //     list_iterate(entradasSegundoNivel, (void*) imprimirBitsUso);
 
 void vaciarTLB(uint32_t pcb_nuevo){
+    void destroyer(void * entrada){
+        free(entrada);
+    }
     if(PCB_ACTUAL != pcb_nuevo){
-        list_clean(listaTLB);
+        list_clean_and_destroy_elements(listaTLB, destroyer);
         log_info(logger, "TLB vaciada por cambio de proceso");
     }
     else{
@@ -112,9 +115,11 @@ uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t
     
     t_paquete * paquete = armarPaqueteCon(consulta, REQ_TABLA_SEGUNDO_NIVEL_CPU_MEMORIA);
     enviarPaquete(paquete,socket_memoria);
+    free(consulta);
+    eliminarPaquete(paquete);
     t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
-   
     uint32_t * tablaSegundoNivelDeserializada = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
+    eliminarPaquete(paqueteRespuesta);
     uint32_t tablaSegundoNivel = *tablaSegundoNivelDeserializada; 
     free(tablaSegundoNivelDeserializada);
     return tablaSegundoNivel;
@@ -131,9 +136,12 @@ uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina, t_
 
     t_paquete * paquete = armarPaqueteCon(consulta, codOP);
     enviarPaquete(paquete,socket_memoria);
+    free(consulta);
+    eliminarPaquete(paquete);
     t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
     
     uint32_t * marco = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
+    eliminarPaquete(paqueteRespuesta);
     uint32_t marcoo = * marco;
     free(marco);
     return marcoo;
