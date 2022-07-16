@@ -83,7 +83,7 @@ void writeEnMemoria(uint32_t direccionFisica, uint32_t dato)
     pthread_mutex_lock(&mutex_memoria);
     memcpy(memoria + direccionFisica, &dato, sizeof(uint32_t));
     pthread_mutex_unlock(&mutex_memoria);
-    log_info(logger, "dato escrito: %d en direccion fisica:%d", dato, direccionFisica);
+    log_info(logger, "OK: dato escrito: %d en direccion fisica:%d", dato, direccionFisica);
 }
 
 uint32_t marcosProceso(uint32_t tamanioProceso)

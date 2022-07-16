@@ -90,6 +90,11 @@ void deserializarPeticionKernel(t_paquete *paquete, int socket)
             log_info(logger, " ");
             suspenderProceso(pcb); // liberarMarcos()
             eliminarMarcos(pcb->tablaDePaginas);
+            uint32_t respuesta = 1;
+            t_paquete *paqueteRespuesta = armarPaqueteCon(&respuesta, RES_SUSP_PROCESO_KERNEL_MEMORIA);
+            enviarPaquete(paqueteRespuesta, socket);
+            eliminarPaquete(paqueteRespuesta);
+            log_info(logger, "Finaliza la suspensión del proceso: %d", pcb->id);
             freePCB(pcb);
             break;
         }

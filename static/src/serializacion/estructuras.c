@@ -360,6 +360,9 @@ void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 		case REQ_SUSP_PROCESO_KERNEL_MEMORIA:{
 			return serializarPCB(stream,estructura,0);
 		}
+		case RES_SUSP_PROCESO_KERNEL_MEMORIA:{
+			return serializarUINT32_T(stream, estructura);
+		}
 		case REQ_TABLA_SEGUNDO_NIVEL_CPU_MEMORIA:{
 			return serializarConsultaTablaPagina(stream,estructura);
 		}
@@ -387,6 +390,7 @@ void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 		case RES_WRITE_CPU_MEMORIA :{
 			return serializarUINT32_T(stream,estructura);
 		}
+
 		default:{
 			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
 			exit(EXIT_FAILURE);
@@ -445,6 +449,9 @@ int tamanioEstructura(void* estructura ,t_cod_op cod_op){
 		case REQ_SUSP_PROCESO_KERNEL_MEMORIA:{
 			t_pcb * pcb = (t_pcb *) estructura; 
 			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
+		}
+		case RES_SUSP_PROCESO_KERNEL_MEMORIA:{
+			return sizeof(uint32_t);
 		}
 		case REQ_TABLA_SEGUNDO_NIVEL_CPU_MEMORIA:{
 			return sizeof(uint32_t)*3;
