@@ -364,8 +364,7 @@ void ejecutarPCB(t_pcb * pcb){
         case PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL:{
             t_pcb * pcbActualizado = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
             pcbActualizado->estimacionRafaga -= pcbActualizado->lengthUltimaRafaga; 
-            log_info(logger, "vuelve para hacer su IO: id: %d | estimacionRafaga: %d | lenghtUltimaRafaga: %d", pcbActualizado->id, pcbActualizado->estimacionRafaga, pcbActualizado->lengthUltimaRafaga);             
-            log_info(logger, "Entró un pcb desalojado por interrupción ID: %d", pcbActualizado->id);
+            log_info(logger, "Entró un pcb desalojado por interrupción ID: id: %d | estimacionRafaga: %d | lenghtUltimaRafaga: %d", pcbActualizado->id, pcbActualizado->estimacionRafaga, pcbActualizado->lengthUltimaRafaga);
             addEstadoReady(pcbActualizado);
             sem_post(&sem_ready);
             // pthread_mutex_lock(&mutex_pcb_ejecutando);

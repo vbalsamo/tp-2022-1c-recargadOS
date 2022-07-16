@@ -1,11 +1,5 @@
 #include <main.h>
 
-
-
-
-
-
-
 void manejarProceso(int * socket_consola){
 
     t_paquete * paquete = recibirPaquete(*socket_consola);
