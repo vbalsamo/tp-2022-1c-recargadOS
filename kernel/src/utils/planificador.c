@@ -195,20 +195,21 @@ void hilo_block(){
         pthread_mutex_unlock(&mutex_estado_blocked);        
         
         uint32_t ultimoIOenSegundos = ultimoIO->tiempoBloqueo/1000;
+        uint32_t ultimoIOenUseconds = ultimoIO->tiempoBloqueo*1000;
         log_info(logger, "pcb: %d ejecutando IO de: %d segundos", ultimoIO->pcb->id, ultimoIOenSegundos);
         if(ultimoIOenSegundos > TIEMPO_MAXIMO_BLOQUEADO){
             log_info(logger, "pcb: %d excedió el tiempo maximo de IO permitido de %d segundos", ultimoIO->pcb->id, TIEMPO_MAXIMO_BLOQUEADO);
             log_info(logger, "Se suspende el pcb");
-            sleep(TIEMPO_MAXIMO_BLOQUEADO);
+            usleep(TIEMPO_MAXIMO_BLOQUEADO);
             comunicacionMemoriaSuspender(ultimoIO->pcb);
             sem_post(&sem_multiprogramacion);
             log_info(logger, "pcb: %d ejecutando IO restante de %d segundos", ultimoIO->pcb->id, (ultimoIOenSegundos - TIEMPO_MAXIMO_BLOQUEADO));
-            sleep(ultimoIOenSegundos - TIEMPO_MAXIMO_BLOQUEADO);
+            usleep(ultimoIOenUseconds - TIEMPO_MAXIMO_BLOQUEADO);
             log_info(logger, "terminó la io del proceso: %d", ultimoIO->pcb->id);
             addEstadoSuspReady(ultimoIO->pcb);
             sem_post(&sem_hay_pcb_esperando_ready);
         } else{
-            sleep(ultimoIOenSegundos);
+            usleep(ultimoIOenUseconds);
             addEstadoReady(ultimoIO->pcb);
             log_info(logger, "terminó la io del proceso: %d", ultimoIO->pcb->id);
 
@@ -383,7 +384,6 @@ void ejecutarPCB(t_pcb * pcb){
             exit(EXIT_FAILURE);
             break;
         }
-        
     }
     eliminarPaquete(paqueteRespuesta);
 }
