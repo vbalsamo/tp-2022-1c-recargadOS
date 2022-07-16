@@ -204,6 +204,7 @@ void hilo_block(){
             sem_post(&sem_multiprogramacion);
             log_info(logger, "pcb: %d ejecutando IO restante de %d segundos", ultimoIO->pcb->id, (ultimoIOenSegundos - TIEMPO_MAXIMO_BLOQUEADO));
             sleep(ultimoIOenSegundos - TIEMPO_MAXIMO_BLOQUEADO);
+            log_info(logger, "terminó la io del proceso: %d", ultimoIO->pcb->id);
             addEstadoSuspReady(ultimoIO->pcb);
             sem_post(&sem_hay_pcb_esperando_ready);
         } else{
