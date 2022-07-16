@@ -7,7 +7,8 @@ int main(int argc, char* argv[]) {
     log_info(logger, "parametros validados");
    
     char * pathConfig = argv[1];
-    incializarVariablesGlobales(pathConfig);
+    char * pathIPS = argv[2];
+    incializarVariablesGlobales(pathConfig, pathIPS);
     log_info(logger, "Variables de configuracion Leidas");
     
     iniciarEstructurasServer();

@@ -69,15 +69,15 @@ void deserializarPeticionKernel(t_paquete *paquete, int socket)
     {
         case REQ_CREAR_PROCESO_KERNEL_MEMORIA:
         {
-            log_info(logger, "se solicita crear proceso");
             t_pcb *pcb = deserializarPCB(paquete->buffer->stream, 0);
+            log_info(logger, "se solicita crear estructuras del proceso %d", pcb->id);
             uint32_t *tablaPaginas1erNivel = malloc(sizeof(uint32_t));
             *tablaPaginas1erNivel = inicializarEstructurasProceso(pcb);
             t_paquete *paqueteRespuesta = armarPaqueteCon(tablaPaginas1erNivel, RES_CREAR_PROCESO_KERNEL_MEMORIA);
             crearArchivoSwap(pcb->id, pcb->tamanioProceso);
             enviarPaquete(paqueteRespuesta, socket);
             eliminarPaquete(paqueteRespuesta);
-            log_info(logger, "se envia tabla Paginas 1er Nivel");
+            log_info(logger, "se envia el índice de la tabla de páginas del proceso %d a kernel", pcb->id);
             free(tablaPaginas1erNivel);
             freePCB(pcb);
             break;
@@ -86,7 +86,7 @@ void deserializarPeticionKernel(t_paquete *paquete, int socket)
         {
             t_pcb *pcb = deserializarPCB(paquete->buffer->stream, 0);
             log_info(logger, " ");
-            log_info(logger, "se solicita suspender el proceso %d, se swapean sus marcos", pcb->id);
+            log_info(logger, "se solicita suspender el proceso %d, se swapean sus páginas", pcb->id);
             log_info(logger, " ");
             suspenderProceso(pcb); // liberarMarcos()
             eliminarMarcos(pcb->tablaDePaginas);
@@ -118,7 +118,7 @@ void deserializarPeticionKernel(t_paquete *paquete, int socket)
 }    
 void deserializarPeticionCPU(t_paquete *paquete, int socket)
 {
-    retardoMemoria();
+    
     switch (paquete->codigo_operacion)
     {
         case REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA:
@@ -148,7 +148,7 @@ void deserializarPeticionCPU(t_paquete *paquete, int socket)
             t_consultaTablaPagina *consulta = deserializarConsultaTablaPagina(paquete->buffer->stream);
             uint32_t marco = obtenerMarco(consulta->tablaDePaginas, consulta->entradaPagina, consulta->id, false);
             t_paquete *paqueteRespuesta = armarPaqueteCon(&marco, RES_MARCO_MEMORIA_CPU);
-            log_info(logger, "se agigna el marco: %d al pcb: %d. LECTURA", marco, consulta->id);
+            log_info(logger, "se asigna el marco: %d al pcb: %d. LECTURA", marco, consulta->id);
             enviarPaquete(paqueteRespuesta, socket);
             eliminarPaquete(paqueteRespuesta);
             free(consulta);

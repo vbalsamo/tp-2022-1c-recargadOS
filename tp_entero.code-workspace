@@ -1,6 +1,10 @@
 {
     "folders": [
 		{
+			"name": "tp-2022-1c-recargadOS",
+			"path": "."
+		},
+		{
 			"name": "consola",
 			"path": "consola"
 		},
@@ -21,10 +25,8 @@
 			"path": "static"
 		},
 		{
+			"name": "pruebas",
 			"path": "pruebas"
-		},
-		{
-			"path": "."
 		}
 	],
     "settings": {
@@ -61,7 +63,10 @@
 			"memoria.h": "c",
 			"bitarray.h": "c",
 			"swap.h": "c",
-			"queue.h": "c"
+			"queue.h": "c",
+			"handshake_memoria.h": "c",
+			"ciclo_instruccion.h": "c",
+			"dictionary.h": "c"
 		}
     }
 }

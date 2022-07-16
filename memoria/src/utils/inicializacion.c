@@ -6,10 +6,11 @@ void validarParametros(int argc, char* argv[]){
         exit(EXIT_FAILURE);
     }
 }
-void incializarVariablesGlobales(char * pathConfig) {
+void incializarVariablesGlobales(char * pathConfig, char * pathConfigIP) {
     config = config_create(pathConfig);
-    IP = config_get_string_value(config, "IP");
-    PUERTO_ESCUCHA = config_get_string_value(config, "PUERTO_ESCUCHA");
+    ips = config_create(pathConfigIP);
+    IP = config_get_string_value(ips, "IP_MEMORIA");
+    PUERTO_ESCUCHA = config_get_string_value(ips, "PUERTO_MEMORIA");
     TAM_PAGINA = config_get_int_value(config, "TAM_PAGINA");
     TAM_MEMORIA = config_get_int_value(config, "TAM_MEMORIA");
     ENTRADAS_POR_TABLA = config_get_int_value(config, "ENTRADAS_POR_TABLA");
@@ -31,4 +32,5 @@ void inicializarMemoria(){
 
 void eliminarVariablesGlobales(char * pathConfig) {
     config_destroy(config);
+    config_destroy(ips);
 }

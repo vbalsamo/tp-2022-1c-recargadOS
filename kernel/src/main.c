@@ -2,20 +2,15 @@
 
 
 
-t_proceso * deserializarSegunProceso(t_paquete * paquete, int socket){
-    t_proceso * proceso = deserializarProceso(paquete->buffer->stream);
-    eliminarPaquete(paquete);
-    //close(socket);
-    return proceso;
-}
+
 
 
 
 void manejarProceso(int * socket_consola){
 
     t_paquete * paquete = recibirPaquete(*socket_consola);
-    t_proceso * nuevo_proceso = deserializarSegunProceso(paquete, *socket_consola);
-    
+    t_proceso * nuevo_proceso = deserializarProceso(paquete->buffer->stream);
+    eliminarPaquete(paquete);
     // for(int i=0; i<nuevo_proceso->sizeInstrucciones; i++){
     //     log_info(logger, "instruccion_id:%d, instruccion_string:%s, parametro1:%d, parametro2:%d",(nuevo_proceso->instrucciones + i)->identificador, instruccion_idAString((nuevo_proceso->instrucciones + i)->identificador), (nuevo_proceso->instrucciones + i)->parametro1, (nuevo_proceso->instrucciones + i)->parametro2);
     // }
@@ -39,7 +34,9 @@ int main(int argc, char* argv[]) {
 
     validarParametros(argc, argv);
     char * pathConfig = argv[1];
-    inicializarVariablesGlobales(pathConfig);
+    char * pathIPS = argv[2];
+
+    inicializarVariablesGlobales(pathConfig, pathIPS);
     pthread_mutex_init(&mutex_estado_new, (void *)NULL);
     pthread_mutex_init(&mutex_estado_ready, (void *)NULL);
     pthread_mutex_init(&mutex_pcb_ejecutando, (void *)NULL);

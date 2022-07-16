@@ -4,6 +4,7 @@
     #include<commons/config.h>
     t_log * logger;
     t_config * config;
+    t_config * ips;
     char * IP;
     char * PUERTO_ESCUCHA;
     char * IP_CPU;

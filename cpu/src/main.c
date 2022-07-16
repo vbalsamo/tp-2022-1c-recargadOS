@@ -17,13 +17,14 @@ void iniciarHilos(){
     pthread_join(thread_dispatch, NULL);
     //servidor(servidor_dispatch);
 }
-void inicializarVariablesGlobales(char * pathConfig){
+void inicializarVariablesGlobales(char * pathConfig,char * pathConfigIP){
     config = config_create(pathConfig);
-    IP = config_get_string_value(config, "IP");
-    PUERTO_ESCUCHA_DISPATCH = config_get_string_value(config, "PUERTO_ESCUCHA_DISPATCH");
-    PUERTO_ESCUCHA_INTERRUPT = config_get_string_value(config, "PUERTO_ESCUCHA_INTERRUPT");
-    IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA");
-    PUERTO_MEMORIA = config_get_string_value(config, "PUERTO_MEMORIA");
+    ips = config_create(pathConfigIP);
+    IP = config_get_string_value(ips, "IP_CPU");
+    PUERTO_ESCUCHA_DISPATCH = config_get_string_value(ips, "PUERTO_CPU_DISPATCH");
+    PUERTO_ESCUCHA_INTERRUPT = config_get_string_value(ips, "PUERTO_CPU_INTERRUPT");
+    IP_MEMORIA = config_get_string_value(ips, "IP_MEMORIA");
+    PUERTO_MEMORIA = config_get_string_value(ips, "PUERTO_MEMORIA");
     RETARDO_NOOP = config_get_int_value(config, "RETARDO_NOOP") / 1000;
     ENTRADAS_TLB = config_get_int_value(config, "ENTRADAS_TLB");
     REEMPLAZO_TLB = config_get_string_value(config, "REEMPLAZO_TLB");
@@ -36,7 +37,8 @@ int main(int argc, char* argv[]) {
     validarParametros(argc, argv);
     log_info(logger, "parametros validados");
     char * pathConfig = argv[1];
-    inicializarVariablesGlobales(pathConfig);
+    char * pathIPS = argv[2];
+    inicializarVariablesGlobales(pathConfig, pathIPS);
     //handshake con memoria
     int socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     traduccion_direcciones = obtenerTraduccionDeDirecciones(socket_memoria);
@@ -47,6 +49,7 @@ int main(int argc, char* argv[]) {
     
     //liberar heap
     config_destroy(config);
+    config_destroy(ips);
     free(traduccion_direcciones);
     return 0;
 }

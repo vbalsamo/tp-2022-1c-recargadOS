@@ -14,6 +14,7 @@ int main(int argc, char* argv[]) {
 
     t_config* config = config_create(pathConfig);
     char * IP_KERNEL = config_get_string_value(config,"IP_KERNEL");
+    
     char * PUERTO_KERNEL = config_get_string_value(config,"PUERTO_KERNEL");
     
 

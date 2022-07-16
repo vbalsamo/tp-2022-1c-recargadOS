@@ -12,5 +12,5 @@
     void validarParametros(int argc, char* argv[]);
     t_list* obtenerInstrucciones(char* pathInstruccion);
     void inicializarEstados();
-    void inicializarVariablesGlobales(char * pathConfig);
+    void inicializarVariablesGlobales(char * pathConfig, char * pathConfigIP);
 #endif

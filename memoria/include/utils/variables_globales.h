@@ -3,7 +3,8 @@
     #include <commons/config.h>
     #include <commons/log.h>
     #include <stdint.h>
-    t_config * config;
+    t_config * config;  
+    t_config * ips;
     t_log * logger;
     char * IP;
     char * PUERTO_ESCUCHA;

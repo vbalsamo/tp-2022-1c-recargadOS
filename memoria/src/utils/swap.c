@@ -14,6 +14,8 @@ void crearArchivoSwap(uint32_t id, uint32_t tamanioProceso){
     char * nombreArchivo =obtnerPathSwap(id);
     int tamanioSwap =  marcosProceso(tamanioProceso)*TAM_PAGINA;
     char * contenidoSwap = string_repeat('0', tamanioSwap);
+    log_info(logger, "Esperando retardo swap de %d", RETARDO_SWAP/1000);
+    usleep(RETARDO_SWAP);
     FILE * archivo = fopen(nombreArchivo, "w+");
     fwrite(contenidoSwap, sizeof(char) , tamanioSwap, archivo);
     free(nombreArchivo);
@@ -23,12 +25,15 @@ void crearArchivoSwap(uint32_t id, uint32_t tamanioProceso){
 
 void eliminarArchivoSwap(uint32_t id){
     char * nombreArchivo = obtnerPathSwap(id);
+    log_info(logger, "Esperando retardo swap de %d", RETARDO_SWAP/1000);
+    usleep(RETARDO_SWAP);
     remove(nombreArchivo);
     free(nombreArchivo);
 }
 
 void escribirMarcoSwap(void * contenidoMarco, uint32_t numeroPagina, uint32_t id) {
     pthread_mutex_lock(&mutex_swap);
+    log_info(logger, "Esperando retardo swap de %d", RETARDO_SWAP/1000);
     usleep(RETARDO_SWAP);
     char * nombreArchivo = obtnerPathSwap(id);
     
@@ -43,9 +48,9 @@ void escribirMarcoSwap(void * contenidoMarco, uint32_t numeroPagina, uint32_t id
 
 void * leerPaginaSwap(uint32_t numeroPagina, uint32_t id) {
     pthread_mutex_lock(&mutex_swap);
+    log_info(logger, "Esperando retardo swap de %d", RETARDO_SWAP/1000);
     usleep(RETARDO_SWAP);
     char * nombreArchivo = obtnerPathSwap(id);
-    
     int desplazamiento = numeroPagina * TAM_PAGINA;
     FILE * archivo = fopen(nombreArchivo, "r+");
     fseek(archivo, desplazamiento, SEEK_SET);

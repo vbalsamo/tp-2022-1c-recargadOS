@@ -4,6 +4,7 @@
 #include <commons/log.h>
 #include <serializacion/estructuras.h>
 t_config * config;
+t_config * ips;
 char * IP;
 char * PUERTO_ESCUCHA_DISPATCH;
 char * PUERTO_ESCUCHA_INTERRUPT;

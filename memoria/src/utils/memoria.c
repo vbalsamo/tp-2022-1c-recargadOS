@@ -70,6 +70,7 @@ void escribirMarco(uint32_t numeroMarco, void *paginaSwap)
 
 uint32_t *leerDireccionFisica(uint32_t direccionFisica)
 {
+    retardoMemoria();
     uint32_t *dato = malloc(sizeof(uint32_t));
     pthread_mutex_lock(&mutex_memoria);
     memcpy(dato, memoria + direccionFisica, sizeof(uint32_t));
@@ -80,10 +81,11 @@ uint32_t *leerDireccionFisica(uint32_t direccionFisica)
 
 void writeEnMemoria(uint32_t direccionFisica, uint32_t dato)
 {   
+    retardoMemoria();
     pthread_mutex_lock(&mutex_memoria);
     memcpy(memoria + direccionFisica, &dato, sizeof(uint32_t));
     pthread_mutex_unlock(&mutex_memoria);
-    log_info(logger, "OK: dato escrito: %d en direccion fisica:%d", dato, direccionFisica);
+    log_info(logger, "dato escrito: %d en direccion fisica:%d", dato, direccionFisica);
 }
 
 uint32_t marcosProceso(uint32_t tamanioProceso)
@@ -106,20 +108,20 @@ uint32_t inicializarEstructurasProceso(t_pcb *pcb)
         {
             t_entradaPrimerNivel *entrada = crearEntradaPrimerNivel(ENTRADAS_POR_TABLA, pcb->id, &ID_EN_SWAP);
             list_add(tablaPrimerNivel, entrada);
-            log_info(logger, "creada tabla de primer nivel");
+            log_info(logger, "Se crea entrada de primer nivel");
         }
     }
     if (entradasUltimaPaginaSegundoNivel > 0)
     {
         t_entradaPrimerNivel *entrada = crearEntradaPrimerNivel(entradasUltimaPaginaSegundoNivel, pcb->id, &ID_EN_SWAP);
         list_add(tablaPrimerNivel, entrada);
-        log_info(logger, "creada tabla de primer nivel incompleta");
+        log_info(logger, "Se crea entrada de primer nivel");
     }
     pthread_mutex_lock(&mutex_tablas_primer_nivel);
     uint32_t indexTablaPrimerNivel = list_add(tablasPrimerNivel, tablaPrimerNivel);
     pthread_mutex_unlock(&mutex_tablas_primer_nivel);
 
-    log_info(logger, "creada la tabla de paginas de primer nivel de indice: %d, para el pcb->id>:%d", indexTablaPrimerNivel, pcb->id);
+    log_info(logger, "creada la tabla de paginas de primer nivel de indice: %d, para el proceso %d", indexTablaPrimerNivel, pcb->id);
     t_estadoPCB *estado = newEstadoPCB(indexTablaPrimerNivel);
 
     // ver si esto anda y pasar a funcion
@@ -132,7 +134,6 @@ uint32_t inicializarEstructurasProceso(t_pcb *pcb)
 }
 char *stringID(uint32_t _id)
 {
-
     char *id = string_new();
     string_append_with_format(&id, "%d", _id);
     return id;
@@ -147,7 +148,8 @@ t_entradaSegundoNivel *crearEntradaSegundoNivel(uint32_t id, uint32_t * ID_EN_SW
     entrada->uso = false;
     entrada->id = id;
     entrada->paginaSwap = *ID_EN_SWAP;
-    log_info(logger, "id_en_swap: %d", *ID_EN_SWAP);
+    log_info(logger, "se crea entrada de 2do nivel para el proceso %d", entrada->id);
+    //log_info(logger, "id_en_swap: %d", *ID_EN_SWAP);
     (*ID_EN_SWAP)++;
     return entrada;
 }
@@ -178,6 +180,7 @@ t_entradaPrimerNivel *crearEntradaPrimerNivel(int entradasSegundoNivel, uint32_t
 
 uint32_t obtenerTablaSegundoNivel(uint32_t indexTablaPrimerNivel, uint32_t entradaPagina)
 {   
+    retardoMemoria();
     pthread_mutex_lock(&mutex_tablas_primer_nivel);
     t_list *tablaPrimerNivel = list_get(tablasPrimerNivel, indexTablaPrimerNivel);
     pthread_mutex_unlock(&mutex_tablas_primer_nivel);
@@ -187,6 +190,7 @@ uint32_t obtenerTablaSegundoNivel(uint32_t indexTablaPrimerNivel, uint32_t entra
 
 uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, uint32_t id, bool esWrite)
 {
+    retardoMemoria();
     pthread_mutex_lock(&mutex_entrada_segundo_nivel);
     pthread_mutex_lock(&mutex_tablas_segundo_nivel);
     t_list *tablaSegundoNivel = list_get(tablasSegundoNivel, indexTablaSegundoNivel);
@@ -221,6 +225,7 @@ uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, u
             t_entradaSegundoNivel *victima = reemplazar(estado, entrada);
             if (victima->modificado)
             {
+                //retardoMemoria();
                 void *contenidoMarco = leerMarco(victima->marco);
                 escribirMarcoSwap(contenidoMarco, victima->paginaSwap, id);
                 free(contenidoMarco);
@@ -236,6 +241,7 @@ uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, u
 
             entrada->marco = victima->marco;
             void *contenidoPaginaSwap = leerPaginaSwap(entrada->paginaSwap, id);
+            //retardoMemoria();
             escribirMarco(entrada->marco, contenidoPaginaSwap);
             free(contenidoPaginaSwap);
         }
@@ -265,7 +271,7 @@ void eliminarEntradaSegundoNivel(void *entrada)
 
 void eliminarEntradaPrimerNivel(void *entrada)
 {
-    log_info(logger, "eliminado tabla de segundo nivel index:%d", ((t_entradaPrimerNivel *)entrada)->tablaSegundoNivel);
+    log_info(logger, "liberando tablas de segundo nivel index:%d", ((t_entradaPrimerNivel *)entrada)->tablaSegundoNivel);
     pthread_mutex_lock(&mutex_tablas_segundo_nivel);
     t_list *tablaSegundoNivel = list_get(tablasSegundoNivel, ((t_entradaPrimerNivel *)entrada)->tablaSegundoNivel);
     pthread_mutex_unlock(&mutex_tablas_segundo_nivel);
@@ -274,7 +280,7 @@ void eliminarEntradaPrimerNivel(void *entrada)
 
 void eliminarMarcos(int indexTablaPrimerNivel)
 {
-    log_info(logger, "eliminando tablas de primer nivel index: %d", indexTablaPrimerNivel);
+    log_info(logger, "liberando tablas de primer nivel index: %d", indexTablaPrimerNivel);
     pthread_mutex_lock(&mutex_tablas_primer_nivel);
     t_list *tablaPrimerNivel = list_get(tablasPrimerNivel, indexTablaPrimerNivel);
     pthread_mutex_unlock(&mutex_tablas_primer_nivel);
@@ -289,7 +295,7 @@ void swapearEntradaSegundoNivel(void *entrada)
     if (entradaSegundoNivel->presencia && entradaSegundoNivel->modificado)
     {
         void *marco = leerMarco(entradaSegundoNivel->marco);
-        log_info(logger, "se lee el marco:%d", entradaSegundoNivel->marco);
+        //log_info(logger, "se lee el marco:%d", entradaSegundoNivel->marco);
         escribirMarcoSwap(marco, entradaSegundoNivel->paginaSwap, entradaSegundoNivel->id);
         entradaSegundoNivel->presencia = 0;
         entradaSegundoNivel->modificado = 0;
@@ -317,7 +323,9 @@ void suspenderProceso(t_pcb *pcb)
     t_list *tablaPrimerNivel = list_get(tablasPrimerNivel, pcb->tablaDePaginas);
     pthread_mutex_unlock(&mutex_tablas_primer_nivel);
     log_info(logger, "swapeando tabla de primerNivel nivel index:%d", pcb->tablaDePaginas);
+    pthread_mutex_lock(&mutex_entrada_segundo_nivel);
     list_iterate(tablaPrimerNivel, swapearEntradaPrimerNivel);
+    pthread_mutex_unlock(&mutex_entrada_segundo_nivel);
     char *_id = stringID(pcb->id);
     pthread_mutex_lock(&mutex_estados_pcb);
     t_estadoPCB * estado = dictionary_get(estadosPCBS, _id);
@@ -376,7 +384,7 @@ t_entradaSegundoNivel *reemplazarClock(t_estadoPCB *estado, t_list *entradasSegu
     void imprimirBitsUso(t_entradaSegundoNivel * entrada)
     {
         if (entrada->presencia)
-            log_info(logger, "PAGINASWAP: %d - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d", entrada->paginaSwap, entrada->marco, entrada->uso, entrada->presencia);
+            log_info(logger, "INDICE SWAP: %d - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d", entrada->paginaSwap, entrada->marco, entrada->uso, entrada->presencia);
     }
 
     list_iterate(entradasSegundoNivel, (void *)imprimirBitsUso);
@@ -414,7 +422,7 @@ t_entradaSegundoNivel *reemplazarClockM(t_estadoPCB *estado, t_list *entradasSeg
     void imprimirBitsUso(t_entradaSegundoNivel * entrada)
     {
         if (entrada->presencia)
-            log_info(logger, "PAGINASWAP: %d - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d - BIT MODIFICADO: %d", entrada->paginaSwap, entrada->marco, entrada->uso, entrada->presencia, entrada->modificado);
+            log_info(logger, "INDICE SWAP: %d - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d - BIT MODIFICADO: %d", entrada->paginaSwap, entrada->marco, entrada->uso, entrada->presencia, entrada->modificado);
     }
 
     list_iterate(entradasSegundoNivel, (void *)imprimirBitsUso);
@@ -433,14 +441,14 @@ t_entradaSegundoNivel *reemplazarClockM(t_estadoPCB *estado, t_list *entradasSeg
             if (!(recorredorEntrada->modificado || recorredorEntrada->uso))
             {
                 entradaRemplazar = recorredorEntrada;
-                log_info(logger, "Victima Algoritmo %s: paginaSwapReemplazada:%d -paginaSwapNueva: %d - frame:%d", ALGORITMO_REEMPLAZO,
+                log_info(logger, "Victima Algoritmo %s: Indice swap reemplazado:%d -paginaSwapNueva: %d - frame:%d", ALGORITMO_REEMPLAZO,
                          entradaRemplazar->paginaSwap, entrada->paginaSwap, entradaRemplazar->marco);
                 break;
             }
             else if (!recorredorEntrada->uso)
             {
                 entradaRemplazar = recorredorEntrada;
-                log_info(logger, "Victima Algoritmo %s: paginaSwapReemplazada:%d -paginaSwapNueva: %d - frame:%d", ALGORITMO_REEMPLAZO,
+                log_info(logger, "Victima Algoritmo %s: Indice swap reemplazado:%d -paginaSwapNueva: %d - frame:%d", ALGORITMO_REEMPLAZO,
                          entradaRemplazar->paginaSwap, entrada->paginaSwap, entradaRemplazar->marco);
                 break;
             }

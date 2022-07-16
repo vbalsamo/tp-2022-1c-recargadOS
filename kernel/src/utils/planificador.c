@@ -22,7 +22,7 @@ t_pcb * iniciarPcb(t_proceso * proceso){
     pcb->PC = 0;
     pcb->tablaDePaginas = 0; //¿iniciar conexion con memomoria para solicitar tabla de paginas?
     pcb->estimacionRafaga = ESTIMACION_INICIAL;
-
+    free(proceso);
     return pcb;
 }
 
@@ -123,9 +123,9 @@ t_pcb* planificacionSRT(){
         log_info(logger, "id: %d | estimacionRafaga: %d | lenghtUltimaRafaga: %d", pcbFor->id, pcbFor->estimacionRafaga, pcbFor->lengthUltimaRafaga); 
     }
     
-
+    pthread_mutex_lock(&mutex_estado_susp_ready);
     log_info(logger, "PCBS EN SUSP_READY: %d\n", queue_size(estado_susp_ready));
-    
+    pthread_mutex_unlock(&mutex_estado_susp_ready);
     uint32_t _id_pcb_ejecutando = id_pcb_ejecutando;
     bool filtro(void* pcbFiltro){
         return ((t_pcb*) pcbFiltro)->id == _id_pcb_ejecutando;
@@ -185,7 +185,7 @@ void execAexit(t_pcb * pcb){
     close(*consolaAnotificar->socket);
     free(consolaAnotificar->socket);
     free(consolaAnotificar);
-    free(pcb);
+    freePCB(pcb);
     sem_post(&sem_multiprogramacion);
 }
 
@@ -231,10 +231,8 @@ void comunicacionMemoriaSuspender(t_pcb * pcb){
     t_paquete * paqueteRespuesta = recibirPaquete(socketMemoria);
     if(paqueteRespuesta->codigo_operacion == RES_SUSP_PROCESO_KERNEL_MEMORIA){
         log_info(logger, "Memoria terminó de suspender el proceso: %d", pcb->id);
-        return;
     }
     eliminarPaquete(paqueteRespuesta);
-  
 }
 
 void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
@@ -337,7 +335,7 @@ void ejecutarPCB(t_pcb * pcb){
     t_paquete * paquete = armarPaqueteCon(pcb, REQ_PCB_A_EJECUTAR_KERNEL_CPU);
     enviarPaquete(paquete, socketDispatch);
     eliminarPaquete(paquete);
-    free(pcb);
+    freePCB(pcb);
     
     t_paquete * paqueteRespuesta = recibirPaquete(socketDispatch);
     switch (paqueteRespuesta->codigo_operacion){
@@ -353,9 +351,7 @@ void ejecutarPCB(t_pcb * pcb){
             //log_info(logger, "estimacionRafaga: %d, id: %d, lengthUltimaRafaga: %d,PC: %d, sizeInstrucciones: %d, tablaDePaginas: %d, tamanioProceso: %d", 
             //        pcbActualizado->estimacionRafaga, pcbActualizado->id, pcbActualizado->lengthUltimaRafaga, pcbActualizado->PC, pcbActualizado->sizeInstrucciones, pcbActualizado->tablaDePaginas, pcbActualizado->tamanioProceso);
             //addEstadoBlocked(pcbActualizado);
-            
-            
-            
+
             //el hilo de bloqueados es el que se bloquea con usleep(io->tiempoBloqueo)
             break;
         }
@@ -381,14 +377,17 @@ void ejecutarPCB(t_pcb * pcb){
             break; 
         }   
         default:{
+            eliminarPaquete(paqueteRespuesta);
             char * error = string_new();
             string_append_with_format(&error,"Respuesta de CPU %s no soportada",codOPtoString(paqueteRespuesta->codigo_operacion));
+
             perror(error);
             exit(EXIT_FAILURE);
             break;
         }
         
     }
+    eliminarPaquete(paqueteRespuesta);
 }
 
 

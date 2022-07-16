@@ -16,17 +16,18 @@ void inicializarEstados(){
     estado_blocked = queue_create();
 }
 
-void inicializarVariablesGlobales(char * pathConfig){
+void inicializarVariablesGlobales(char * pathConfig, char * pathConfigIP){
     config = config_create(pathConfig);
+    ips = config_create(pathConfigIP);
     logger = log_create("kernel.log", "kernel", 1, LOG_LEVEL_INFO);
-    IP = config_get_string_value(config, "IP");
-    PUERTO_ESCUCHA = config_get_string_value(config, "PUERTO_ESCUCHA");
+    IP = config_get_string_value(ips, "IP_KERNEL");
+    PUERTO_ESCUCHA = config_get_string_value(ips, "PUERTO_KERNEL");
 
-    IP_CPU = config_get_string_value(config, "IP_CPU");
-    PUERTO_CPU_DISPATCH = config_get_string_value(config, "PUERTO_CPU_DISPATCH");
-    PUERTO_CPU_INTERRUPT = config_get_string_value(config, "PUERTO_CPU_INTERRUPT");
-    IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA"); 
-    PUERTO_MEMORIA = config_get_string_value(config,"PUERTO_MEMORIA");
+    IP_CPU = config_get_string_value(ips, "IP_CPU");
+    PUERTO_CPU_DISPATCH = config_get_string_value(ips, "PUERTO_CPU_DISPATCH");
+    PUERTO_CPU_INTERRUPT = config_get_string_value(ips, "PUERTO_CPU_INTERRUPT");
+    IP_MEMORIA = config_get_string_value(ips, "IP_MEMORIA"); 
+    PUERTO_MEMORIA = config_get_string_value(ips,"PUERTO_MEMORIA");
     GRADO_MULTIPROGRAMACION = config_get_int_value(config, "GRADO_MULTIPROGRAMACION");
     ALGORITMO_PLANIFICACION = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
     ESTIMACION_INICIAL = config_get_int_value(config, "ESTIMACION_INICIAL");

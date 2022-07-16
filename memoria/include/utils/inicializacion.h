@@ -7,5 +7,5 @@
     #include <commons/collections/list.h>
     #include <utils/variables_globales.h>
     void validarParametros(int argc, char* argv[]);
-    void incializarVariablesGlobales(char * pathConfig);
+    void incializarVariablesGlobales(char * pathConfig, char * pathConfigIP);
 #endif

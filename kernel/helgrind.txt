@@ -1,0 +1,124 @@
+==16306== Helgrind, a thread error detector
+==16306== Copyright (C) 2007-2017, and GNU GPL'd, by OpenWorks LLP et al.
+==16306== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==16306== Command: ./bin/kernel.out /home/utnso/tp-2022-1c-recargadOS/pruebas/INTEGRAL_KERNEL.cfg /home/utnso/tp-2022-1c-recargadOS/pruebas/IP.cfg
+==16306== Parent PID: 16305
+==16306== 
+==16306== ---Thread-Announcement------------------------------------------
+==16306== 
+==16306== Thread #1 is the program's root thread
+==16306== 
+==16306== ---Thread-Announcement------------------------------------------
+==16306== 
+==16306== Thread #2 was created
+==16306==    at 0x49B0152: clone (clone.S:71)
+==16306==    by 0x48752EB: create_thread (createthread.c:101)
+==16306==    by 0x4876E0F: pthread_create@@GLIBC_2.2.5 (pthread_create.c:817)
+==16306==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==16306==    by 0x10B4D9: inicializarPlanificacion (planificador.c:285)
+==16306==    by 0x10BF6F: main (main.c:62)
+==16306== 
+==16306== ----------------------------------------------------------------
+==16306== 
+==16306==  Lock at 0x111200 was first observed
+==16306==    at 0x4843D9D: pthread_mutex_init (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==16306==    by 0x10BE2B: main (main.c:41)
+==16306==  Address 0x111200 is 0 bytes inside data symbol "mutex_estado_ready"
+==16306== 
+==16306== Possible data race during write of size 1 at 0x4A88050 by thread #1
+==16306== Locks held: none
+==16306==    at 0x48488CC: mempcpy (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==16306==    by 0x4920661: _IO_new_file_xsputn (fileops.c:1236)
+==16306==    by 0x4920661: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+==16306==    by 0x4913DBA: fputs (iofputs.c:38)
+==16306==    by 0x4864DB6: txt_write_in_file (in /usr/lib/libcommons.so)
+==16306==    by 0x4864534: _log_write_in_level (in /usr/lib/libcommons.so)
+==16306==    by 0x48641ED: log_info (in /usr/lib/libcommons.so)
+==16306==    by 0x10A84F: ingresarANew (planificador.c:33)
+==16306==    by 0x10BDB7: manejarProceso (main.c:28)
+==16306==    by 0x10BF9C: main (main.c:71)
+==16306== 
+==16306== This conflicts with a previous write of size 1 by thread #2
+==16306== Locks held: 1, at address 0x111200
+==16306==    at 0x48488CC: mempcpy (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==16306==    by 0x4920661: _IO_new_file_xsputn (fileops.c:1236)
+==16306==    by 0x4920661: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+==16306==    by 0x4913DBA: fputs (iofputs.c:38)
+==16306==    by 0x4864DB6: txt_write_in_file (in /usr/lib/libcommons.so)
+==16306==    by 0x4864534: _log_write_in_level (in /usr/lib/libcommons.so)
+==16306==    by 0x48641ED: log_info (in /usr/lib/libcommons.so)
+==16306==    by 0x10B98B: addEstadoReady (planificador.c:396)
+==16306==    by 0x10A8B7: Aready (planificador.c:48)
+==16306==  Address 0x4a88050 is 0 bytes inside a block of size 4,096 alloc'd
+==16306==    at 0x483C893: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==16306==    by 0x4912D33: _IO_file_doallocate (filedoalloc.c:101)
+==16306==    by 0x4922EFF: _IO_doallocbuf (genops.c:347)
+==16306==    by 0x4921F5F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:745)
+==16306==    by 0x49206E4: _IO_new_file_xsputn (fileops.c:1244)
+==16306==    by 0x49206E4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+==16306==    by 0x4913DBA: fputs (iofputs.c:38)
+==16306==    by 0x4864DB6: txt_write_in_file (in /usr/lib/libcommons.so)
+==16306==    by 0x4864534: _log_write_in_level (in /usr/lib/libcommons.so)
+==16306==    by 0x48641ED: log_info (in /usr/lib/libcommons.so)
+==16306==    by 0x10BAE2: inicializarEstados (inicializacion.c:12)
+==16306==    by 0x10BF65: main (main.c:61)
+==16306==  Block was alloc'd by thread #1
+==16306== 
+==16306== ----------------------------------------------------------------
+==16306== 
+==16306==  Lock at 0x111200 was first observed
+==16306==    at 0x4843D9D: pthread_mutex_init (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==16306==    by 0x10BE2B: main (main.c:41)
+==16306==  Address 0x111200 is 0 bytes inside data symbol "mutex_estado_ready"
+==16306== 
+==16306== Possible data race during write of size 1 at 0x4A85C30 by thread #1
+==16306== Locks held: none
+==16306==    at 0x48488CC: mempcpy (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==16306==    by 0x4920661: _IO_new_file_xsputn (fileops.c:1236)
+==16306==    by 0x4920661: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+==16306==    by 0x490812B: __vfprintf_internal (vfprintf-internal.c:1688)
+==16306==    by 0x48F2D6E: printf (printf.c:33)
+==16306==    by 0x4864DED: txt_write_in_stdout (in /usr/lib/libcommons.so)
+==16306==    by 0x486457F: _log_write_in_level (in /usr/lib/libcommons.so)
+==16306==    by 0x48641ED: log_info (in /usr/lib/libcommons.so)
+==16306==    by 0x10A84F: ingresarANew (planificador.c:33)
+==16306==    by 0x10BDB7: manejarProceso (main.c:28)
+==16306==    by 0x10BF9C: main (main.c:71)
+==16306== 
+==16306== This conflicts with a previous write of size 1 by thread #2
+==16306== Locks held: 1, at address 0x111200
+==16306==    at 0x48488CC: mempcpy (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==16306==    by 0x4920661: _IO_new_file_xsputn (fileops.c:1236)
+==16306==    by 0x4920661: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+==16306==    by 0x490812B: __vfprintf_internal (vfprintf-internal.c:1688)
+==16306==    by 0x48F2D6E: printf (printf.c:33)
+==16306==    by 0x4864DED: txt_write_in_stdout (in /usr/lib/libcommons.so)
+==16306==    by 0x486457F: _log_write_in_level (in /usr/lib/libcommons.so)
+==16306==    by 0x48641ED: log_info (in /usr/lib/libcommons.so)
+==16306==    by 0x10B98B: addEstadoReady (planificador.c:396)
+==16306==  Address 0x4a85c30 is 0 bytes inside a block of size 1,024 alloc'd
+==16306==    at 0x483C893: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==16306==    by 0x4912D33: _IO_file_doallocate (filedoalloc.c:101)
+==16306==    by 0x4922EFF: _IO_doallocbuf (genops.c:347)
+==16306==    by 0x4921F5F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:745)
+==16306==    by 0x49206E4: _IO_new_file_xsputn (fileops.c:1244)
+==16306==    by 0x49206E4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+==16306==    by 0x490812B: __vfprintf_internal (vfprintf-internal.c:1688)
+==16306==    by 0x48F2D6E: printf (printf.c:33)
+==16306==    by 0x4864DED: txt_write_in_stdout (in /usr/lib/libcommons.so)
+==16306==    by 0x486457F: _log_write_in_level (in /usr/lib/libcommons.so)
+==16306==    by 0x48641ED: log_info (in /usr/lib/libcommons.so)
+==16306==    by 0x10BAE2: inicializarEstados (inicializacion.c:12)
+==16306==    by 0x10BF65: main (main.c:61)
+==16306==  Block was alloc'd by thread #1
+==16306== 
+==16306== 
+==16306== Process terminating with default action of signal 2 (SIGINT)
+==16306==    at 0x488149F: accept (accept.c:26)
+==16306==    by 0x10D4FB: esperar_cliente (socket.c:47)
+==16306==    by 0x10BF8A: main (main.c:68)
+==16306== 
+==16306== Use --history-level=approx or =none to gain increased speed, at
+==16306== the cost of reduced accuracy of conflicting-access information
+==16306== For lists of detected and suppressed errors, rerun with: -s
+==16306== ERROR SUMMARY: 7440 errors from 2 contexts (suppressed: 1930 from 115)
