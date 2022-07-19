@@ -15,11 +15,16 @@ int iniciar_servidor(char* IP, char* PORT)
 
 	socket_servidor = socket(server_info->ai_family,  server_info->ai_socktype,server_info->ai_flags);
 	
-	if(socket_servidor == -1){
+
+	if(socket_servidor < 0){
 		perror("error de creacion de socket");
 		exit(EXIT_FAILURE);
 	}
-	
+	if (setsockopt(socket_servidor, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) < 0){
+		perror("setsockopt(SO_REUSEADDR) failed");
+		exit(EXIT_FAILURE);
+	}
+    
 	int binded = bind(socket_servidor, server_info->ai_addr, server_info->ai_addrlen);
 	
 	if(binded == -1){

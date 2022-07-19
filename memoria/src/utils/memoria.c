@@ -92,7 +92,14 @@ uint32_t marcosProceso(uint32_t tamanioProceso)
 {
     return (uint32_t)ceil((double)tamanioProceso / (double)TAM_PAGINA);
 }
-
+uint32_t paginaPrimerNivel(uint32_t paginaSwap)
+{
+    return (uint32_t)floor((double)paginaSwap / (double)ENTRADAS_POR_TABLA);
+}
+uint32_t paginaSegundoNivel(uint32_t paginaSwap)
+{
+    return paginaSwap%ENTRADAS_POR_TABLA;
+}
 uint32_t inicializarEstructurasProceso(t_pcb *pcb)
 {
     uint32_t ID_EN_SWAP = 0;
@@ -377,17 +384,23 @@ t_list *obtenerEntradasSegundoNivel(uint32_t indexTablaPaginasPrimerNivel)
     return entradasSegundoNivel;
 }
 
+
 t_entradaSegundoNivel *reemplazarClock(t_estadoPCB *estado, t_list *entradasSegundoNivel, t_entradaSegundoNivel *entrada)
 {
     int cant_entradas = list_size(entradasSegundoNivel);
     t_entradaSegundoNivel *entradaRemplazar;
-    void imprimirBitsUso(t_entradaSegundoNivel * entrada)
-    {
-        if (entrada->presencia)
-            log_info(logger, "INDICE SWAP: %d - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d", entrada->paginaSwap, entrada->marco, entrada->uso, entrada->presencia);
+    log_info(logger, "------Estado inicial antes de reemplazo------");
+    log_info(logger, "PUNTERO: %d", estado->punteroClock);
+    void imprimirEstadoInicial(t_entradaSegundoNivel * entrada)
+    {   
+        log_info(logger, "PAGINA:(%d,%d) - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d", 
+        paginaPrimerNivel(entrada->paginaSwap), 
+        paginaSegundoNivel(entrada->paginaSwap), 
+        entrada->marco, 
+        entrada->uso, 
+        entrada->presencia);
     }
-
-    list_iterate(entradasSegundoNivel, (void *)imprimirBitsUso);
+    list_iterate(entradasSegundoNivel, (void *)imprimirEstadoInicial);
 
     t_entradaSegundoNivel *recorredorEntrada;
 
@@ -401,15 +414,28 @@ t_entradaSegundoNivel *reemplazarClock(t_estadoPCB *estado, t_list *entradasSegu
         {
             if (!recorredorEntrada->uso)
             {
+                
                 entradaRemplazar = recorredorEntrada;
-                log_info(logger, "Victima Algoritmo %s: paginaSwap Reemplazada:%d - paginaSwap Nueva:%d  - frame:%d", ALGORITMO_REEMPLAZO,
-                         entradaRemplazar->paginaSwap, entrada->paginaSwap, entradaRemplazar->marco);
+                log_info(logger, "Victima no en uso");
+                log_info(logger, "Victima Algoritmo %s: pagina Reemplazada:(%d,%d) - pagina Nueva:(%d,%d) - frame:%d", ALGORITMO_REEMPLAZO,
+                         paginaPrimerNivel(recorredorEntrada->paginaSwap), paginaSegundoNivel(recorredorEntrada->paginaSwap), 
+                         paginaPrimerNivel(entrada->paginaSwap), paginaSegundoNivel(entrada->paginaSwap), entradaRemplazar->marco);
                 break;
             }
             else
             {
                 recorredorEntrada->uso = false;
+                log_info(logger, "Pagina:(%d,%d) se setea uso=false. PUNTERO: %d", 
+                paginaPrimerNivel(recorredorEntrada->paginaSwap), 
+                paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                estado->punteroClock);
             }
+        }
+        else {
+            log_info(logger, "Pagina:(%d,%d) no esta presente. PUNTERO: %d", 
+            paginaPrimerNivel(recorredorEntrada->paginaSwap), 
+            paginaSegundoNivel(recorredorEntrada->paginaSwap), 
+            estado->punteroClock);
         }
     }
     return entradaRemplazar;
@@ -419,13 +445,18 @@ t_entradaSegundoNivel *reemplazarClockM(t_estadoPCB *estado, t_list *entradasSeg
 {
     int cant_entradas = list_size(entradasSegundoNivel);
     t_entradaSegundoNivel *entradaRemplazar;
-    void imprimirBitsUso(t_entradaSegundoNivel * entrada)
-    {
-        if (entrada->presencia)
-            log_info(logger, "INDICE SWAP: %d - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d - BIT MODIFICADO: %d", entrada->paginaSwap, entrada->marco, entrada->uso, entrada->presencia, entrada->modificado);
+    log_info(logger, "------Estado inicial antes de reemplazo------");
+    log_info(logger, "PUNTERO: %d", estado->punteroClock);
+    void imprimirEstadoInicial(t_entradaSegundoNivel * entrada)
+    {   
+        log_info(logger, "PAGINA:(%d,%d) - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d", 
+        paginaPrimerNivel(entrada->paginaSwap), 
+        paginaSegundoNivel(entrada->paginaSwap), 
+        entrada->marco, 
+        entrada->uso, 
+        entrada->presencia);
     }
-
-    list_iterate(entradasSegundoNivel, (void *)imprimirBitsUso);
+    list_iterate(entradasSegundoNivel, (void *)imprimirEstadoInicial);
 
     t_entradaSegundoNivel *recorredorEntrada;
 
@@ -441,21 +472,41 @@ t_entradaSegundoNivel *reemplazarClockM(t_estadoPCB *estado, t_list *entradasSeg
             if (!(recorredorEntrada->modificado || recorredorEntrada->uso))
             {
                 entradaRemplazar = recorredorEntrada;
-                log_info(logger, "Victima Algoritmo %s: Indice swap reemplazado:%d -paginaSwapNueva: %d - frame:%d", ALGORITMO_REEMPLAZO,
-                         entradaRemplazar->paginaSwap, entrada->paginaSwap, entradaRemplazar->marco);
+                log_info(logger, "Victima no modificada y no en uso");
+                log_info(logger, "Victima Algoritmo %s: pagina reemplazada:(%d,%d) - pagina Nueva:(%d,%d) - frame:%d", ALGORITMO_REEMPLAZO,
+                        paginaPrimerNivel(recorredorEntrada->paginaSwap), 
+                        paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                        paginaPrimerNivel(entrada->paginaSwap), 
+                        paginaSegundoNivel(entrada->paginaSwap),
+                        entradaRemplazar->marco);
                 break;
             }
             else if (!recorredorEntrada->uso)
             {
                 entradaRemplazar = recorredorEntrada;
-                log_info(logger, "Victima Algoritmo %s: Indice swap reemplazado:%d -paginaSwapNueva: %d - frame:%d", ALGORITMO_REEMPLAZO,
-                         entradaRemplazar->paginaSwap, entrada->paginaSwap, entradaRemplazar->marco);
+                log_info(logger, "Victima no en uso");
+                log_info(logger, "Victima Algoritmo %s: pagina reemplazada:(%d,%d) - pagina Nueva:(%d,%d) - frame:%d", ALGORITMO_REEMPLAZO,
+                        paginaPrimerNivel(recorredorEntrada->paginaSwap), 
+                        paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                        paginaPrimerNivel(entrada->paginaSwap), 
+                        paginaSegundoNivel(entrada->paginaSwap), 
+                        entradaRemplazar->marco);
                 break;
             }
             else
             {
                 recorredorEntrada->uso = false;
+                log_info(logger, "Pagina:(%d,%d) se setea uso=false. PUNTERO: %d", 
+                        paginaPrimerNivel(recorredorEntrada->paginaSwap), 
+                        paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                        estado->punteroClock);
             }
+        }
+        else {
+            log_info(logger, "Pagina:(%d,%d) no esta presente. PUNTERO: %d", 
+                    paginaPrimerNivel(recorredorEntrada->paginaSwap), 
+                    paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                    estado->punteroClock);
         }
     }
     return entradaRemplazar;

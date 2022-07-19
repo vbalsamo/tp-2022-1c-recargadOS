@@ -64,6 +64,8 @@
     t_entradaPrimerNivel * crearEntradaPrimerNivel(int entradasSegundoNivel, uint32_t id, uint32_t * ID_EN_SWAP);
     t_list * crearTablaSegundoNivel(int entradas, uint32_t id, uint32_t * ID_EN_SWAP);
     uint32_t marcosProceso(uint32_t tamanioProceso);
+    uint32_t paginaSegundoNivel(uint32_t paginaSwap);
+    uint32_t paginaPrimerNivel(uint32_t paginaSwap);
     uint32_t inicializarEstructurasProceso(t_pcb* pcb);
     t_entradaSegundoNivel * reemplazar(t_estadoPCB * estado, t_entradaSegundoNivel* entrada);
     t_list * obtenerEntradasSegundoNivel(uint32_t indexTablaPaginasPrimerNivel);
