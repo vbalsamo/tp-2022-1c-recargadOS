@@ -40,7 +40,7 @@
     void addEstadoExit(t_pcb * pcb);
     void addEstadoReady(t_pcb * pcb);
     void addEstadoExec(t_pcb * pcb);
-    void addEstadoBlocked(t_IO * io);
+    void addEstadoBlocked(t_pcbBloqueado * io);
     void addEstadoSuspBlocked(t_IO * ultimoIO);
     void addEstadoSuspReady(t_pcb * pcb);
     void comunicacionCPU(t_pcb * pcb);
@@ -48,14 +48,18 @@
     void comunicacionMemoriaFinalizar(t_pcb *);
     void comunicacionMemoriaDesuspender(t_pcb * pcb);
     void comunicacionMemoriaSuspender(t_pcb * pcb);
+    void sumarEspera(void * pcbBloqueado);
+    void sumarEsperaSegundos(void * pcbBloqueado);
     t_pcb * planificacionFIFO();
     t_pcb * planificacionSRT();
     void Aready();
     void readyAexec();
     void suspReadyAready();
+    void hacerIO (uint32_t tiempoBloqueo);
+    void sumarEspera(void * pcbBloqueado);
+    void hilo_block();
     void ingresarANew(t_pcb * pcb);
     t_pcb * algoritmoPlanificacion();
-    
     t_pcb * obtenerSiguienteAready();
     void interrumpirPCB();
     void ejecutarPCB(t_pcb * pcb);

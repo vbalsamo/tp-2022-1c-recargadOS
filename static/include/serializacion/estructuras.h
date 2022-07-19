@@ -82,12 +82,19 @@
         t_pcb * pcb;
         uint32_t tiempoBloqueo;
     }t_IO;
+
+	typedef struct{
+		t_pcb * pcb;
+		uint32_t tiempoBloqueo;
+		uint32_t tiempoEspera;
+	}t_pcbBloqueado;
 	
 	typedef struct{
 		uint32_t tablaDePaginas;
 		uint32_t entradaPagina;
 		uint32_t id;
 	}t_consultaTablaPagina;
+	
 	typedef struct{
 		uint32_t direccionFisica;
 		uint32_t dato;
