@@ -28,13 +28,36 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
         pthread_mutex_lock(&mutex_interrupcion);
         if (hayInterrupcion){
             hayInterrupcion=false;
-            pthread_mutex_unlock(&mutex_interrupcion);
             pcb->lengthUltimaRafaga = pcb->PC - PC_inicial;
             log_info(logger, "Hay interrupcion, devulve el pcb");
-            paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL);
-            return paquete;
+            switch (instruccion.identificador){
+                case IO:{
+                    t_IO * io = malloc(sizeof(t_IO));
+                    io->pcb = pcb;
+                    io->tiempoBloqueo = instruccion.parametro1;
+                    log_info(logger, "Ejecuto IO de: %d milisegundos", instruccion.parametro1);
+                    paquete = armarPaqueteCon(io, PCB_EJECUTADO_IO_CPU_KERNEL);
+                    free(io);
+                    //log_info(logger, "Ejecuto IO, devuelve el pcb id:%d", pcb->id);
+                    pthread_mutex_unlock(&mutex_interrupcion);
+                    return paquete;
+                }
+                case EXIT:{
+                    paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL);
+                    log_info(logger, "Ejecuto EXIT, devuelve el pcb id:%d", pcb->id);
+                    pthread_mutex_unlock(&mutex_interrupcion);
+                    return paquete;
+                }
+                default:{
+                    paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL);
+                    pthread_mutex_unlock(&mutex_interrupcion);
+                    return paquete;
+                }
+            }
+            
         }
         else{
+            hayInterrupcion=false;
             pthread_mutex_unlock(&mutex_interrupcion);
         }   
         

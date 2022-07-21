@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Jul 18 21:14:13 2022
+# Make data base, printed on Wed Jul 20 20:38:49 2022
 
 # Variables
 
@@ -53,7 +51,7 @@ VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupp
 # environment
 _ = /usr/share/code/code
 # environment
-JOURNAL_STREAM = 9:37231
+JOURNAL_STREAM = 9:38544
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-mate:/etc/xdg
 # environment
@@ -73,13 +71,13 @@ MANDATORY_PATH = /usr/share/gconf/mate.mandatory.path
 # environment
 XDG_DATA_DIRS = /usr/share/mate:/home/juan-dell/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
 # environment
-DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=ed6e7513b9f17063762acbd562d27fc0
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=e27d97b46b13ef8487ce240062d89192
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
 QT_SCALE_FACTOR = 1
 # environment
-MANAGERPID = 1182
+MANAGERPID = 1598
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -95,7 +93,7 @@ PATH = /home/juan-dell/.local/bin:/home/juan-dell/Downloads/idea-IU-213.7172.25/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/juandell-Latitude-E7450:@/tmp/.ICE-unix/1196,unix/juandell-Latitude-E7450:/tmp/.ICE-unix/1196
+SESSION_MANAGER = local/juandell-Latitude-E7450:@/tmp/.ICE-unix/1618,unix/juandell-Latitude-E7450:/tmp/.ICE-unix/1618
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -103,7 +101,7 @@ VSCODE_LOG_STACK = false
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = df1cc41c65a14e04909f10edcb609e5e
+INVOCATION_ID = 460a1c04b12441819f38da720efbc15b
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -115,7 +113,7 @@ XDG_SESSION_DESKTOP = mate
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 16027
+GIO_LAUNCHED_DESKTOP_FILE_PID = 2124
 # automatic
 %F = $(notdir $%)
 # environment
@@ -131,7 +129,7 @@ QT_QPA_PLATFORMTHEME = qt5ct
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 1271
+SSH_AGENT_PID = 1696
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = MATE
 # environment
@@ -171,7 +169,7 @@ SHLVL = 0
 # environment
 IM_CONFIG_PHASE = 1
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-c8cbc47f-3363-4244-b9f5-55a502a6916a.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-860fc217-df9a-4b27-9513-b345182ebf65.sock
 # environment
 COMPIZ_CONFIG_PROFILE = mint
 # environment
@@ -251,9 +249,9 @@ LC_ADDRESS = es_AR.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 16027
+VSCODE_PID = 2124
 # environment
-DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=ed6e7513b9f17063762acbd562d27fc0
+DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=e27d97b46b13ef8487ce240062d89192
 # environment
 NVM_RC_VERSION = 
 # variable set hash-table stats:
@@ -281,6 +279,8 @@ all:
 #  Implicit rule search has been done.
 #  File does not exist.
  
+make: *** No rule to make target 'all'.  Stop.
+
 #  File has not been updated.
 
 # Not a target:
@@ -324,6 +324,6 @@ GNUmakefile:
 # strcache performance: lookups = 25 / hit rate = 12%
 # hash-table stats:
 # Load=22/8192=0%, Rehash=0, Collisions=1/25=4%
-# Finished Make data base on Mon Jul 18 21:14:13 2022
+# Finished Make data base on Wed Jul 20 20:38:49 2022
 
  
