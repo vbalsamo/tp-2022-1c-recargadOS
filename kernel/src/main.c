@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
     pthread_mutex_init(&mutex_estado_susp_ready, (void*)NULL);
     pthread_mutex_init(&mutex_consolas_conectadas, (void*)NULL);
     pthread_mutex_init(&mutex_id_pcb_ejecutando, (void*)NULL);
-
+    id_pcb_ejecutando=-1;
     consolas_conectadas = list_create();
 
     sem_init(&sem_multiprogramacion, 0, GRADO_MULTIPROGRAMACION);
