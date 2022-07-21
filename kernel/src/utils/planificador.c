@@ -87,13 +87,19 @@ void readyAexec(){
         t_pcb * pcb;
         pcb = algoritmoPlanificacion();
         bool filtro(void* pcbAux){
-        return ((t_pcb*) pcbAux)->id == pcb->id;
+            return ((t_pcb*) pcbAux)->id == pcb->id;
         };
         pthread_mutex_lock(&mutex_estado_ready);
         list_remove_by_condition(estado_ready, filtro);
         pthread_mutex_unlock(&mutex_estado_ready);
+        
+        pthread_mutex_lock(&mutex_id_pcb_ejecutando);
         id_pcb_ejecutando = pcb->id;
+        pthread_mutex_unlock(&mutex_id_pcb_ejecutando);
         ejecutarPCB(pcb);
+        pthread_mutex_lock(&mutex_id_pcb_ejecutando);
+        id_pcb_ejecutando = -1;
+        pthread_mutex_unlock(&mutex_id_pcb_ejecutando);
     }
 }
 //pcb->estimacionRafaga = alfa*pcb->lengthUltimaRafaga + (1-alfa)*pcb->estimacionRafaga
@@ -126,12 +132,17 @@ t_pcb* planificacionSRT(){
     pthread_mutex_lock(&mutex_estado_susp_ready);
     log_info(logger, "PCBS EN SUSP_READY: %d\n", queue_size(estado_susp_ready));
     pthread_mutex_unlock(&mutex_estado_susp_ready);
+
+    pthread_mutex_lock(&mutex_id_pcb_ejecutando);
     uint32_t _id_pcb_ejecutando = id_pcb_ejecutando;
+    pthread_mutex_unlock(&mutex_id_pcb_ejecutando);
+
     bool filtro(void* pcbFiltro){
         return ((t_pcb*) pcbFiltro)->id == _id_pcb_ejecutando;
     };
 
     t_pcb* pcb_en_ejecucion = list_find(estado_ready, filtro);
+    
     if(pcb_en_ejecucion == NULL){
         pcbPlanificado = list_get(estado_ready, indexAPlanificar);
         pthread_mutex_unlock(&mutex_estado_ready);
@@ -387,13 +398,22 @@ t_pcb * planificacionFIFO(){
 //     return pcb;
 // }
 void interrumpirPCB(){
-    log_info(logger, "Interrumpiendo proceso");
-    int socketInterrupt = crear_conexion(IP_CPU, PUERTO_CPU_INTERRUPT);
-    int numero = 1;
-    t_paquete * paquete = armarPaqueteCon(&numero, REQ_INTERRUPCION_KERNEL_CPU);
-    enviarPaquete(paquete, socketInterrupt);
-    eliminarPaquete(paquete);
-    //close(socketInterrupt);
+    pthread_mutex_lock(&mutex_id_pcb_ejecutando);
+    if(id_pcb_ejecutando>=0){
+        pthread_mutex_unlock(&mutex_id_pcb_ejecutando);
+        log_info(logger, "Interrumpiendo proceso");
+        int socketInterrupt = crear_conexion(IP_CPU, PUERTO_CPU_INTERRUPT);
+        int numero = 1;
+        t_paquete * paquete = armarPaqueteCon(&numero, REQ_INTERRUPCION_KERNEL_CPU);
+        enviarPaquete(paquete, socketInterrupt);
+        eliminarPaquete(paquete);
+        //close(socketInterrupt);
+        
+    }
+    else {
+        pthread_mutex_unlock(&mutex_id_pcb_ejecutando);
+    }
+    
 }
 
 

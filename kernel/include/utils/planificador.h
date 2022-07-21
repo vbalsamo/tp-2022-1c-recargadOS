@@ -18,7 +18,7 @@
     pthread_mutex_t mutex_estado_blocked;
     pthread_mutex_t mutex_pcb_ejecutando;
     pthread_mutex_t mutex_estado_susp_ready;
-
+    pthread_mutex_t mutex_id_pcb_ejecutando;
     sem_t sem_multiprogramacion;
     sem_t sem_hay_pcb_en_new;
     sem_t sem_ready;

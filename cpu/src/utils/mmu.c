@@ -3,7 +3,7 @@ void iniciarEstructurasMMU() {
     tiempoAccesoGlobal = 0;
     indiceFIFO = 0;
     listaTLB = list_create();
-    PCB_ACTUAL = 0;
+    PCB_ACTUAL = -1;
 }
 
 t_EntradaTLB * newEntradaTLB(uint32_t pagina, uint32_t marco) {

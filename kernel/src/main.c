@@ -38,6 +38,7 @@ int main(int argc, char* argv[]) {
     pthread_mutex_init(&mutex_estado_blocked, (void *)NULL);
     pthread_mutex_init(&mutex_estado_susp_ready, (void*)NULL);
     pthread_mutex_init(&mutex_consolas_conectadas, (void*)NULL);
+    pthread_mutex_init(&mutex_id_pcb_ejecutando, (void*)NULL);
 
     consolas_conectadas = list_create();
 
