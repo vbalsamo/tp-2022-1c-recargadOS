@@ -27,18 +27,18 @@ void iniciarEstructurasMemoria(void)
     {
         bitarray_clean_bit(bitarray, i);
     }
-    
+
     tablasPrimerNivel = list_create();
     tablasSegundoNivel = list_create();
     estadosPCBS = dictionary_create();
-        
+
     pthread_mutex_init(&mutex_tablas_primer_nivel, (void *)NULL);
     pthread_mutex_init(&mutex_tablas_segundo_nivel, (void *)NULL);
     pthread_mutex_init(&mutex_estados_pcb, (void *)NULL);
     pthread_mutex_init(&mutex_id_en_swap, (void *)NULL);
-    pthread_mutex_init(&mutex_memoria, (void*)NULL);
-    pthread_mutex_init(&mutex_bitarray, (void*)NULL);
-    pthread_mutex_init(&mutex_entrada_segundo_nivel, (void*)NULL);
+    pthread_mutex_init(&mutex_memoria, (void *)NULL);
+    pthread_mutex_init(&mutex_bitarray, (void *)NULL);
+    pthread_mutex_init(&mutex_entrada_segundo_nivel, (void *)NULL);
 }
 
 t_estadoPCB *newEstadoPCB(uint32_t indexTablaPaginasPrimerNivel)
@@ -80,7 +80,7 @@ uint32_t *leerDireccionFisica(uint32_t direccionFisica)
 }
 
 void writeEnMemoria(uint32_t direccionFisica, uint32_t dato)
-{   
+{
     retardoMemoria();
     pthread_mutex_lock(&mutex_memoria);
     memcpy(memoria + direccionFisica, &dato, sizeof(uint32_t));
@@ -98,7 +98,7 @@ uint32_t paginaPrimerNivel(uint32_t paginaSwap)
 }
 uint32_t paginaSegundoNivel(uint32_t paginaSwap)
 {
-    return paginaSwap%ENTRADAS_POR_TABLA;
+    return paginaSwap % ENTRADAS_POR_TABLA;
 }
 uint32_t inicializarEstructurasProceso(t_pcb *pcb)
 {
@@ -146,7 +146,7 @@ char *stringID(uint32_t _id)
     return id;
 }
 
-t_entradaSegundoNivel *crearEntradaSegundoNivel(uint32_t id, uint32_t * ID_EN_SWAP)
+t_entradaSegundoNivel *crearEntradaSegundoNivel(uint32_t id, uint32_t *ID_EN_SWAP)
 {
     t_entradaSegundoNivel *entrada = malloc(sizeof(t_entradaSegundoNivel));
     entrada->marco = TAM_MEMORIA;
@@ -156,12 +156,12 @@ t_entradaSegundoNivel *crearEntradaSegundoNivel(uint32_t id, uint32_t * ID_EN_SW
     entrada->id = id;
     entrada->paginaSwap = *ID_EN_SWAP;
     log_info(logger, "se crea entrada de 2do nivel para el proceso %d", entrada->id);
-    //log_info(logger, "id_en_swap: %d", *ID_EN_SWAP);
+    // log_info(logger, "id_en_swap: %d", *ID_EN_SWAP);
     (*ID_EN_SWAP)++;
     return entrada;
 }
 
-t_list *crearTablaSegundoNivel(int entradas, uint32_t id, uint32_t * ID_EN_SWAP)
+t_list *crearTablaSegundoNivel(int entradas, uint32_t id, uint32_t *ID_EN_SWAP)
 {
     t_list *tabla = list_create();
     for (int j = 0; j < entradas; j++)
@@ -173,7 +173,7 @@ t_list *crearTablaSegundoNivel(int entradas, uint32_t id, uint32_t * ID_EN_SWAP)
     return tabla;
 }
 
-t_entradaPrimerNivel *crearEntradaPrimerNivel(int entradasSegundoNivel, uint32_t id, uint32_t * ID_EN_SWAP)
+t_entradaPrimerNivel *crearEntradaPrimerNivel(int entradasSegundoNivel, uint32_t id, uint32_t *ID_EN_SWAP)
 {
     t_list *tablaSegundoNivel = crearTablaSegundoNivel(entradasSegundoNivel, id, ID_EN_SWAP);
     t_entradaPrimerNivel *entrada = malloc(sizeof(t_entradaPrimerNivel));
@@ -181,12 +181,12 @@ t_entradaPrimerNivel *crearEntradaPrimerNivel(int entradasSegundoNivel, uint32_t
     entrada->tablaSegundoNivel = list_add(tablasSegundoNivel, tablaSegundoNivel);
     pthread_mutex_unlock(&mutex_tablas_segundo_nivel);
     entrada->id = id;
- 
+
     return entrada;
 }
 
 uint32_t obtenerTablaSegundoNivel(uint32_t indexTablaPrimerNivel, uint32_t entradaPagina)
-{   
+{
     retardoMemoria();
     pthread_mutex_lock(&mutex_tablas_primer_nivel);
     t_list *tablaPrimerNivel = list_get(tablasPrimerNivel, indexTablaPrimerNivel);
@@ -202,7 +202,7 @@ uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, u
     pthread_mutex_lock(&mutex_tablas_segundo_nivel);
     t_list *tablaSegundoNivel = list_get(tablasSegundoNivel, indexTablaSegundoNivel);
     pthread_mutex_unlock(&mutex_tablas_segundo_nivel);
-    
+
     t_entradaSegundoNivel *entrada = list_get(tablaSegundoNivel, entradaPagina);
     char *_id = stringID(id);
     pthread_mutex_lock(&mutex_estados_pcb);
@@ -232,15 +232,14 @@ uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, u
             t_entradaSegundoNivel *victima = reemplazar(estado, entrada);
             if (victima->modificado)
             {
-                //retardoMemoria();
+                // retardoMemoria();
                 void *contenidoMarco = leerMarco(victima->marco);
                 escribirMarcoSwap(contenidoMarco, victima->paginaSwap, id);
                 free(contenidoMarco);
                 victima->modificado = false;
-                victima->presencia = false;
                 char *_idVictima = stringID(victima->id);
                 pthread_mutex_lock(&mutex_estados_pcb);
-                t_estadoPCB * estadoVictima = dictionary_get(estadosPCBS, _idVictima);
+                t_estadoPCB *estadoVictima = dictionary_get(estadosPCBS, _idVictima);
                 pthread_mutex_unlock(&mutex_estados_pcb);
                 estadoVictima->marcosOcupados--;
                 free(_idVictima);
@@ -248,7 +247,7 @@ uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, u
 
             entrada->marco = victima->marco;
             void *contenidoPaginaSwap = leerPaginaSwap(entrada->paginaSwap, id);
-            //retardoMemoria();
+            // retardoMemoria();
             escribirMarco(entrada->marco, contenidoPaginaSwap);
             free(contenidoPaginaSwap);
         }
@@ -302,7 +301,7 @@ void swapearEntradaSegundoNivel(void *entrada)
     if (entradaSegundoNivel->presencia && entradaSegundoNivel->modificado)
     {
         void *marco = leerMarco(entradaSegundoNivel->marco);
-        //log_info(logger, "se lee el marco:%d", entradaSegundoNivel->marco);
+        // log_info(logger, "se lee el marco:%d", entradaSegundoNivel->marco);
         escribirMarcoSwap(marco, entradaSegundoNivel->paginaSwap, entradaSegundoNivel->id);
         entradaSegundoNivel->presencia = 0;
         entradaSegundoNivel->modificado = 0;
@@ -335,9 +334,9 @@ void suspenderProceso(t_pcb *pcb)
     pthread_mutex_unlock(&mutex_entrada_segundo_nivel);
     char *_id = stringID(pcb->id);
     pthread_mutex_lock(&mutex_estados_pcb);
-    t_estadoPCB * estado = dictionary_get(estadosPCBS, _id);
+    t_estadoPCB *estado = dictionary_get(estadosPCBS, _id);
     pthread_mutex_unlock(&mutex_estados_pcb);
-    estado->marcosOcupados=0;
+    estado->marcosOcupados = 0;
     free(_id);
 }
 
@@ -359,11 +358,12 @@ t_entradaSegundoNivel *reemplazar(t_estadoPCB *estado, t_entradaSegundoNivel *en
         exit(-1);
     }
     list_destroy(entradasSegundoNivel);
+    entradaRemplazar->presencia = false;
     return entradaRemplazar;
 }
 
 t_list *obtenerEntradasSegundoNivel(uint32_t indexTablaPaginasPrimerNivel)
-{   
+{
     pthread_mutex_lock(&mutex_tablas_primer_nivel);
     t_list *tablaPrimerNivel = list_get(tablasPrimerNivel, indexTablaPaginasPrimerNivel);
     pthread_mutex_unlock(&mutex_tablas_primer_nivel);
@@ -384,58 +384,69 @@ t_list *obtenerEntradasSegundoNivel(uint32_t indexTablaPaginasPrimerNivel)
     return entradasSegundoNivel;
 }
 
-
 t_entradaSegundoNivel *reemplazarClock(t_estadoPCB *estado, t_list *entradasSegundoNivel, t_entradaSegundoNivel *entrada)
 {
-    int cant_entradas = list_size(entradasSegundoNivel);
     t_entradaSegundoNivel *entradaRemplazar;
     log_info(logger, "------Estado inicial antes de reemplazo------");
     log_info(logger, "PUNTERO: %d", estado->punteroClock);
     void imprimirEstadoInicial(t_entradaSegundoNivel * entrada)
-    {   
-        log_info(logger, "PAGINA:(%d,%d) - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d", 
-        paginaPrimerNivel(entrada->paginaSwap), 
-        paginaSegundoNivel(entrada->paginaSwap), 
-        entrada->marco, 
-        entrada->uso, 
-        entrada->presencia);
+    {
+        log_info(logger, "PAGINA:(%d,%d) - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d",
+                 paginaPrimerNivel(entrada->paginaSwap),
+                 paginaSegundoNivel(entrada->paginaSwap),
+                 entrada->marco,
+                 entrada->uso,
+                 entrada->presencia);
     }
+
+    bool filtroEntradasSegundoNivel(t_entradaSegundoNivel * entradaFilter)
+    {
+        return entradaFilter->presencia;
+    }
+    list_filter(entradasSegundoNivel, (void *)filtroEntradasSegundoNivel);
+
+    bool compararEntradasSegundoNivel(t_entradaSegundoNivel * entrada, t_entradaSegundoNivel * entrada2)
+    {
+        return entrada->marco < entrada2->marco;
+    }
+    list_sort(entradasSegundoNivel, (void *)compararEntradasSegundoNivel);
+
     list_iterate(entradasSegundoNivel, (void *)imprimirEstadoInicial);
 
-    t_entradaSegundoNivel *recorredorEntrada;
+    t_entradaSegundoNivel* recorredorEntrada;
 
     while (1)
-    {
-
+    {            
         recorredorEntrada = list_get(entradasSegundoNivel, estado->punteroClock);
-        estado->punteroClock = (estado->punteroClock + 1) % cant_entradas;
+        estado->punteroClock = (estado->punteroClock + 1) % MARCOS_POR_PROCESO;
 
         if (recorredorEntrada->presencia)
         {
             if (!recorredorEntrada->uso)
             {
-                
+
                 entradaRemplazar = recorredorEntrada;
                 log_info(logger, "Victima no en uso");
                 log_info(logger, "Victima Algoritmo %s: pagina Reemplazada:(%d,%d) - pagina Nueva:(%d,%d) - frame:%d", ALGORITMO_REEMPLAZO,
-                         paginaPrimerNivel(recorredorEntrada->paginaSwap), paginaSegundoNivel(recorredorEntrada->paginaSwap), 
+                         paginaPrimerNivel(recorredorEntrada->paginaSwap), paginaSegundoNivel(recorredorEntrada->paginaSwap),
                          paginaPrimerNivel(entrada->paginaSwap), paginaSegundoNivel(entrada->paginaSwap), entradaRemplazar->marco);
                 break;
             }
             else
             {
                 recorredorEntrada->uso = false;
-                log_info(logger, "Pagina:(%d,%d) se setea uso=false. PUNTERO: %d", 
-                paginaPrimerNivel(recorredorEntrada->paginaSwap), 
-                paginaSegundoNivel(recorredorEntrada->paginaSwap),
-                estado->punteroClock);
+                log_info(logger, "Pagina:(%d,%d) se setea uso=false. PUNTERO: %d",
+                         paginaPrimerNivel(recorredorEntrada->paginaSwap),
+                         paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                         estado->punteroClock);
             }
         }
-        else {
-            log_info(logger, "Pagina:(%d,%d) no esta presente. PUNTERO: %d", 
-            paginaPrimerNivel(recorredorEntrada->paginaSwap), 
-            paginaSegundoNivel(recorredorEntrada->paginaSwap), 
-            estado->punteroClock);
+        else
+        {
+            log_info(logger, "Pagina:(%d,%d) no esta presente. PUNTERO: %d",
+                     paginaPrimerNivel(recorredorEntrada->paginaSwap),
+                     paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                     estado->punteroClock);
         }
     }
     return entradaRemplazar;
@@ -443,77 +454,126 @@ t_entradaSegundoNivel *reemplazarClock(t_estadoPCB *estado, t_list *entradasSegu
 
 t_entradaSegundoNivel *reemplazarClockM(t_estadoPCB *estado, t_list *entradasSegundoNivel, t_entradaSegundoNivel *entrada)
 {
-    int cant_entradas = list_size(entradasSegundoNivel);
     t_entradaSegundoNivel *entradaRemplazar;
     log_info(logger, "------Estado inicial antes de reemplazo------");
     log_info(logger, "PUNTERO: %d", estado->punteroClock);
     void imprimirEstadoInicial(t_entradaSegundoNivel * entrada)
-    {   
-        log_info(logger, "PAGINA:(%d,%d) - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d", 
-        paginaPrimerNivel(entrada->paginaSwap), 
-        paginaSegundoNivel(entrada->paginaSwap), 
-        entrada->marco, 
-        entrada->uso, 
-        entrada->presencia);
+    {
+        if(entrada->presencia)
+        {
+            log_info(logger, "PAGINA:(%d,%d) - FRAME: %d - BIT USO: %d - BIT MODIFICADO: %d - BIT PRESENCIA: %d",
+                 paginaPrimerNivel(entrada->paginaSwap),
+                 paginaSegundoNivel(entrada->paginaSwap),
+                 entrada->marco,
+                 entrada->uso,
+                 entrada->modificado,
+                 entrada->presencia);
+        }
     }
-    list_iterate(entradasSegundoNivel, (void *)imprimirEstadoInicial);
-
+    
     t_entradaSegundoNivel *recorredorEntrada;
+    
+    bool filtroEntradasSegundoNivel(t_entradaSegundoNivel * entradaFilter)
+    {
+        return entradaFilter->presencia;
+    }
+    list_filter(entradasSegundoNivel, (void *)filtroEntradasSegundoNivel);
+
+    bool compararEntradasSegundoNivel(t_entradaSegundoNivel * entrada, t_entradaSegundoNivel * entrada2)
+    {
+        return entrada->marco < entrada2->marco;
+    }
+    list_sort(entradasSegundoNivel, (void *)compararEntradasSegundoNivel);
+
+    list_iterate(entradasSegundoNivel, (void *)imprimirEstadoInicial);
+    log_info(logger, "buscando bit de uso: 0 - bit de modificado: 0");
 
     while (1)
     {
-
-        recorredorEntrada = list_get(entradasSegundoNivel, estado->punteroClock);
-        estado->punteroClock = (estado->punteroClock + 1) % cant_entradas;
-
-        if (recorredorEntrada->presencia)
+        for (int i = 0; i < MARCOS_POR_PROCESO; i++)
         {
 
-            if (!(recorredorEntrada->modificado || recorredorEntrada->uso))
+            recorredorEntrada = list_get(entradasSegundoNivel, estado->punteroClock);
+            estado->punteroClock = (estado->punteroClock + 1) % MARCOS_POR_PROCESO;
+
+            if (recorredorEntrada->presencia)
             {
-                entradaRemplazar = recorredorEntrada;
-                log_info(logger, "Victima no modificada y no en uso");
-                log_info(logger, "Victima Algoritmo %s: pagina reemplazada:(%d,%d) - pagina Nueva:(%d,%d) - frame:%d", ALGORITMO_REEMPLAZO,
-                        paginaPrimerNivel(recorredorEntrada->paginaSwap), 
-                        paginaSegundoNivel(recorredorEntrada->paginaSwap),
-                        paginaPrimerNivel(entrada->paginaSwap), 
-                        paginaSegundoNivel(entrada->paginaSwap),
-                        entradaRemplazar->marco);
-                break;
-            }
-            else if (!recorredorEntrada->uso)
-            {
-                entradaRemplazar = recorredorEntrada;
-                log_info(logger, "Victima no en uso");
-                log_info(logger, "Victima Algoritmo %s: pagina reemplazada:(%d,%d) - pagina Nueva:(%d,%d) - frame:%d", ALGORITMO_REEMPLAZO,
-                        paginaPrimerNivel(recorredorEntrada->paginaSwap), 
-                        paginaSegundoNivel(recorredorEntrada->paginaSwap),
-                        paginaPrimerNivel(entrada->paginaSwap), 
-                        paginaSegundoNivel(entrada->paginaSwap), 
-                        entradaRemplazar->marco);
-                break;
+
+                if (!(recorredorEntrada->modificado || recorredorEntrada->uso))
+                {
+                    entradaRemplazar = recorredorEntrada;
+                    log_info(logger, "Victima no modificada y no en uso");
+                    log_info(logger, "Victima Algoritmo %s: pagina reemplazada:(%d,%d) - pagina Nueva:(%d,%d) - frame:%d", ALGORITMO_REEMPLAZO,
+                             paginaPrimerNivel(recorredorEntrada->paginaSwap),
+                             paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                             paginaPrimerNivel(entrada->paginaSwap),
+                             paginaSegundoNivel(entrada->paginaSwap),
+                             entradaRemplazar->marco);
+                    return entradaRemplazar;
+                }
+                else
+                {
+                    log_info(logger, "Pagina:(%d,%d) - Bit uso: %d - Bit modificado: %d. PUNTERO: %d",
+                             paginaPrimerNivel(recorredorEntrada->paginaSwap),
+                             paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                             recorredorEntrada->uso,
+                             recorredorEntrada->modificado,
+                             estado->punteroClock);
+                }
             }
             else
             {
-                recorredorEntrada->uso = false;
-                log_info(logger, "Pagina:(%d,%d) se setea uso=false. PUNTERO: %d", 
-                        paginaPrimerNivel(recorredorEntrada->paginaSwap), 
-                        paginaSegundoNivel(recorredorEntrada->paginaSwap),
-                        estado->punteroClock);
+                // log_info(logger, "Pagina:(%d,%d) no esta presente. PUNTERO: %d",
+                //          paginaPrimerNivel(recorredorEntrada->paginaSwap),
+                //          paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                //          estado->punteroClock);
             }
         }
-        else {
-            log_info(logger, "Pagina:(%d,%d) no esta presente. PUNTERO: %d", 
-                    paginaPrimerNivel(recorredorEntrada->paginaSwap), 
-                    paginaSegundoNivel(recorredorEntrada->paginaSwap),
-                    estado->punteroClock);
+
+        log_info(logger, "buscando bit de uso: 0 - bit de modificado: 1");
+        for (int i = 0; i < MARCOS_POR_PROCESO; i++)
+        {
+
+            recorredorEntrada = list_get(entradasSegundoNivel, estado->punteroClock);
+            estado->punteroClock = (estado->punteroClock + 1) % MARCOS_POR_PROCESO;
+
+            if (recorredorEntrada->presencia)
+            {
+
+                if (!recorredorEntrada->uso && recorredorEntrada->modificado)
+                {
+                    entradaRemplazar = recorredorEntrada;
+                    log_info(logger, "Victima no en uso");
+                    log_info(logger, "Victima Algoritmo %s: pagina reemplazada:(%d,%d) - pagina Nueva:(%d,%d) - frame:%d", ALGORITMO_REEMPLAZO,
+                             paginaPrimerNivel(recorredorEntrada->paginaSwap),
+                             paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                             paginaPrimerNivel(entrada->paginaSwap),
+                             paginaSegundoNivel(entrada->paginaSwap),
+                             entradaRemplazar->marco);
+                    return entradaRemplazar;
+                }
+                else
+                {
+                    recorredorEntrada->uso = false;
+                    log_info(logger, "Pagina:(%d,%d) se setea uso=false. PUNTERO: %d",
+                             paginaPrimerNivel(recorredorEntrada->paginaSwap),
+                             paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                             estado->punteroClock);
+                }
+            }
+            else
+            {
+                // log_info(logger, "Pagina:(%d,%d) no esta presente. PUNTERO: %d",
+                //          paginaPrimerNivel(recorredorEntrada->paginaSwap),
+                //          paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                //          estado->punteroClock);
+            }
         }
     }
-    return entradaRemplazar;
 }
 
 void retardoMemoria()
 {
-    log_info(logger, "Esperando retardo memoria de %d milisegundos", RETARDO_MEMORIA/1000);
+    log_info(logger, "Esperando retardo memoria de %d milisegundos", RETARDO_MEMORIA / 1000);
     usleep(RETARDO_MEMORIA);
 }
