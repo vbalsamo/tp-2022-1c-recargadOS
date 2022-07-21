@@ -134,7 +134,7 @@ t_pcb* planificacionSRT(){
     pthread_mutex_unlock(&mutex_estado_susp_ready);
 
     pthread_mutex_lock(&mutex_id_pcb_ejecutando);
-    uint32_t _id_pcb_ejecutando = id_pcb_ejecutando;
+    int32_t _id_pcb_ejecutando = id_pcb_ejecutando;
     pthread_mutex_unlock(&mutex_id_pcb_ejecutando);
 
     bool filtro(void* pcbFiltro){
