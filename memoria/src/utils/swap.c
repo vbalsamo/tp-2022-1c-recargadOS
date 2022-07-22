@@ -33,7 +33,7 @@ void eliminarArchivoSwap(uint32_t id){
 
 void escribirMarcoSwap(void * contenidoMarco, uint32_t numeroPagina, uint32_t id) {
     pthread_mutex_lock(&mutex_swap);
-    log_info(logger, "Esperando retardo swap de %d para página %d del proceso %d", RETARDO_SWAP/1000, numeroPagina, id);
+    log_info(logger, "Esperando retardo swap de %d milisegundos", RETARDO_SWAP/1000);
     usleep(RETARDO_SWAP);
     char * nombreArchivo = obtnerPathSwap(id);
     
@@ -48,7 +48,7 @@ void escribirMarcoSwap(void * contenidoMarco, uint32_t numeroPagina, uint32_t id
 
 void * leerPaginaSwap(uint32_t numeroPagina, uint32_t id) {
     pthread_mutex_lock(&mutex_swap);
-    log_info(logger, "Esperando retardo swap de %d para página %d del proceso %d", RETARDO_SWAP/1000, numeroPagina, id);
+    log_info(logger, "Esperando retardo swap de %d milisegundos", RETARDO_SWAP/1000);
     usleep(RETARDO_SWAP);
     char * nombreArchivo = obtnerPathSwap(id);
     int desplazamiento = numeroPagina * TAM_PAGINA;
