@@ -344,13 +344,26 @@ t_entradaSegundoNivel *reemplazar(t_estadoPCB *estado, t_entradaSegundoNivel *en
 {
     t_entradaSegundoNivel *entradaRemplazar = NULL;
     t_list *entradasSegundoNivel = obtenerEntradasSegundoNivel(estado->indexTablaPaginasPrimerNivel);
+
+    bool filtroEntradasSegundoNivel(t_entradaSegundoNivel * entradaFilter)
+    {
+        return entradaFilter->presencia;
+    }
+    t_list *listaEntradas = list_filter(entradasSegundoNivel, (void *)filtroEntradasSegundoNivel); 
+
+    bool compararEntradasSegundoNivel(t_entradaSegundoNivel * entrada, t_entradaSegundoNivel * entrada2)
+    {
+        return entrada->marco < entrada2->marco;
+    }
+    list_sort(listaEntradas, (void *)compararEntradasSegundoNivel);
+
     if (string_equals_ignore_case(ALGORITMO_REEMPLAZO, "CLOCK"))
     {
-        entradaRemplazar = reemplazarClock(estado, entradasSegundoNivel, entrada);
+        entradaRemplazar = reemplazarClock(estado, listaEntradas, entrada);
     }
     else if (string_equals_ignore_case(ALGORITMO_REEMPLAZO, "CLOCK-M"))
     {
-        entradaRemplazar = reemplazarClockM(estado, entradasSegundoNivel, entrada);
+        entradaRemplazar = reemplazarClockM(estado, listaEntradas, entrada);
     }
     else
     {
@@ -358,6 +371,7 @@ t_entradaSegundoNivel *reemplazar(t_estadoPCB *estado, t_entradaSegundoNivel *en
         exit(-1);
     }
     list_destroy(entradasSegundoNivel);
+    list_destroy(listaEntradas);
     return entradaRemplazar;
 }
 
@@ -398,22 +412,11 @@ t_entradaSegundoNivel *reemplazarClock(t_estadoPCB *estado, t_list *entradasSegu
                  entrada->presencia);
     }
 
-    bool filtroEntradasSegundoNivel(t_entradaSegundoNivel * entradaFilter)
-    {
-        return entradaFilter->presencia;
-    }
-    entradasSegundoNivel = list_filter(entradasSegundoNivel, (void *)filtroEntradasSegundoNivel);
-
-    bool compararEntradasSegundoNivel(t_entradaSegundoNivel * entrada, t_entradaSegundoNivel * entrada2)
-    {
-        return entrada->marco < entrada2->marco;
-    }
-    list_sort(entradasSegundoNivel, (void *)compararEntradasSegundoNivel);
-
     list_iterate(entradasSegundoNivel, (void *)imprimirEstadoInicial);
 
     t_entradaSegundoNivel* recorredorEntrada;
 
+    log_info(logger, "------Iniciando reemplazo------");
     while (1)
     {            
         recorredorEntrada = list_get(entradasSegundoNivel, estado->punteroClock);
@@ -469,20 +472,9 @@ t_entradaSegundoNivel *reemplazarClockM(t_estadoPCB *estado, t_list *entradasSeg
     
     t_entradaSegundoNivel *recorredorEntrada;
     
-    bool filtroEntradasSegundoNivel(t_entradaSegundoNivel * entradaFilter)
-    {
-        return entradaFilter->presencia;
-    }
-    entradasSegundoNivel = list_filter(entradasSegundoNivel, (void *)filtroEntradasSegundoNivel);
-
-    bool compararEntradasSegundoNivel(t_entradaSegundoNivel * entrada1, t_entradaSegundoNivel * entrada2)
-    {
-        return entrada1->marco < entrada2->marco;
-    }
-    list_sort(entradasSegundoNivel, (void *)compararEntradasSegundoNivel);
-
     list_iterate(entradasSegundoNivel, (void *)imprimirEstadoInicial);
-
+    
+    log_info(logger, "------Iniciando reemplazo------");
     while (1)
     {
         log_info(logger, "buscando bit de uso: 0 - bit de modificado: 0");

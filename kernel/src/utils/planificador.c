@@ -459,9 +459,7 @@ void ejecutarPCB(t_pcb *pcb)
         pcbBloqueado->tiempoEspera = 0;
         addEstadoBlocked(pcbBloqueado);
         sem_post(&sem_block);
-
-        // FREE IO
-
+        free(io);
         // t_pcb * pcbActualizado = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
         // pcbActualizado->estimacionRafaga = ALFA*(io->pcb->lengthUltimaRafaga) + (1-ALFA)*(io->pcb->estimacionRafaga);
         // log_info(logger, "estimacionRafaga: %d, id: %d, lengthUltimaRafaga: %d,PC: %d, sizeInstrucciones: %d, tablaDePaginas: %d, tamanioProceso: %d",
