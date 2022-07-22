@@ -15,6 +15,7 @@
     #include <pthread.h>
     #include <utils/variables_globales.h>
     #include <utils/ciclo_instruccion.h>
+    #include <log/log.h>
 
     int* socket_dispatch;
     int * socket_interrupt;

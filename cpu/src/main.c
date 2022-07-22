@@ -33,7 +33,8 @@ void inicializarVariablesGlobales(char * pathConfig,char * pathConfigIP){
     log_info(logger, "Variables de configuracion Leidas");
 }
 int main(int argc, char* argv[]) {
-    logger = log_create("cpu.log", "cpu", true, LOG_LEVEL_INFO);
+    char * logPath = obtenerPathLog();
+    logger = log_create(logPath, "cpu", true, LOG_LEVEL_INFO);
     validarParametros(argc, argv);
     log_info(logger, "parametros validados");
     char * pathConfig = argv[1];

@@ -13,6 +13,7 @@
     #include <utils/server.h>
     #include <utils/memoria.h>
     #include <utils/swap.h>
+    #include <log/log.h>
     
     
 #endif

@@ -1,8 +1,8 @@
 #include <main.h>
 
 int main(int argc, char* argv[]) {
-    
-    logger = log_create("./memoria.log","memoria", true, LOG_LEVEL_TRACE);
+    char * logPath = obtenerPathLog();
+    logger = log_create(logPath, "memoria", true, LOG_LEVEL_TRACE);
     validarParametros(argc, argv);
     log_info(logger, "parametros validados");
    

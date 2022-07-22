@@ -19,7 +19,8 @@ void inicializarEstados(){
 void inicializarVariablesGlobales(char * pathConfig, char * pathConfigIP){
     config = config_create(pathConfig);
     ips = config_create(pathConfigIP);
-    logger = log_create("kernel.log", "kernel", 1, LOG_LEVEL_INFO);
+    char * logPath = obtenerPathLog();
+    logger = log_create(logPath, "kernel", 1, LOG_LEVEL_INFO);
     IP = config_get_string_value(ips, "IP_KERNEL");
     PUERTO_ESCUCHA = config_get_string_value(ips, "PUERTO_KERNEL");
 

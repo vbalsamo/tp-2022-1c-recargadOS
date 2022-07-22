@@ -9,7 +9,7 @@ CDEBUG=-g -Wall -DDEBUG
 CRELEASE=-O3 -Wall -DNDEBUG
 
 # Arguments when executing with start, memcheck or helgrind
-ARGS=/home/utnso/tp-2022-1c-recargadOS/memoria/config/MEMORIA_MEMORIA.cfg /home/utnso/tp-2022-1c-recargadOS/pruebas/IP.cfg
+ARGS=/home/utnso/tp-2022-1c-recargadOS/memoria/config/SUSPE_MEMORIA.cfg /home/utnso/tp-2022-1c-recargadOS/pruebas/IP.cfg
 # Argumentos Pruebas
 BASE=/home/utnso/tp-2022-1c-recargadOS/pruebas/BASE_MEMORIA.cfg /home/utnso/tp-2022-1c-recargadOS/pruebas/IP.cfg
 PLANI=/home/utnso/tp-2022-1c-recargadOS/pruebas/PLANI_MEMORIA.cfg /home/utnso/tp-2022-1c-recargadOS/pruebas/IP.cfg
