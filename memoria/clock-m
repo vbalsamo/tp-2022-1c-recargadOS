@@ -1,0 +1,144 @@
+[INFO] 18:22:06:165 memoria/(2444:2444): parametros validados
+[INFO] 18:22:06:165 memoria/(2444:2444): Variables de configuracion Leidas
+[INFO] 18:22:12:366 memoria/(2444:2446): se envia traducciones de direciones
+[INFO] 18:22:36:774 memoria/(2495:2495): parametros validados
+[INFO] 18:22:36:775 memoria/(2495:2495): Variables de configuracion Leidas
+[INFO] 18:22:40:144 memoria/(2495:2497): se envia traducciones de direciones
+[INFO] 18:22:48:730 memoria/(2495:2496): se solicita crear estructuras del proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): creada tabla de 2do nivel
+[INFO] 18:22:48:730 memoria/(2495:2496): Se crea entrada de primer nivel
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): creada tabla de 2do nivel
+[INFO] 18:22:48:730 memoria/(2495:2496): Se crea entrada de primer nivel
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): creada tabla de 2do nivel
+[INFO] 18:22:48:730 memoria/(2495:2496): Se crea entrada de primer nivel
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): se crea entrada de 2do nivel para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): creada tabla de 2do nivel
+[INFO] 18:22:48:730 memoria/(2495:2496): Se crea entrada de primer nivel
+[INFO] 18:22:48:730 memoria/(2495:2496): creada la tabla de paginas de primer nivel de indice: 0, para el proceso 0
+[INFO] 18:22:48:730 memoria/(2495:2496): se envia el índice de la tabla de páginas del proceso 0 a kernel
+[INFO] 18:22:48:732 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:22:49:233 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:22:49:734 memoria/(2495:2497): Esperando retardo swap de 1000 para página 0 del proceso 0
+[INFO] 18:22:50:735 memoria/(2495:2497): se asigna el marco: 0 al pcb: 0. ESCRITURA
+[INFO] 18:22:50:737 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:22:51:238 memoria/(2495:2497): dato escrito: 1000 en direccion fisica:0
+[INFO] 18:22:51:239 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:22:51:740 memoria/(2495:2497): dato escrito: 1001 en direccion fisica:4
+[INFO] 18:22:51:741 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:22:52:242 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:22:52:742 memoria/(2495:2497): Esperando retardo swap de 1000 para página 1 del proceso 0
+[INFO] 18:22:53:743 memoria/(2495:2497): se asigna el marco: 1 al pcb: 0. ESCRITURA
+[INFO] 18:22:53:744 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:22:54:244 memoria/(2495:2497): dato escrito: 2000 en direccion fisica:260
+[INFO] 18:22:54:245 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:22:54:746 memoria/(2495:2497): dato leido: 2000 en direccion fisica:260
+[INFO] 18:22:54:747 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:22:55:247 memoria/(2495:2497): dato escrito: 2000 en direccion fisica:256
+[INFO] 18:22:55:248 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:22:55:749 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:22:56:250 memoria/(2495:2497): Esperando retardo swap de 1000 para página 8 del proceso 0
+[INFO] 18:22:57:251 memoria/(2495:2497): se asigna el marco: 2 al pcb: 0. ESCRITURA
+[INFO] 18:22:57:252 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:22:57:752 memoria/(2495:2497): dato escrito: 4000 en direccion fisica:512
+[INFO] 18:22:57:753 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:22:58:253 memoria/(2495:2497): dato escrito: 4001 en direccion fisica:516
+[INFO] 18:23:03:257 memoria/(2495:2496):  
+[INFO] 18:23:03:257 memoria/(2495:2496): se solicita suspender el proceso 0, se swapean sus páginas
+[INFO] 18:23:03:257 memoria/(2495:2496):  
+[INFO] 18:23:03:257 memoria/(2495:2496): swapeando tabla de primerNivel nivel index:0
+[INFO] 18:23:03:257 memoria/(2495:2496): swapeando tabla de segundo nivel index:0
+[INFO] 18:23:03:257 memoria/(2495:2496): Esperando retardo swap de 1000 para página 0 del proceso 0
+[INFO] 18:23:04:258 memoria/(2495:2496): Esperando retardo swap de 1000 para página 1 del proceso 0
+[INFO] 18:23:05:259 memoria/(2495:2496): swapeando tabla de segundo nivel index:1
+[INFO] 18:23:05:259 memoria/(2495:2496): swapeando tabla de segundo nivel index:2
+[INFO] 18:23:05:259 memoria/(2495:2496): Esperando retardo swap de 1000 para página 8 del proceso 0
+[INFO] 18:23:06:260 memoria/(2495:2496): swapeando tabla de segundo nivel index:3
+[INFO] 18:23:06:261 memoria/(2495:2496): liberando tablas de primer nivel index: 0
+[INFO] 18:23:06:261 memoria/(2495:2496): liberando tablas de segundo nivel index:0
+[INFO] 18:23:06:261 memoria/(2495:2496): liberando tablas de segundo nivel index:1
+[INFO] 18:23:06:261 memoria/(2495:2496): liberando tablas de segundo nivel index:2
+[INFO] 18:23:06:261 memoria/(2495:2496): liberando tablas de segundo nivel index:3
+[INFO] 18:23:06:261 memoria/(2495:2496): Finaliza la suspensión del proceso: 0
+[INFO] 18:23:07:263 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:07:764 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:08:265 memoria/(2495:2497): Esperando retardo swap de 1000 para página 0 del proceso 0
+[INFO] 18:23:09:266 memoria/(2495:2497): se asigna el marco: 0 al pcb: 0. LECTURA
+[INFO] 18:23:09:267 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:09:768 memoria/(2495:2497): dato leido: 1000 en direccion fisica:0
+[INFO] 18:23:09:772 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:10:274 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:10:775 memoria/(2495:2497): Esperando retardo swap de 1000 para página 4 del proceso 0
+[INFO] 18:23:11:775 memoria/(2495:2497): se asigna el marco: 1 al pcb: 0. ESCRITURA
+[INFO] 18:23:11:776 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:12:277 memoria/(2495:2497): dato escrito: 3000 en direccion fisica:256
+[INFO] 18:23:12:278 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:12:779 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:13:280 memoria/(2495:2497): Esperando retardo swap de 1000 para página 1 del proceso 0
+[INFO] 18:23:14:280 memoria/(2495:2497): se asigna el marco: 2 al pcb: 0. LECTURA
+[INFO] 18:23:14:281 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:14:782 memoria/(2495:2497): dato leido: 2000 en direccion fisica:512
+[INFO] 18:23:14:784 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:15:285 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:15:785 memoria/(2495:2497): ------Estado inicial antes de reemplazo------
+[INFO] 18:23:15:785 memoria/(2495:2497): PUNTERO: 0
+[INFO] 18:23:15:785 memoria/(2495:2497): PAGINA:(0,0) - FRAME: 0 - BIT USO: 1 - BIT MODIFICADO: 0 - BIT PRESENCIA: 1
+[INFO] 18:23:15:785 memoria/(2495:2497): PAGINA:(1,0) - FRAME: 1 - BIT USO: 1 - BIT MODIFICADO: 1 - BIT PRESENCIA: 1
+[INFO] 18:23:15:785 memoria/(2495:2497): PAGINA:(0,1) - FRAME: 2 - BIT USO: 1 - BIT MODIFICADO: 0 - BIT PRESENCIA: 1
+[INFO] 18:23:15:785 memoria/(2495:2497): buscando bit de uso: 0 - bit de modificado: 0
+[INFO] 18:23:15:785 memoria/(2495:2497): Pagina:(0,0) - Bit uso: 1 - Bit modificado: 0. PUNTERO: 1
+[INFO] 18:23:15:785 memoria/(2495:2497): Pagina:(1,0) - Bit uso: 1 - Bit modificado: 1. PUNTERO: 2
+[INFO] 18:23:15:785 memoria/(2495:2497): Pagina:(0,1) - Bit uso: 1 - Bit modificado: 0. PUNTERO: 0
+[INFO] 18:23:15:785 memoria/(2495:2497): buscando bit de uso: 0 - bit de modificado: 1
+[INFO] 18:23:15:785 memoria/(2495:2497): Pagina:(0,0) se setea uso=false. PUNTERO: 1
+[INFO] 18:23:15:785 memoria/(2495:2497): Pagina:(1,0) se setea uso=false. PUNTERO: 2
+[INFO] 18:23:15:785 memoria/(2495:2497): Pagina:(0,1) se setea uso=false. PUNTERO: 0
+[INFO] 18:23:15:785 memoria/(2495:2497): buscando bit de uso: 0 - bit de modificado: 0
+[INFO] 18:23:15:785 memoria/(2495:2497): Victima no modificada y no en uso
+[INFO] 18:23:15:785 memoria/(2495:2497): Victima Algoritmo CLOCK-M: pagina reemplazada:(0,0) - pagina Nueva:(2,0) - frame:0
+[INFO] 18:23:15:785 memoria/(2495:2497): Esperando retardo swap de 1000 para página 8 del proceso 0
+[INFO] 18:23:16:785 memoria/(2495:2497): se asigna el marco: 0 al pcb: 0. LECTURA
+[INFO] 18:23:16:786 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:17:287 memoria/(2495:2497): dato leido: 4000 en direccion fisica:0
+[INFO] 18:23:17:288 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:17:789 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:18:290 memoria/(2495:2497): ------Estado inicial antes de reemplazo------
+[INFO] 18:23:18:290 memoria/(2495:2497): PUNTERO: 1
+[INFO] 18:23:18:290 memoria/(2495:2497): PAGINA:(2,0) - FRAME: 0 - BIT USO: 1 - BIT MODIFICADO: 0 - BIT PRESENCIA: 1
+[INFO] 18:23:18:290 memoria/(2495:2497): PAGINA:(1,0) - FRAME: 1 - BIT USO: 0 - BIT MODIFICADO: 1 - BIT PRESENCIA: 1
+[INFO] 18:23:18:290 memoria/(2495:2497): PAGINA:(0,1) - FRAME: 2 - BIT USO: 0 - BIT MODIFICADO: 0 - BIT PRESENCIA: 1
+[INFO] 18:23:18:290 memoria/(2495:2497): buscando bit de uso: 0 - bit de modificado: 0
+[INFO] 18:23:18:290 memoria/(2495:2497): Pagina:(1,0) - Bit uso: 0 - Bit modificado: 1. PUNTERO: 2
+[INFO] 18:23:18:290 memoria/(2495:2497): Victima no modificada y no en uso
+[INFO] 18:23:18:290 memoria/(2495:2497): Victima Algoritmo CLOCK-M: pagina reemplazada:(0,1) - pagina Nueva:(3,3) - frame:2
+[INFO] 18:23:18:290 memoria/(2495:2497): Esperando retardo swap de 1000 para página 15 del proceso 0
+[INFO] 18:23:19:290 memoria/(2495:2497): se asigna el marco: 2 al pcb: 0. ESCRITURA
+[INFO] 18:23:19:291 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:19:791 memoria/(2495:2497): dato escrito: 9999 en direccion fisica:672
+[INFO] 18:23:19:792 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:20:293 memoria/(2495:2497): dato leido: 9999 en direccion fisica:672
+[INFO] 18:23:20:294 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:20:795 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:21:296 memoria/(2495:2497): se asigna el marco: 1 al pcb: 0. LECTURA
+[INFO] 18:23:21:297 memoria/(2495:2497): Esperando retardo memoria de 500 milisegundos
+[INFO] 18:23:21:797 memoria/(2495:2497): dato leido: 3000 en direccion fisica:256
+[INFO] 18:23:21:799 memoria/(2495:2496): liberando tablas de primer nivel index: 0
+[INFO] 18:23:21:799 memoria/(2495:2496): liberando tablas de segundo nivel index:0
+[INFO] 18:23:21:799 memoria/(2495:2496): liberando tablas de segundo nivel index:1
+[INFO] 18:23:21:799 memoria/(2495:2496): liberando tablas de segundo nivel index:2
+[INFO] 18:23:21:799 memoria/(2495:2496): liberando tablas de segundo nivel index:3
+[INFO] 18:23:21:799 memoria/(2495:2496): se solicita borrar memoria y swap del proceso: 0
