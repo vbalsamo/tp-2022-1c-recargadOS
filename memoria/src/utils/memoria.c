@@ -232,11 +232,9 @@ uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, u
             t_entradaSegundoNivel *victima = reemplazar(estado, entrada);
             if (victima->modificado)
             {
-                // retardoMemoria();
                 void *contenidoMarco = leerMarco(victima->marco);
                 escribirMarcoSwap(contenidoMarco, victima->paginaSwap, id);
                 free(contenidoMarco);
-                victima->modificado = false;
                 char *_idVictima = stringID(victima->id);
                 pthread_mutex_lock(&mutex_estados_pcb);
                 t_estadoPCB *estadoVictima = dictionary_get(estadosPCBS, _idVictima);
@@ -244,7 +242,9 @@ uint32_t obtenerMarco(uint32_t indexTablaSegundoNivel, uint32_t entradaPagina, u
                 estadoVictima->marcosOcupados--;
                 free(_idVictima);
             }
-
+            victima->modificado = false;
+            victima->presencia = false;
+            victima->uso = false;
             entrada->marco = victima->marco;
             void *contenidoPaginaSwap = leerPaginaSwap(entrada->paginaSwap, id);
             // retardoMemoria();
@@ -358,7 +358,6 @@ t_entradaSegundoNivel *reemplazar(t_estadoPCB *estado, t_entradaSegundoNivel *en
         exit(-1);
     }
     list_destroy(entradasSegundoNivel);
-    entradaRemplazar->presencia = false;
     return entradaRemplazar;
 }
 
@@ -403,7 +402,7 @@ t_entradaSegundoNivel *reemplazarClock(t_estadoPCB *estado, t_list *entradasSegu
     {
         return entradaFilter->presencia;
     }
-    list_filter(entradasSegundoNivel, (void *)filtroEntradasSegundoNivel);
+    entradasSegundoNivel = list_filter(entradasSegundoNivel, (void *)filtroEntradasSegundoNivel);
 
     bool compararEntradasSegundoNivel(t_entradaSegundoNivel * entrada, t_entradaSegundoNivel * entrada2)
     {
@@ -457,18 +456,15 @@ t_entradaSegundoNivel *reemplazarClockM(t_estadoPCB *estado, t_list *entradasSeg
     t_entradaSegundoNivel *entradaRemplazar;
     log_info(logger, "------Estado inicial antes de reemplazo------");
     log_info(logger, "PUNTERO: %d", estado->punteroClock);
-    void imprimirEstadoInicial(t_entradaSegundoNivel * entrada)
+    void imprimirEstadoInicial(t_entradaSegundoNivel * entradaa)
     {
-        if(entrada->presencia)
-        {
             log_info(logger, "PAGINA:(%d,%d) - FRAME: %d - BIT USO: %d - BIT MODIFICADO: %d - BIT PRESENCIA: %d",
-                 paginaPrimerNivel(entrada->paginaSwap),
-                 paginaSegundoNivel(entrada->paginaSwap),
-                 entrada->marco,
-                 entrada->uso,
-                 entrada->modificado,
-                 entrada->presencia);
-        }
+                 paginaPrimerNivel(entradaa->paginaSwap),
+                 paginaSegundoNivel(entradaa->paginaSwap),
+                 entradaa->marco,
+                 entradaa->uso,
+                 entradaa->modificado,
+                 entradaa->presencia);
     }
     
     t_entradaSegundoNivel *recorredorEntrada;
@@ -477,59 +473,47 @@ t_entradaSegundoNivel *reemplazarClockM(t_estadoPCB *estado, t_list *entradasSeg
     {
         return entradaFilter->presencia;
     }
-    list_filter(entradasSegundoNivel, (void *)filtroEntradasSegundoNivel);
+    entradasSegundoNivel = list_filter(entradasSegundoNivel, (void *)filtroEntradasSegundoNivel);
 
-    bool compararEntradasSegundoNivel(t_entradaSegundoNivel * entrada, t_entradaSegundoNivel * entrada2)
+    bool compararEntradasSegundoNivel(t_entradaSegundoNivel * entrada1, t_entradaSegundoNivel * entrada2)
     {
-        return entrada->marco < entrada2->marco;
+        return entrada1->marco < entrada2->marco;
     }
     list_sort(entradasSegundoNivel, (void *)compararEntradasSegundoNivel);
 
     list_iterate(entradasSegundoNivel, (void *)imprimirEstadoInicial);
-    log_info(logger, "buscando bit de uso: 0 - bit de modificado: 0");
 
     while (1)
     {
+        log_info(logger, "buscando bit de uso: 0 - bit de modificado: 0");
         for (int i = 0; i < MARCOS_POR_PROCESO; i++)
         {
-
             recorredorEntrada = list_get(entradasSegundoNivel, estado->punteroClock);
             estado->punteroClock = (estado->punteroClock + 1) % MARCOS_POR_PROCESO;
-
-            if (recorredorEntrada->presencia)
+            
+            if (!recorredorEntrada->modificado && !recorredorEntrada->uso)
             {
-
-                if (!(recorredorEntrada->modificado || recorredorEntrada->uso))
-                {
-                    entradaRemplazar = recorredorEntrada;
-                    log_info(logger, "Victima no modificada y no en uso");
-                    log_info(logger, "Victima Algoritmo %s: pagina reemplazada:(%d,%d) - pagina Nueva:(%d,%d) - frame:%d", ALGORITMO_REEMPLAZO,
-                             paginaPrimerNivel(recorredorEntrada->paginaSwap),
-                             paginaSegundoNivel(recorredorEntrada->paginaSwap),
-                             paginaPrimerNivel(entrada->paginaSwap),
-                             paginaSegundoNivel(entrada->paginaSwap),
-                             entradaRemplazar->marco);
-                    return entradaRemplazar;
-                }
-                else
-                {
-                    log_info(logger, "Pagina:(%d,%d) - Bit uso: %d - Bit modificado: %d. PUNTERO: %d",
-                             paginaPrimerNivel(recorredorEntrada->paginaSwap),
-                             paginaSegundoNivel(recorredorEntrada->paginaSwap),
-                             recorredorEntrada->uso,
-                             recorredorEntrada->modificado,
-                             estado->punteroClock);
-                }
+                entradaRemplazar = recorredorEntrada;
+                log_info(logger, "Victima no modificada y no en uso");
+                log_info(logger, "Victima Algoritmo %s: pagina reemplazada:(%d,%d) - pagina Nueva:(%d,%d) - frame:%d", ALGORITMO_REEMPLAZO,
+                            paginaPrimerNivel(recorredorEntrada->paginaSwap),
+                            paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                            paginaPrimerNivel(entrada->paginaSwap),
+                            paginaSegundoNivel(entrada->paginaSwap),
+                            entradaRemplazar->marco);
+                return entradaRemplazar;
             }
             else
             {
-                // log_info(logger, "Pagina:(%d,%d) no esta presente. PUNTERO: %d",
-                //          paginaPrimerNivel(recorredorEntrada->paginaSwap),
-                //          paginaSegundoNivel(recorredorEntrada->paginaSwap),
-                //          estado->punteroClock);
+                log_info(logger, "Pagina:(%d,%d) - Bit uso: %d - Bit modificado: %d. PUNTERO: %d",
+                            paginaPrimerNivel(recorredorEntrada->paginaSwap),
+                            paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                            recorredorEntrada->uso,
+                            recorredorEntrada->modificado,
+                            estado->punteroClock);
             }
         }
-
+        
         log_info(logger, "buscando bit de uso: 0 - bit de modificado: 1");
         for (int i = 0; i < MARCOS_POR_PROCESO; i++)
         {
@@ -537,36 +521,25 @@ t_entradaSegundoNivel *reemplazarClockM(t_estadoPCB *estado, t_list *entradasSeg
             recorredorEntrada = list_get(entradasSegundoNivel, estado->punteroClock);
             estado->punteroClock = (estado->punteroClock + 1) % MARCOS_POR_PROCESO;
 
-            if (recorredorEntrada->presencia)
+            if (!recorredorEntrada->uso && recorredorEntrada->modificado)
             {
-
-                if (!recorredorEntrada->uso && recorredorEntrada->modificado)
-                {
-                    entradaRemplazar = recorredorEntrada;
-                    log_info(logger, "Victima no en uso");
-                    log_info(logger, "Victima Algoritmo %s: pagina reemplazada:(%d,%d) - pagina Nueva:(%d,%d) - frame:%d", ALGORITMO_REEMPLAZO,
-                             paginaPrimerNivel(recorredorEntrada->paginaSwap),
-                             paginaSegundoNivel(recorredorEntrada->paginaSwap),
-                             paginaPrimerNivel(entrada->paginaSwap),
-                             paginaSegundoNivel(entrada->paginaSwap),
-                             entradaRemplazar->marco);
-                    return entradaRemplazar;
-                }
-                else
-                {
-                    recorredorEntrada->uso = false;
-                    log_info(logger, "Pagina:(%d,%d) se setea uso=false. PUNTERO: %d",
-                             paginaPrimerNivel(recorredorEntrada->paginaSwap),
-                             paginaSegundoNivel(recorredorEntrada->paginaSwap),
-                             estado->punteroClock);
-                }
+                entradaRemplazar = recorredorEntrada;
+                log_info(logger, "Victima no en uso");
+                log_info(logger, "Victima Algoritmo %s: pagina reemplazada:(%d,%d) - pagina Nueva:(%d,%d) - frame:%d", ALGORITMO_REEMPLAZO,
+                            paginaPrimerNivel(recorredorEntrada->paginaSwap),
+                            paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                            paginaPrimerNivel(entrada->paginaSwap),
+                            paginaSegundoNivel(entrada->paginaSwap),
+                            entradaRemplazar->marco);
+                return entradaRemplazar;
             }
             else
             {
-                // log_info(logger, "Pagina:(%d,%d) no esta presente. PUNTERO: %d",
-                //          paginaPrimerNivel(recorredorEntrada->paginaSwap),
-                //          paginaSegundoNivel(recorredorEntrada->paginaSwap),
-                //          estado->punteroClock);
+                recorredorEntrada->uso = false;
+                log_info(logger, "Pagina:(%d,%d) se setea uso=false. PUNTERO: %d",
+                            paginaPrimerNivel(recorredorEntrada->paginaSwap),
+                            paginaSegundoNivel(recorredorEntrada->paginaSwap),
+                            estado->punteroClock);
             }
         }
     }
