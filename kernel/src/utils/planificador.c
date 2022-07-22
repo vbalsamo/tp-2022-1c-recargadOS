@@ -276,7 +276,7 @@ void hilo_block()
                 log_info(logger, "Se suspende el pcb");
                 comunicacionMemoriaSuspender(ultimoPcbBloqueado->pcb);
                 sem_post(&sem_multiprogramacion);
-                log_info(logger, "pcb: %d ejecutando IO restante de %d milisegundos", ultimoPcbBloqueado->pcb->id, (ultimoPcbBloqueado->tiempoBloqueo - TIEMPO_MAXIMO_BLOQUEADO / 1000));
+                log_info(logger, "pcb: %d ejecutando IO restante de %d milisegundos", ultimoPcbBloqueado->pcb->id, (ultimoPcbBloqueado->tiempoBloqueo - ioParaSuspender / 1000));
                 hacerIO(ultimoPcbBloqueado->tiempoBloqueo * 1000 - ioParaSuspender); // restante
                 addEstadoSuspReady(ultimoPcbBloqueado->pcb);
                 sem_post(&sem_hay_pcb_esperando_ready);
